@@ -1,0 +1,10 @@
+# ==================================================
+# VelioraGacha GUI Rewards
+# File ini otomatis diisi dari /vgcreate gui > Crate Settings > Reward Editor.
+# Jangan perlu edit manual kecuali paham format Bukkit ItemStack serialization.
+# Setiap item GUI memakai default weight editor.default-weight dari config.yml.
+# Reward command tetap diedit manual di rewards.yml.
+# ==================================================
+editor:
+  default-weight: 10
+rewards: {}
