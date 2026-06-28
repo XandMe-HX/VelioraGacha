@@ -1,36 +1,20 @@
 package id.velioragardens.velioragacha;
 
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,917 +25,92 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public final class VelioraGachaPlugin extends JavaPlugin implements Listener, CommandExecutor, TabCompleter {
-    private final Map<String, KeyDef> keys = new HashMap<>();
-    private final Map<String, CrateDef> crates = new HashMap<>();
-    private final Map<String, CrateLocation> locations = new HashMap<>();
-    private final Map<String, List<RewardDef>> rewards = new HashMap<>();
-    private final Map<UUID, PlayerData> playerCache = new HashMap<>();
-    private final Map<UUID, BukkitTask> rouletteTasks = new HashMap<>();
-    private final Set<UUID> openingPlayers = new HashSet<>();
-
-    private File cratesFile;
-    private File keysFile;
-    private File rewardsFile;
-    private File playerDataFolder;
-    private FileConfiguration cratesConfig;
-    private FileConfiguration keysConfig;
-    private FileConfiguration rewardsConfig;
+    private final Map<String, KeyDef> keys = new LinkedHashMap<>();
+    private final Map<String, CrateDef> crates = new LinkedHashMap<>();
+    private final Map<String, CrateLoc> locations = new HashMap<>();
+    private final Map<UUID, Map<String, Integer>> keyCache = new HashMap<>();
+    private final Map<UUID, BukkitTask> opening = new HashMap<>();
+    private File cratesFile, keysFile, playerDir;
+    private FileConfiguration cratesYml, keysYml;
     private Economy economy;
+    private DecimalFormat money = new DecimalFormat("#,###");
+    private org.bukkit.NamespacedKey crateKey, keyKey;
     private BukkitTask effectTask;
-    private DecimalFormat moneyFormat;
 
-    private org.bukkit.NamespacedKey crateItemKey;
-
-    @Override
-    public void onEnable() {
-        crateItemKey = new org.bukkit.NamespacedKey(this, "crate_id");
-        saveBundledResources();
-        setupEconomy();
-        reloadAll();
-
-        Objects.requireNonNull(getCommand("vgcreate"), "Command vgcreate missing").setExecutor(this);
-        Objects.requireNonNull(getCommand("vgcreate"), "Command vgcreate missing").setTabCompleter(this);
-        Objects.requireNonNull(getCommand("key"), "Command key missing").setExecutor(this);
-        Objects.requireNonNull(getCommand("key"), "Command key missing").setTabCompleter(this);
-        Bukkit.getPluginManager().registerEvents(this, this);
-        startEffectTask();
-        getLogger().info("VelioraGacha enabled.");
+    @Override public void onEnable() {
+        crateKey = new org.bukkit.NamespacedKey(this, "crate_id");
+        keyKey = new org.bukkit.NamespacedKey(this, "key_id");
+        saveMissing("config.yml"); saveMissing("crates.yml"); saveMissing("keys.yml"); saveMissing("rewards.yml");
+        playerDir = new File(getDataFolder(), "playerdata"); if (!playerDir.exists()) playerDir.mkdirs();
+        hookVault(); loadAll();
+        getCommand("vgcreate").setExecutor(this); getCommand("vgcreate").setTabCompleter(this);
+        getCommand("key").setExecutor(this); getCommand("key").setTabCompleter(this);
+        Bukkit.getPluginManager().registerEvents(this, this); startEffects();
     }
 
-    @Override
-    public void onDisable() {
-        for (BukkitTask task : rouletteTasks.values()) task.cancel();
-        rouletteTasks.clear();
-        openingPlayers.clear();
+    @Override public void onDisable() {
+        opening.values().forEach(BukkitTask::cancel); opening.clear();
         if (effectTask != null) effectTask.cancel();
-        for (PlayerData data : playerCache.values()) savePlayerData(data);
-        playerCache.clear();
-        getLogger().info("VelioraGacha disabled.");
+        for (UUID uuid : keyCache.keySet()) savePlayer(uuid);
     }
 
-    private void saveBundledResources() {
-        saveResourceIfMissing("config.yml");
-        saveResourceIfMissing("crates.yml");
-        saveResourceIfMissing("keys.yml");
-        saveResourceIfMissing("rewards.yml");
-        playerDataFolder = new File(getDataFolder(), "playerdata");
-        if (!playerDataFolder.exists() && !playerDataFolder.mkdirs()) {
-            getLogger().warning("Could not create playerdata folder.");
-        }
-    }
-
-    private void saveResourceIfMissing(String path) {
-        File file = new File(getDataFolder(), path);
-        if (!file.exists()) saveResource(path, false);
-    }
-
-    private void setupEconomy() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            economy = null;
-            return;
-        }
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-        economy = rsp == null ? null : rsp.getProvider();
-    }
-
-    private void reloadAll() {
-        reloadConfig();
-        moneyFormat = new DecimalFormat(getConfig().getString("economy.money-format", "#,###"));
-        cratesFile = new File(getDataFolder(), "crates.yml");
-        keysFile = new File(getDataFolder(), "keys.yml");
-        rewardsFile = new File(getDataFolder(), "rewards.yml");
-        cratesConfig = YamlConfiguration.loadConfiguration(cratesFile);
-        keysConfig = YamlConfiguration.loadConfiguration(keysFile);
-        rewardsConfig = YamlConfiguration.loadConfiguration(rewardsFile);
-        loadKeys();
-        loadCrates();
-        loadRewards();
-    }
+    private void saveMissing(String name) { if (!new File(getDataFolder(), name).exists()) saveResource(name, false); }
+    private void hookVault() { RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class); economy = rsp == null ? null : rsp.getProvider(); }
+    private void loadAll() { reloadConfig(); money = new DecimalFormat(getConfig().getString("economy.money-format", "#,###")); cratesFile = new File(getDataFolder(), "crates.yml"); keysFile = new File(getDataFolder(), "keys.yml"); cratesYml = YamlConfiguration.loadConfiguration(cratesFile); keysYml = YamlConfiguration.loadConfiguration(keysFile); loadKeys(); loadCrates(); }
 
     private void loadKeys() {
-        keys.clear();
-        ConfigurationSection section = keysConfig.getConfigurationSection("keys");
-        if (section == null) return;
-        for (String id : section.getKeys(false)) {
-            String path = "keys." + id;
-            String display = keysConfig.getString(path + ".display-name", id);
-            Material material = safeMaterial(keysConfig.getString(path + ".material"), Material.TRIPWIRE_HOOK);
-            double price = Math.max(0, keysConfig.getDouble(path + ".price", 150000));
-            List<String> lore = keysConfig.getStringList(path + ".lore");
-            keys.put(id.toLowerCase(Locale.ROOT), new KeyDef(id.toLowerCase(Locale.ROOT), display, material, price, lore));
-        }
+        keys.clear(); ConfigurationSection s = keysYml.getConfigurationSection("keys"); if (s == null) return;
+        for (String id : s.getKeys(false)) { String p = "keys." + id; keys.put(id.toLowerCase(Locale.ROOT), new KeyDef(id.toLowerCase(Locale.ROOT), keysYml.getString(p + ".display-name", id), mat(keysYml.getString(p + ".material"), Material.TRIPWIRE_HOOK), keysYml.getDouble(p + ".price", 150000))); }
     }
 
     private void loadCrates() {
-        crates.clear();
-        locations.clear();
-        ConfigurationSection section = cratesConfig.getConfigurationSection("crates");
-        if (section != null) {
-            for (String id : section.getKeys(false)) {
-                String path = "crates." + id;
-                if (!cratesConfig.getBoolean(path + ".enabled", true)) continue;
-                Material block = safeMaterial(cratesConfig.getString(path + ".block"), Material.CHEST);
-                String display = cratesConfig.getString(path + ".display", id);
-                String key = cratesConfig.getString(path + ".key", id + "_key").toLowerCase(Locale.ROOT);
-                String effect = cratesConfig.getString(path + ".effect", "fire_spiral");
-                int slot = cratesConfig.getInt(path + ".gui-slot", 10);
-                String level = cratesConfig.getString(path + ".level-reward", "Default");
-                boolean hologram = cratesConfig.getBoolean(path + ".hologram-enabled", true);
-                crates.put(id.toLowerCase(Locale.ROOT), new CrateDef(id.toLowerCase(Locale.ROOT), display, block, key, effect, slot, level, hologram));
-            }
-        }
-        ConfigurationSection locSec = cratesConfig.getConfigurationSection("locations");
-        if (locSec != null) {
-            for (String locKey : locSec.getKeys(false)) {
-                String path = "locations." + locKey;
-                String crate = cratesConfig.getString(path + ".crate", "").toLowerCase(Locale.ROOT);
-                String world = cratesConfig.getString(path + ".world", "world");
-                int x = cratesConfig.getInt(path + ".x");
-                int y = cratesConfig.getInt(path + ".y");
-                int z = cratesConfig.getInt(path + ".z");
-                if (crates.containsKey(crate)) locations.put(locKey, new CrateLocation(crate, world, x, y, z));
-            }
-        }
+        crates.clear(); locations.clear(); ConfigurationSection s = cratesYml.getConfigurationSection("crates");
+        if (s != null) for (String id : s.getKeys(false)) { String p = "crates." + id; if (!cratesYml.getBoolean(p + ".enabled", true)) continue; crates.put(id.toLowerCase(Locale.ROOT), new CrateDef(id.toLowerCase(Locale.ROOT), cratesYml.getString(p + ".display", id), mat(cratesYml.getString(p + ".block"), Material.CHEST), cratesYml.getString(p + ".key", id + "_key").toLowerCase(Locale.ROOT), cratesYml.getString(p + ".effect", "fire_spiral"))); }
+        ConfigurationSection l = cratesYml.getConfigurationSection("locations");
+        if (l != null) for (String k : l.getKeys(false)) locations.put(k, new CrateLoc(cratesYml.getString("locations." + k + ".crate", ""), cratesYml.getString("locations." + k + ".world", "world"), cratesYml.getInt("locations." + k + ".x"), cratesYml.getInt("locations." + k + ".y"), cratesYml.getInt("locations." + k + ".z")));
     }
 
-    private void loadRewards() {
-        rewards.clear();
-        ConfigurationSection root = rewardsConfig.getConfigurationSection("rewards");
-        if (root == null) return;
-        for (String crateId : root.getKeys(false)) {
-            List<RewardDef> list = new ArrayList<>();
-            ConfigurationSection crateSection = root.getConfigurationSection(crateId);
-            if (crateSection == null) continue;
-            for (String rarity : crateSection.getKeys(false)) {
-                List<Map<?, ?>> maps = rewardsConfig.getMapList("rewards." + crateId + "." + rarity);
-                for (Map<?, ?> map : maps) {
-                    String type = String.valueOf(map.getOrDefault("type", "ITEM")).toUpperCase(Locale.ROOT);
-                    int weight = parseInt(map.get("weight"), 10);
-                    if ("COMMAND".equals(type)) {
-                        String command = String.valueOf(map.getOrDefault("command", ""));
-                        String display = String.valueOf(map.getOrDefault("display", "Command Reward"));
-                        Material material = safeMaterial(String.valueOf(map.getOrDefault("material", "COMMAND_BLOCK")), Material.COMMAND_BLOCK);
-                        int amount = Math.max(1, parseInt(map.get("amount"), 1));
-                        list.add(RewardDef.command(crateId, rarity, display, command, material, amount, weight));
-                    } else {
-                        Material material = safeMaterial(String.valueOf(map.getOrDefault("material", "STONE")), Material.STONE);
-                        int amount = Math.max(1, parseInt(map.get("amount"), 1));
-                        list.add(RewardDef.item(crateId, rarity, material, amount, weight));
-                    }
-                }
-            }
-            rewards.put(crateId.toLowerCase(Locale.ROOT), list);
-        }
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("key")) return handleKeyCommand(sender, args);
-        if (command.getName().equalsIgnoreCase("vgcreate")) return handleAdminCommand(sender, args);
-        return false;
-    }
-
-    private boolean handleKeyCommand(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
-            send(sender, message("player-only"));
-            return true;
-        }
-        if (args.length == 1 && args[0].equalsIgnoreCase("shop")) {
-            if (!player.hasPermission("velioragacha.shop")) {
-                send(player, message("no-permission"));
-                return true;
-            }
-            openKeyShop(player);
-            return true;
-        }
-        send(player, "&dVelioraGacha &7» &f/key shop");
+    @Override public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("key")) { if (sender instanceof Player p && args.length == 1 && args[0].equalsIgnoreCase("shop")) openShop(p); else msg(sender, "&f/key shop"); return true; }
+        if (args.length == 0) { msg(sender, "&d/vgcreate gui &7| &d/vgcreate givekey <player|*> <key> <amount> &7| &d/vgcreate reload"); return true; }
+        if (args[0].equalsIgnoreCase("reload")) { if (!sender.hasPermission("velioragacha.reload")) return deny(sender); loadAll(); restartEffects(); msg(sender, "&aVelioraGacha berhasil direload."); return true; }
+        if (args[0].equalsIgnoreCase("gui")) { if (!(sender instanceof Player p)) return true; if (!p.hasPermission("velioragacha.gui")) return deny(p); openAdmin(p); return true; }
+        if (args[0].equalsIgnoreCase("givekey")) return giveKey(sender, args);
         return true;
     }
 
-    private boolean handleAdminCommand(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            send(sender, "&8&m--------------------------------");
-            send(sender, "&d&lVelioraGacha Admin");
-            send(sender, "&f/vgcreate gui &7- Buka admin GUI.");
-            send(sender, "&f/vgcreate givekey <player|*> <key> <amount> &7- Beri key.");
-            send(sender, "&f/vgcreate reload &7- Reload config.");
-            send(sender, "&8&m--------------------------------");
-            return true;
-        }
-        if (args[0].equalsIgnoreCase("gui")) {
-            if (!(sender instanceof Player player)) {
-                send(sender, message("player-only"));
-                return true;
-            }
-            if (!player.hasPermission("velioragacha.gui")) {
-                send(player, message("no-permission"));
-                return true;
-            }
-            openAdminGui(player);
-            return true;
-        }
-        if (args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("velioragacha.reload")) {
-                send(sender, message("no-permission"));
-                return true;
-            }
-            reloadAll();
-            restartEffectTask();
-            send(sender, message("reload-success"));
-            return true;
-        }
-        if (args[0].equalsIgnoreCase("givekey")) {
-            if (!sender.hasPermission("velioragacha.givekey")) {
-                send(sender, message("no-permission"));
-                return true;
-            }
-            if (args.length < 4) {
-                send(sender, "&cGunakan: /vgcreate givekey <player|*> <key> <amount>");
-                return true;
-            }
-            String target = args[1];
-            String keyId = args[2].toLowerCase(Locale.ROOT);
-            int amount = parseInt(args[3], 0);
-            if (amount < 1) {
-                send(sender, "&cAmount minimal 1.");
-                return true;
-            }
-            KeyDef key = keys.get(keyId);
-            if (key == null) {
-                send(sender, message("invalid-key").replace("%key%", keyId));
-                return true;
-            }
-            if (target.equals("*")) {
-                for (Player online : Bukkit.getOnlinePlayers()) addKey(online, key.id(), amount, true);
-                send(sender, message("key-given").replace("%amount%", String.valueOf(amount)).replace("%key%", plain(key.displayName())).replace("%player%", "semua player online"));
-                return true;
-            }
-            OfflinePlayer off = Bukkit.getOfflinePlayer(target);
-            PlayerData data = loadPlayerData(off.getUniqueId(), off.getName() == null ? target : off.getName());
-            data.addKey(key.id(), amount);
-            savePlayerData(data);
-            Player online = off.getPlayer();
-            if (online != null) send(online, message("key-received").replace("%amount%", String.valueOf(amount)).replace("%key%", plain(key.displayName())));
-            send(sender, message("key-given").replace("%amount%", String.valueOf(amount)).replace("%key%", plain(key.displayName())).replace("%player%", target));
-            return true;
-        }
-        send(sender, "&cSubcommand tidak dikenal.");
-        return true;
+    private boolean giveKey(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("velioragacha.givekey")) return deny(sender); if (args.length < 4) { msg(sender, "&c/vgcreate givekey <player|*> <key> <amount>"); return true; }
+        String key = args[2].toLowerCase(Locale.ROOT); int amount = parse(args[3]); if (!keys.containsKey(key) || amount < 1) { msg(sender, "&cKey/amount tidak valid."); return true; }
+        if (args[1].equals("*")) { for (Player p : Bukkit.getOnlinePlayers()) addKey(p.getUniqueId(), key, amount); msg(sender, "&aKey diberikan ke semua player online."); return true; }
+        OfflinePlayer off = Bukkit.getOfflinePlayer(args[1]); addKey(off.getUniqueId(), key, amount); msg(sender, "&aKey diberikan ke &f" + args[1]); return true;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (command.getName().equalsIgnoreCase("key")) {
-            if (args.length == 1) return match(args[0], List.of("shop"));
-            return Collections.emptyList();
-        }
-        if (args.length == 1) return match(args[0], List.of("gui", "givekey", "reload"));
-        if (args.length == 3 && args[0].equalsIgnoreCase("givekey")) return match(args[2], new ArrayList<>(keys.keySet()));
-        if (args.length == 4 && args[0].equalsIgnoreCase("givekey")) return match(args[3], List.of("1", "5", "10", "32", "64"));
-        return Collections.emptyList();
-    }
+    @Override public List<String> onTabComplete(CommandSender s, Command c, String a, String[] args) { if (c.getName().equalsIgnoreCase("key")) return args.length == 1 ? List.of("shop") : List.of(); if (args.length == 1) return List.of("gui", "givekey", "reload"); if (args.length == 3 && args[0].equalsIgnoreCase("givekey")) return new ArrayList<>(keys.keySet()); if (args.length == 4) return List.of("1", "5", "10", "32", "64"); return List.of(); }
 
-    private void openKeyShop(Player player) {
-        GuiHolder holder = new GuiHolder(GuiType.KEY_SHOP, null, 1);
-        Inventory inv = Bukkit.createInventory(holder, 54, color(getConfig().getString("shop.title", "&8Key Shop")));
-        holder.inventory = inv;
-        fill(inv);
-        int[] slots = {20, 22, 24, 30, 32};
-        int i = 0;
-        for (KeyDef key : keys.values()) {
-            if (i >= slots.length) break;
-            inv.setItem(slots[i++], keyIcon(key, List.of("&7Harga: &a" + formatMoney(key.price()), "&7Klik untuk beli.")));
-        }
-        player.openInventory(inv);
-    }
+    private void openShop(Player p) { Holder h = new Holder("shop", null, 1); Inventory inv = gui(h, 54, "&8Key Shop"); fill(inv); int[] slots = {20,22,24,30,32}; int i=0; for (KeyDef k: keys.values()) if (i<slots.length) inv.setItem(slots[i++], keyIcon(k)); p.openInventory(inv); }
+    private void openQty(Player p, String key, int amount) { KeyDef k=keys.get(key); if(k==null)return; int max=getConfig().getInt("settings.max-shop-amount",64); amount=Math.max(1,Math.min(max,amount)); Holder h=new Holder("qty",key,amount); Inventory inv=gui(h,54,"&8Beli "+plain(k.name)); fill(inv); inv.setItem(20,item(Material.RED_STAINED_GLASS_PANE,"&c-10")); inv.setItem(21,item(Material.RED_DYE,"&c-1")); inv.setItem(22,item(k.icon,"&f"+plain(k.name)+" &7x"+amount+" &a"+cash(k.price*amount))); inv.setItem(23,item(Material.LIME_DYE,"&a+1")); inv.setItem(24,item(Material.LIME_STAINED_GLASS_PANE,"&a+10")); inv.setItem(30,item(Material.ARROW,"&eBack")); inv.setItem(32,item(Material.EMERALD_BLOCK,"&aConfirm")); p.openInventory(inv); }
+    private void openAdmin(Player p) { Holder h=new Holder("admin",null,1); Inventory inv=gui(h,27,"&8VelioraGacha Admin"); fill(inv); inv.setItem(11,item(Material.TRIPWIRE_HOOK,"&dKey Manager")); inv.setItem(13,item(Material.CHEST,"&6Crate Placer")); inv.setItem(15,item(Material.COMPARATOR,"&eCrate Settings")); p.openInventory(inv); }
+    private void openPlacer(Player p) { Holder h=new Holder("placer",null,1); Inventory inv=gui(h,27,"&8Crate Placer"); fill(inv); int slot=10; for(CrateDef c:crates.values()) inv.setItem(slot++, crateItem(c)); p.openInventory(inv); }
+    private void openKeys(Player p) { Holder h=new Holder("keys",null,1); Inventory inv=gui(h,27,"&8Key Manager"); fill(inv); int slot=10; for(KeyDef k:keys.values()) inv.setItem(slot++, keyIcon(k)); p.openInventory(inv); }
+    private void openSettings(Player p) { Holder h=new Holder("settings",null,1); Inventory inv=gui(h,27,"&8Crate Settings"); fill(inv); int slot=10; for(CrateDef c:crates.values()) inv.setItem(slot++, item(c.block,"&e"+c.name)); p.openInventory(inv); }
 
-    private void openQuantityGui(Player player, String keyId, int amount) {
-        KeyDef key = keys.get(keyId);
-        if (key == null) return;
-        int max = Math.max(1, getConfig().getInt("settings.max-shop-amount", 64));
-        amount = Math.max(1, Math.min(max, amount));
-        GuiHolder holder = new GuiHolder(GuiType.KEY_QUANTITY, keyId, amount);
-        String title = getConfig().getString("shop.quantity-title", "&8Beli %key%").replace("%key%", plain(key.displayName()));
-        Inventory inv = Bukkit.createInventory(holder, 54, color(title));
-        holder.inventory = inv;
-        fill(inv);
-        inv.setItem(20, named(Material.RED_STAINED_GLASS_PANE, "&c-10", List.of("&7Kurangi 10.")));
-        inv.setItem(21, named(Material.RED_DYE, "&c-1", List.of("&7Kurangi 1.")));
-        inv.setItem(22, keyIcon(key, List.of("&7Jumlah: &f" + amount, "&7Total: &a" + formatMoney(key.price() * amount))));
-        inv.setItem(23, named(Material.LIME_DYE, "&a+1", List.of("&7Tambah 1.")));
-        inv.setItem(24, named(Material.LIME_STAINED_GLASS_PANE, "&a+10", List.of("&7Tambah 10.")));
-        inv.setItem(30, named(Material.ARROW, "&eKembali", List.of("&7Kembali ke shop.")));
-        inv.setItem(32, named(Material.EMERALD_BLOCK, "&aConfirm Beli", List.of("&7Total: &a" + formatMoney(key.price() * amount))));
-        player.openInventory(inv);
-    }
+    @EventHandler public void click(InventoryClickEvent e) { if (!(e.getWhoClicked() instanceof Player p) || !(e.getInventory().getHolder() instanceof Holder h)) return; e.setCancelled(true); ItemStack it=e.getCurrentItem(); if(it==null)return; int slot=e.getRawSlot(); if(h.type.equals("shop")){String k=pdc(it,keyKey); if(k!=null)openQty(p,k,1);} else if(h.type.equals("qty")){int a=h.amount; if(slot==20)a-=10; else if(slot==21)a--; else if(slot==23)a++; else if(slot==24)a+=10; else if(slot==30){openShop(p);return;} else if(slot==32){buy(p,h.id,h.amount);return;} else return; openQty(p,h.id,a);} else if(h.type.equals("admin")){if(slot==11)openKeys(p); else if(slot==13)openPlacer(p); else if(slot==15)openSettings(p);} else if(h.type.equals("keys")){String k=pdc(it,keyKey); if(k!=null)addKey(p.getUniqueId(),k,e.isShiftClick()?10:1);} else if(h.type.equals("placer")){String c=pdc(it,crateKey); if(c!=null)p.getInventory().addItem(crateItem(crates.get(c)));} }
+    private void buy(Player p,String key,int amount){KeyDef k=keys.get(key); if(k==null)return; if(economy==null){msg(p,"&cEconomy tidak tersedia.");return;} double total=k.price*amount; if(economy.getBalance(p)<total){msg(p,"&cUang kurang. Butuh &f"+cash(total));return;} economy.withdrawPlayer(p,total); addKey(p.getUniqueId(),key,amount); msg(p,"&aBerhasil membeli key x&f"+amount); openQty(p,key,amount);}
 
-    private void openAdminGui(Player player) {
-        GuiHolder holder = new GuiHolder(GuiType.ADMIN_MAIN, null, 1);
-        Inventory inv = Bukkit.createInventory(holder, 27, color("&8VelioraGacha Admin"));
-        holder.inventory = inv;
-        fill(inv);
-        inv.setItem(11, named(Material.TRIPWIRE_HOOK, "&dKey Manager", List.of("&7Klik untuk melihat key.", "&7Shift key: +10 key test.")));
-        inv.setItem(13, named(Material.CHEST, "&6Crate Placer", List.of("&7Ambil crate item khusus.", "&7Place untuk membuat crate.")));
-        inv.setItem(15, named(Material.COMPARATOR, "&eCrate Settings", List.of("&7Lihat crate dan reward editor.")));
-        player.openInventory(inv);
-    }
+    @EventHandler(priority=EventPriority.HIGHEST) public void place(BlockPlaceEvent e){String id=pdc(e.getItemInHand(),crateKey); if(id==null)return; if(!e.getPlayer().hasPermission("velioragacha.place")){e.setCancelled(true);return;} Location l=e.getBlockPlaced().getLocation(); String k=locKey(l); cratesYml.set("locations."+k+".crate",id); cratesYml.set("locations."+k+".world",l.getWorld().getName()); cratesYml.set("locations."+k+".x",l.getBlockX()); cratesYml.set("locations."+k+".y",l.getBlockY()); cratesYml.set("locations."+k+".z",l.getBlockZ()); save(cratesYml,cratesFile); locations.put(k,new CrateLoc(id,l.getWorld().getName(),l.getBlockX(),l.getBlockY(),l.getBlockZ())); msg(e.getPlayer(),"&aCrate dibuat.");}
+    @EventHandler(priority=EventPriority.HIGHEST) public void br(BlockBreakEvent e){CrateLoc l=locations.get(locKey(e.getBlock().getLocation())); if(l==null)return; if(!e.getPlayer().hasPermission("velioragacha.break")){e.setCancelled(true);return;} cratesYml.set("locations."+locKey(e.getBlock().getLocation()),null); save(cratesYml,cratesFile); locations.remove(locKey(e.getBlock().getLocation())); e.setDropItems(false); if(crates.containsKey(l.crate))e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(),crateItem(crates.get(l.crate)));}
+    @EventHandler(priority=EventPriority.HIGHEST) public void interact(PlayerInteractEvent e){Block b=e.getClickedBlock(); if(b==null||!e.getAction().name().equals("RIGHT_CLICK_BLOCK"))return; CrateLoc l=locations.get(locKey(b.getLocation())); if(l==null)return; e.setCancelled(true); Player p=e.getPlayer(); CrateDef c=crates.get(l.crate); if(c==null)return; if(getKeys(p.getUniqueId()).getOrDefault(c.key,0)<=0){noKey(p,b.getLocation());return;} addKey(p.getUniqueId(),c.key,-1); roulette(p,c);}
+    private void noKey(Player p,Location loc){msg(p,"&cKamu butuh key untuk membuka crate ini. Beli di &f/key shop&c."); p.playSound(p.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1); Vector v=p.getLocation().toVector().subtract(loc.toVector()).normalize().multiply(.65); v.setY(.25); p.setVelocity(v);}
+    private void roulette(Player p,CrateDef c){if(opening.containsKey(p.getUniqueId()))return; Holder h=new Holder("roulette",c.id,1); Inventory inv=gui(h,45,"&8Opening "+c.name); fill(inv); Reward r=randomReward(); BukkitTask task=new BukkitRunnable(){int t=0;public void run(){t+=2;inv.setItem(22,t>=80?r.icon():randomReward().icon()); if(t>=80){give(p,r); opening.remove(p.getUniqueId());cancel();}}}.runTaskTimer(this,1,2); opening.put(p.getUniqueId(),task); p.openInventory(inv);}
+    private Reward randomReward(){List<Material> mats=List.of(Material.IRON_INGOT,Material.EMERALD,Material.GOLDEN_APPLE,Material.DIAMOND); Material m=mats.get(new Random().nextInt(mats.size())); return new Reward(m, m==Material.DIAMOND?1:4);} private void give(Player p,Reward r){p.getInventory().addItem(new ItemStack(r.mat,r.amount)); msg(p,"&aKamu mendapat &f"+r.mat.name()+" x"+r.amount);}
 
-    private void openKeyManager(Player player) {
-        GuiHolder holder = new GuiHolder(GuiType.KEY_MANAGER, null, 1);
-        Inventory inv = Bukkit.createInventory(holder, 27, color("&8Key Manager"));
-        holder.inventory = inv;
-        fill(inv);
-        int[] slots = {10, 11, 12, 13, 14};
-        int i = 0;
-        for (KeyDef key : keys.values()) {
-            if (i >= slots.length) break;
-            inv.setItem(slots[i++], keyIcon(key, List.of("&7Klik: beri diri sendiri 1 key.", "&7Shift klik: beri diri sendiri 10 key.", "&8/vgcreate givekey <player> " + key.id() + " <amount>")));
-        }
-        player.openInventory(inv);
-    }
-
-    private void openCratePlacer(Player player) {
-        GuiHolder holder = new GuiHolder(GuiType.CRATE_PLACER, null, 1);
-        Inventory inv = Bukkit.createInventory(holder, 27, color("&8Crate Placer"));
-        holder.inventory = inv;
-        fill(inv);
-        int[] slots = {10, 11, 12, 13, 14};
-        int i = 0;
-        for (CrateDef crate : crates.values()) {
-            if (i >= slots.length) break;
-            inv.setItem(slots[i++], crateItem(crate));
-        }
-        player.openInventory(inv);
-    }
-
-    private void openCrateSettings(Player player) {
-        GuiHolder holder = new GuiHolder(GuiType.CRATE_SETTINGS, null, 1);
-        Inventory inv = Bukkit.createInventory(holder, 27, color("&8Crate Settings"));
-        holder.inventory = inv;
-        fill(inv);
-        int[] slots = {10, 11, 12, 13, 14};
-        int i = 0;
-        for (CrateDef crate : crates.values()) {
-            if (i >= slots.length) break;
-            inv.setItem(slots[i++], named(crate.block(), "&e" + crate.display(), List.of("&7Effect: &f" + crate.effect(), "&7Klik untuk reward editor.")));
-        }
-        player.openInventory(inv);
-    }
-
-    private void openRewardEditor(Player player, String crateId) {
-        GuiHolder holder = new GuiHolder(GuiType.REWARD_EDITOR, crateId, 1);
-        Inventory inv = Bukkit.createInventory(holder, 54, color("&8Reward Editor: " + crateId));
-        holder.inventory = inv;
-        List<RewardDef> list = rewards.getOrDefault(crateId, List.of());
-        int slot = 0;
-        for (RewardDef reward : list) {
-            if (reward.type() == RewardType.ITEM && slot < inv.getSize()) inv.setItem(slot++, new ItemStack(reward.material(), reward.amount()));
-        }
-        player.openInventory(inv);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!(event.getInventory().getHolder() instanceof GuiHolder holder)) return;
-        event.setCancelled(true);
-        ItemStack current = event.getCurrentItem();
-        if (current == null || current.getType().isAir()) return;
-        int slot = event.getRawSlot();
-        switch (holder.type) {
-            case KEY_SHOP -> {
-                String keyId = readKeyFromItem(current);
-                if (keyId != null) openQuantityGui(player, keyId, 1);
-            }
-            case KEY_QUANTITY -> handleQuantityClick(player, holder, slot);
-            case ADMIN_MAIN -> {
-                if (slot == 11) openKeyManager(player);
-                else if (slot == 13) openCratePlacer(player);
-                else if (slot == 15) openCrateSettings(player);
-            }
-            case KEY_MANAGER -> {
-                String keyId = readKeyFromItem(current);
-                if (keyId != null) addKey(player, keyId, event.isShiftClick() ? 10 : 1, true);
-            }
-            case CRATE_PLACER -> {
-                String crateId = readCrateFromItem(current);
-                if (crateId != null) player.getInventory().addItem(crateItem(crates.get(crateId)));
-            }
-            case CRATE_SETTINGS -> {
-                String crateId = readCrateFromItem(current);
-                if (crateId != null) openRewardEditor(player, crateId);
-            }
-            case ROULETTE -> event.setCancelled(true);
-            case REWARD_EDITOR -> event.setCancelled(false);
-        }
-    }
-
-    private void handleQuantityClick(Player player, GuiHolder holder, int slot) {
-        String keyId = holder.payload;
-        int amount = holder.amount;
-        int max = Math.max(1, getConfig().getInt("settings.max-shop-amount", 64));
-        if (slot == 20) amount -= 10;
-        else if (slot == 21) amount -= 1;
-        else if (slot == 23) amount += 1;
-        else if (slot == 24) amount += 10;
-        else if (slot == 30) {
-            openKeyShop(player);
-            return;
-        } else if (slot == 32) {
-            confirmBuy(player, keyId, amount);
-            openQuantityGui(player, keyId, amount);
-            return;
-        } else return;
-        openQuantityGui(player, keyId, Math.max(1, Math.min(max, amount)));
-    }
-
-    private void confirmBuy(Player player, String keyId, int amount) {
-        KeyDef key = keys.get(keyId);
-        if (key == null) return;
-        if (economy == null || !getConfig().getBoolean("economy.enabled", true)) {
-            send(player, message("economy-missing"));
-            return;
-        }
-        double total = key.price() * amount;
-        if (economy.getBalance(player) < total) {
-            send(player, message("not-enough-money").replace("%price%", formatMoney(total)));
-            return;
-        }
-        economy.withdrawPlayer(player, total);
-        addKey(player, keyId, amount, false);
-        send(player, message("key-bought").replace("%amount%", String.valueOf(amount)).replace("%key%", plain(key.displayName())).replace("%price%", formatMoney(total)));
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player player)) return;
-        if (!(event.getInventory().getHolder() instanceof GuiHolder holder)) return;
-        if (holder.type == GuiType.REWARD_EDITOR && holder.payload != null) saveRewardEditor(player, holder.payload, event.getInventory());
-    }
-
-    private void saveRewardEditor(Player player, String crateId, Inventory inventory) {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (ItemStack item : inventory.getContents()) {
-            if (item == null || item.getType().isAir()) continue;
-            Map<String, Object> map = new HashMap<>();
-            map.put("type", "ITEM");
-            map.put("material", item.getType().name());
-            map.put("amount", item.getAmount());
-            map.put("weight", 10);
-            list.add(map);
-        }
-        rewardsConfig.set("rewards." + crateId + ".common", list);
-        saveYaml(rewardsConfig, rewardsFile);
-        loadRewards();
-        send(player, "&aReward editor tersimpan untuk crate &f" + crateId + "&a.");
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItemInHand();
-        String crateId = readCrateFromItem(item);
-        if (crateId == null) return;
-        if (!player.hasPermission("velioragacha.place")) {
-            event.setCancelled(true);
-            send(player, message("no-permission"));
-            return;
-        }
-        CrateDef crate = crates.get(crateId);
-        if (crate == null) {
-            event.setCancelled(true);
-            return;
-        }
-        Location loc = event.getBlockPlaced().getLocation();
-        String key = locationKey(loc);
-        cratesConfig.set("locations." + key + ".crate", crate.id());
-        cratesConfig.set("locations." + key + ".world", loc.getWorld().getName());
-        cratesConfig.set("locations." + key + ".x", loc.getBlockX());
-        cratesConfig.set("locations." + key + ".y", loc.getBlockY());
-        cratesConfig.set("locations." + key + ".z", loc.getBlockZ());
-        saveYaml(cratesConfig, cratesFile);
-        locations.put(key, new CrateLocation(crate.id(), loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-        send(player, message("crate-placed").replace("%crate%", crate.display()));
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBreak(BlockBreakEvent event) {
-        String key = locationKey(event.getBlock().getLocation());
-        CrateLocation location = locations.get(key);
-        if (location == null) return;
-        Player player = event.getPlayer();
-        if (!player.hasPermission("velioragacha.break")) {
-            event.setCancelled(true);
-            send(player, message("no-permission"));
-            return;
-        }
-        CrateDef crate = crates.get(location.crateId());
-        cratesConfig.set("locations." + key, null);
-        saveYaml(cratesConfig, cratesFile);
-        locations.remove(key);
-        event.setDropItems(false);
-        if (crate != null && getConfig().getBoolean("crates.drop-on-break", true)) {
-            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), crateItem(crate));
-        }
-        send(player, message("crate-broken").replace("%crate%", crate == null ? location.crateId() : crate.display()));
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInteract(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null) return;
-        switch (event.getAction()) {
-            case RIGHT_CLICK_BLOCK -> handleCrateClick(event);
-            default -> {}
-        }
-    }
-
-    private void handleCrateClick(PlayerInteractEvent event) {
-        Block block = event.getClickedBlock();
-        if (block == null) return;
-        String locKey = locationKey(block.getLocation());
-        CrateLocation crateLocation = locations.get(locKey);
-        if (crateLocation == null) return;
-        event.setCancelled(true);
-        Player player = event.getPlayer();
-        if (!player.hasPermission("velioragacha.open")) {
-            send(player, message("no-permission"));
-            return;
-        }
-        CrateDef crate = crates.get(crateLocation.crateId());
-        if (crate == null) return;
-        KeyDef key = keys.get(crate.keyId());
-        if (key == null) return;
-        PlayerData data = getData(player);
-        if (data.getKey(crate.keyId()) <= 0) {
-            noKey(player, block.getLocation(), key);
-            return;
-        }
-        if (openingPlayers.contains(player.getUniqueId())) {
-            send(player, message("animation-running"));
-            return;
-        }
-        data.addKey(crate.keyId(), -1);
-        savePlayerData(data);
-        startRoulette(player, crate);
-    }
-
-    private void noKey(Player player, Location crateLoc, KeyDef key) {
-        send(player, message("no-key").replace("%key_name%", plain(key.displayName())));
-        Sound sound = safeSound(getConfig().getString("no-key.sound"), Sound.ENTITY_VILLAGER_NO);
-        player.playSound(player.getLocation(), sound, 1f, 1f);
-        if (getConfig().getBoolean("no-key.knockback.enabled", true)) {
-            double strength = getConfig().getDouble("no-key.knockback.strength", 0.65);
-            double y = getConfig().getDouble("no-key.knockback.y", 0.25);
-            Vector vector = player.getLocation().toVector().subtract(crateLoc.toVector()).normalize().multiply(strength);
-            vector.setY(y);
-            player.setVelocity(vector);
-        }
-    }
-
-    private void startRoulette(Player player, CrateDef crate) {
-        openingPlayers.add(player.getUniqueId());
-        RewardDef reward = chooseReward(crate.id()).orElse(RewardDef.item(crate.id(), "fallback", Material.EMERALD, 1, 1));
-        int size = normalizeInventorySize(getConfig().getInt("animation.gui-size", 45));
-        int indicator = Math.min(size - 1, Math.max(0, getConfig().getInt("animation.indicator-slot", 22)));
-        GuiHolder holder = new GuiHolder(GuiType.ROULETTE, crate.id(), 1);
-        Inventory inv = Bukkit.createInventory(holder, size, color(getConfig().getString("animation.title", "&8Opening %crate%").replace("%crate%", crate.display())));
-        holder.inventory = inv;
-        fill(inv);
-        inv.setItem(Math.max(0, indicator - 9), named(Material.LIME_STAINED_GLASS_PANE, "&a▼", List.of()));
-        inv.setItem(Math.min(size - 1, indicator + 9), named(Material.LIME_STAINED_GLASS_PANE, "&a▲", List.of()));
-        player.openInventory(inv);
-
-        int duration = Math.max(20, getConfig().getInt("animation.duration-ticks", 120));
-        Sound tickSound = safeSound(getConfig().getString("animation.sound-tick"), Sound.BLOCK_NOTE_BLOCK_HAT);
-        Sound finishSound = safeSound(getConfig().getString("animation.sound-finish"), Sound.ENTITY_PLAYER_LEVELUP);
-        BukkitTask task = new BukkitRunnable() {
-            int tick = 0;
-            final Random random = new Random();
-            @Override
-            public void run() {
-                if (!player.isOnline()) {
-                    finishRoulette(player, reward, finishSound, false);
-                    cancel();
-                    return;
-                }
-                tick += 2;
-                RewardDef shown = tick >= duration ? reward : randomRewardVisual(crate.id(), random);
-                inv.setItem(indicator, shown.toIcon());
-                player.playSound(player.getLocation(), tickSound, 0.35f, 1.6f);
-                if (tick >= duration) {
-                    finishRoulette(player, reward, finishSound, true);
-                    cancel();
-                }
-            }
-        }.runTaskTimer(this, 1L, 2L);
-        rouletteTasks.put(player.getUniqueId(), task);
-    }
-
-    private void finishRoulette(Player player, RewardDef reward, Sound finishSound, boolean sound) {
-        BukkitTask task = rouletteTasks.remove(player.getUniqueId());
-        if (task != null) task.cancel();
-        openingPlayers.remove(player.getUniqueId());
-        if (player.isOnline()) {
-            giveReward(player, reward);
-            if (sound) player.playSound(player.getLocation(), finishSound, 1f, 1f);
-        }
-    }
-
-    private RewardDef randomRewardVisual(String crateId, Random random) {
-        List<RewardDef> list = rewards.getOrDefault(crateId, List.of());
-        if (list.isEmpty()) return RewardDef.item(crateId, "fallback", Material.EMERALD, 1, 1);
-        return list.get(random.nextInt(list.size()));
-    }
-
-    private Optional<RewardDef> chooseReward(String crateId) {
-        List<RewardDef> list = rewards.get(crateId);
-        if (list == null || list.isEmpty()) return Optional.empty();
-        int total = 0;
-        for (RewardDef reward : list) total += Math.max(1, reward.weight());
-        int roll = new Random().nextInt(total) + 1;
-        int cursor = 0;
-        for (RewardDef reward : list) {
-            cursor += Math.max(1, reward.weight());
-            if (roll <= cursor) return Optional.of(reward);
-        }
-        return Optional.of(list.get(0));
-    }
-
-    private void giveReward(Player player, RewardDef reward) {
-        if (reward.type() == RewardType.COMMAND) {
-            String cmd = reward.command().replace("%player%", player.getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
-            send(player, message("reward-received").replace("%reward%", plain(reward.display())));
-            return;
-        }
-        ItemStack item = new ItemStack(reward.material(), reward.amount());
-        Map<Integer, ItemStack> leftover = player.getInventory().addItem(item);
-        for (ItemStack left : leftover.values()) player.getWorld().dropItemNaturally(player.getLocation(), left);
-        send(player, message("reward-received").replace("%reward%", reward.material().name() + " x" + reward.amount()));
-    }
-
-    private void startEffectTask() {
-        if (!getConfig().getBoolean("effects.enabled", true)) return;
-        int interval = Math.max(2, getConfig().getInt("effects.interval-ticks", 8));
-        effectTask = new BukkitRunnable() {
-            double t = 0;
-            @Override public void run() {
-                t += 0.35;
-                for (CrateLocation loc : locations.values()) spawnCrateEffect(loc, t);
-            }
-        }.runTaskTimer(this, interval, interval);
-    }
-
-    private void restartEffectTask() {
-        if (effectTask != null) effectTask.cancel();
-        startEffectTask();
-    }
-
-    private void spawnCrateEffect(CrateLocation loc, double t) {
-        World world = Bukkit.getWorld(loc.world());
-        if (world == null) return;
-        if (!world.isChunkLoaded(loc.x() >> 4, loc.z() >> 4)) return;
-        CrateDef crate = crates.get(loc.crateId());
-        if (crate == null) return;
-        Particle particle = effectParticle(crate.effect());
-        double radius = getConfig().getDouble("effects.radius", 1.25);
-        double height = 0.35 + (Math.sin(t) + 1.0) * 0.65;
-        double x = loc.x() + 0.5 + Math.cos(t) * radius;
-        double z = loc.z() + 0.5 + Math.sin(t) * radius;
-        Location particleLoc = new Location(world, x, loc.y() + height, z);
-        world.spawnParticle(particle, particleLoc, 2, 0.03, 0.03, 0.03, 0.01);
-    }
-
-    private Particle effectParticle(String effect) {
-        String e = effect == null ? "" : effect.toLowerCase(Locale.ROOT);
-        if (e.contains("fire")) return safeParticle("FLAME", Particle.FLAME);
-        if (e.contains("end_rod")) return safeParticle("END_ROD", Particle.END_ROD);
-        if (e.contains("bubble")) return safeParticle("BUBBLE_POP", safeParticle("BUBBLE", Particle.HAPPY_VILLAGER));
-        if (e.contains("smoke")) return safeParticle("SMOKE", Particle.CAMPFIRE_COSY_SMOKE);
-        if (e.contains("cherry")) return safeParticle("CHERRY_LEAVES", Particle.HAPPY_VILLAGER);
-        if (e.contains("oak") || e.contains("leaf")) return safeParticle("HAPPY_VILLAGER", Particle.HAPPY_VILLAGER);
-        return Particle.HAPPY_VILLAGER;
-    }
-
-    private ItemStack crateItem(CrateDef crate) {
-        ItemStack item = named(crate.block(), "&d" + crate.display() + " Crate", List.of("&7Place untuk membuat crate.", "&7Crate ID: &f" + crate.id()));
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.getPersistentDataContainer().set(crateItemKey, PersistentDataType.STRING, crate.id());
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
-    private ItemStack keyIcon(KeyDef key, List<String> extraLore) {
-        List<String> lore = new ArrayList<>(key.lore());
-        lore.addAll(extraLore);
-        ItemStack item = named(key.material(), key.displayName(), lore);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.getPersistentDataContainer().set(new org.bukkit.NamespacedKey(this, "key_id"), PersistentDataType.STRING, key.id());
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
-    private String readCrateFromItem(ItemStack item) {
-        if (item == null || !item.hasItemMeta()) return null;
-        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        String id = pdc.get(crateItemKey, PersistentDataType.STRING);
-        return id == null ? null : id.toLowerCase(Locale.ROOT);
-    }
-
-    private String readKeyFromItem(ItemStack item) {
-        if (item == null || !item.hasItemMeta()) return null;
-        String id = item.getItemMeta().getPersistentDataContainer().get(new org.bukkit.NamespacedKey(this, "key_id"), PersistentDataType.STRING);
-        return id == null ? null : id.toLowerCase(Locale.ROOT);
-    }
-
-    private PlayerData getData(Player player) {
-        return playerCache.computeIfAbsent(player.getUniqueId(), uuid -> loadPlayerData(uuid, player.getName()));
-    }
-
-    private PlayerData loadPlayerData(UUID uuid, String name) {
-        PlayerData cached = playerCache.get(uuid);
-        if (cached != null) return cached;
-        File file = new File(playerDataFolder, uuid + ".yml");
-        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-        PlayerData data = new PlayerData(uuid, name == null ? uuid.toString() : name);
-        for (String key : keys.keySet()) data.keys.put(key, Math.max(0, cfg.getInt("keys." + key, 0)));
-        playerCache.put(uuid, data);
-        return data;
-    }
-
-    private void savePlayerData(PlayerData data) {
-        File file = new File(playerDataFolder, data.uuid() + ".yml");
-        FileConfiguration cfg = new YamlConfiguration();
-        cfg.set("name", data.name());
-        for (Map.Entry<String, Integer> entry : data.keys.entrySet()) cfg.set("keys." + entry.getKey(), entry.getValue());
-        saveYaml(cfg, file);
-    }
-
-    private void addKey(Player player, String keyId, int amount, boolean notify) {
-        PlayerData data = getData(player);
-        data.addKey(keyId, amount);
-        savePlayerData(data);
-        KeyDef key = keys.get(keyId);
-        if (notify && key != null) send(player, message("key-received").replace("%amount%", String.valueOf(amount)).replace("%key%", plain(key.displayName())));
-    }
-
-    private void fill(Inventory inv) {
-        Material filler = safeMaterial(getConfig().getString("shop.filler"), Material.BLACK_STAINED_GLASS_PANE);
-        ItemStack pane = named(filler, " ", List.of());
-        for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, pane);
-    }
-
-    private ItemStack named(Material material, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material == null ? Material.STONE : material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(color(name));
-            meta.setLore(colorList(lore));
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-
-    private String message(String path) {
-        return getConfig().getString("messages." + path, "%prefix% &cMissing message: " + path)
-                .replace("%prefix%", getConfig().getString("settings.prefix", "&8[&dVelioraGacha&8] "));
-    }
-
-    private void send(CommandSender sender, String text) {
-        sender.sendMessage(color(text));
-    }
-
-    private String color(String text) {
-        if (text == null) return "";
-        String noClosingHex = text.replaceAll("</#([A-Fa-f0-9]{6})>", "");
-        String noOpeningHex = noClosingHex.replaceAll("<#([A-Fa-f0-9]{6})>", "");
-        return ChatColor.translateAlternateColorCodes('&', noOpeningHex);
-    }
-
-    private List<String> colorList(List<String> list) {
-        List<String> out = new ArrayList<>();
-        for (String line : list) out.add(color(line));
-        return out;
-    }
-
-    private String plain(String text) {
-        return ChatColor.stripColor(color(text));
-    }
-
-    private String formatMoney(double value) {
-        return moneyFormat.format(value).replace(',', '.');
-    }
-
-    private Material safeMaterial(String name, Material fallback) {
-        if (name == null || name.isBlank()) return fallback;
-        Material material = Material.matchMaterial(name.toUpperCase(Locale.ROOT));
-        return material == null ? fallback : material;
-    }
-
-    private Particle safeParticle(String name, Particle fallback) {
-        try { return Particle.valueOf(name.toUpperCase(Locale.ROOT)); }
-        catch (Exception ignored) { return fallback; }
-    }
-
-    private Sound safeSound(String name, Sound fallback) {
-        if (name == null || name.isBlank()) return fallback;
-        try { return Sound.valueOf(name.toUpperCase(Locale.ROOT)); }
-        catch (Exception ignored) { return fallback; }
-    }
-
-    private int normalizeInventorySize(int size) {
-        int normalized = Math.max(9, Math.min(54, size));
-        return ((normalized + 8) / 9) * 9;
-    }
-
-    private int parseInt(Object value, int fallback) {
-        if (value == null) return fallback;
-        try { return Integer.parseInt(String.valueOf(value)); }
-        catch (Exception ignored) { return fallback; }
-    }
-
-    private void saveYaml(FileConfiguration cfg, File file) {
-        try { cfg.save(file); }
-        catch (IOException e) { getLogger().warning("Could not save " + file.getName() + ": " + e.getMessage()); }
-    }
-
-    private String locationKey(Location loc) {
-        return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
-    }
-
-    private List<String> match(String token, List<String> values) {
-        String lower = token.toLowerCase(Locale.ROOT);
-        List<String> out = new ArrayList<>();
-        for (String value : values) if (value.toLowerCase(Locale.ROOT).startsWith(lower)) out.add(value);
-        return out;
-    }
-
-    private enum GuiType { KEY_SHOP, KEY_QUANTITY, ADMIN_MAIN, KEY_MANAGER, CRATE_PLACER, CRATE_SETTINGS, REWARD_EDITOR, ROULETTE }
-    private enum RewardType { ITEM, COMMAND }
-
-    private static final class GuiHolder implements InventoryHolder {
-        private final GuiType type;
-        private final String payload;
-        private final int amount;
-        private Inventory inventory;
-        private GuiHolder(GuiType type, String payload, int amount) {
-            this.type = type;
-            this.payload = payload;
-            this.amount = amount;
-        }
-        @Override public Inventory getInventory() { return inventory; }
-    }
-
-    private record KeyDef(String id, String displayName, Material material, double price, List<String> lore) {}
-    private record CrateDef(String id, String display, Material block, String keyId, String effect, int slot, String levelReward, boolean hologram) {}
-    private record CrateLocation(String crateId, String world, int x, int y, int z) {}
-
-    private static final class PlayerData {
-        private final UUID uuid;
-        private final String name;
-        private final Map<String, Integer> keys = new HashMap<>();
-        private PlayerData(UUID uuid, String name) { this.uuid = uuid; this.name = name; }
-        UUID uuid() { return uuid; }
-        String name() { return name; }
-        int getKey(String key) { return keys.getOrDefault(key, 0); }
-        void addKey(String key, int amount) { keys.put(key, Math.max(0, getKey(key) + amount)); }
-    }
-
-    private record RewardDef(RewardType type, String crateId, String rarity, String display, Material material, int amount, int weight, String command) {
-        static RewardDef item(String crateId, String rarity, Material material, int amount, int weight) {
-            return new RewardDef(RewardType.ITEM, crateId, rarity, material.name() + " x" + amount, material, amount, weight, "");
-        }
-        static RewardDef command(String crateId, String rarity, String display, String command, Material material, int amount, int weight) {
-            return new RewardDef(RewardType.COMMAND, crateId, rarity, display, material, amount, weight, command);
-        }
-        ItemStack toIcon() {
-            ItemStack item = new ItemStack(material, Math.max(1, Math.min(64, amount)));
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f" + display));
-                meta.setLore(List.of(ChatColor.GRAY + "Rarity: " + rarity, ChatColor.GRAY + "Type: " + type.name()));
-                item.setItemMeta(meta);
-            }
-            return item;
-        }
-    }
+    private void startEffects(){effectTask=new BukkitRunnable(){double t=0;public void run(){t+=.4;for(CrateLoc l:locations.values()){World w=Bukkit.getWorld(l.world); if(w==null)continue; w.spawnParticle(Particle.FLAME,l.x+.5+Math.cos(t),l.y+1,l.z+.5+Math.sin(t),1,0,0,0,0);}}}.runTaskTimer(this,8,8);} private void restartEffects(){if(effectTask!=null)effectTask.cancel();startEffects();}
+    private Inventory gui(Holder h,int s,String title){Inventory inv=Bukkit.createInventory(h,s,color(title));h.inv=inv;return inv;} private void fill(Inventory inv){ItemStack f=item(Material.BLACK_STAINED_GLASS_PANE," "); for(int i=0;i<inv.getSize();i++)inv.setItem(i,f);} private ItemStack item(Material m,String name){ItemStack it=new ItemStack(m); ItemMeta im=it.getItemMeta(); if(im!=null){im.setDisplayName(color(name));it.setItemMeta(im);}return it;} private ItemStack keyIcon(KeyDef k){ItemStack it=item(k.icon,k.name); ItemMeta im=it.getItemMeta(); im.getPersistentDataContainer().set(keyKey,PersistentDataType.STRING,k.id); it.setItemMeta(im); return it;} private ItemStack crateItem(CrateDef c){ItemStack it=item(c.block,"&d"+c.name+" Crate"); ItemMeta im=it.getItemMeta(); im.getPersistentDataContainer().set(crateKey,PersistentDataType.STRING,c.id); it.setItemMeta(im); return it;}
+    private Material mat(String n,Material f){Material m=n==null?null:Material.matchMaterial(n);return m==null?f:m;} private String pdc(ItemStack it,org.bukkit.NamespacedKey k){if(it==null||!it.hasItemMeta())return null;return it.getItemMeta().getPersistentDataContainer().get(k,PersistentDataType.STRING);} private void msg(CommandSender s,String m){s.sendMessage(color(m));} private boolean deny(CommandSender s){msg(s,"&cKamu tidak punya izin.");return true;} private String color(String s){return ChatColor.translateAlternateColorCodes('&',s.replaceAll("<#([A-Fa-f0-9]{6})>","").replaceAll("</#([A-Fa-f0-9]{6})>",""));} private String plain(String s){return ChatColor.stripColor(color(s));} private String cash(double d){return money.format(d).replace(',','.');} private int parse(String s){try{return Integer.parseInt(s);}catch(Exception e){return 0;}} private String locKey(Location l){return l.getWorld().getName()+","+l.getBlockX()+","+l.getBlockY()+","+l.getBlockZ();} private void save(FileConfiguration y,File f){try{y.save(f);}catch(IOException ignored){}}
+    private Map<String,Integer> getKeys(UUID u){return keyCache.computeIfAbsent(u,id->{FileConfiguration y=YamlConfiguration.loadConfiguration(new File(playerDir,id+".yml"));Map<String,Integer> m=new HashMap<>();for(String k:keys.keySet())m.put(k,y.getInt("keys."+k,0));return m;});} private void addKey(UUID u,String k,int a){Map<String,Integer> m=getKeys(u);m.put(k,Math.max(0,m.getOrDefault(k,0)+a));savePlayer(u);} private void savePlayer(UUID u){FileConfiguration y=new YamlConfiguration();getKeys(u).forEach((k,v)->y.set("keys."+k,v));save(y,new File(playerDir,u+".yml"));}
+    private record KeyDef(String id,String name,Material icon,double price){} private record CrateDef(String id,String name,Material block,String key,String effect){} private record CrateLoc(String crate,String world,int x,int y,int z){} private record Reward(Material mat,int amount){ItemStack icon(){return new ItemStack(mat,amount);}} private static final class Holder implements InventoryHolder{final String type,id;final int amount;Inventory inv;Holder(String t,String i,int a){type=t;id=i;amount=a;}public Inventory getInventory(){return inv;}}
 }
