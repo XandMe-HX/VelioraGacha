@@ -1,6 +1,12 @@
 # ==================================================
-# VelioraGacha Configuration
-# Plugin standalone gacha crate untuk Veliora Gardens.
+# VelioraGacha V2 Configuration
+# Cara pakai cepat:
+# - Ubah harga key di keys.yml
+# - Ubah effect crate di crates.yml atau /vgcreate gui > Crate Settings
+# - Ubah hologram di hologram.lines
+# - Ubah durasi animasi di animation
+# - Ubah reward item/command manual di rewards.yml
+# - Ubah reward item via GUI, hasilnya tersimpan di rewards-gui.yml
 # ==================================================
 settings:
   prefix: '&8[&dVelioraGacha&8] '
@@ -23,6 +29,7 @@ messages:
   not-enough-money: '%prefix% &cUang kamu kurang. Butuh &f%price%&c.'
   economy-missing: '%prefix% &cEconomy Vault tidak tersedia.'
   no-key: '%prefix% &cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.'
+  wrong-key: '%prefix% &cKey ini tidak cocok untuk crate ini.'
   crate-placed: '%prefix% &aCrate &f%crate% &aberhasil dibuat.'
   crate-broken: '%prefix% &eCrate &f%crate% &edihapus.'
   reward-received: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
@@ -36,29 +43,45 @@ animation:
   duration-ticks: 120
   start-speed-ticks: 2
   end-speed-ticks: 10
+  close-delay-ticks: 30
+  close-behavior: COMPLETE_REWARD
   sound-tick: BLOCK_NOTE_BLOCK_HAT
   sound-finish: ENTITY_PLAYER_LEVELUP
 
 effects:
   enabled: true
-  interval-ticks: 8
-  radius: 1.25
-  height-step: 0.12
+  interval-ticks: 4
+  radius: 0.85
+  height: 1.6
+  points-per-tick: 3
+  speed: 0.18
+  y-speed: 0.035
 
 hologram:
   enabled: true
-  # DecentHolograms support dibuat optional. Kalau API tidak cocok, plugin tetap jalan.
+  provider: AUTO
+  y-offset: 1.8
+  update-ticks: 40
+  nearest-player-radius: 8
   lines:
-    - '<#2FF1FD>&l%crate% Crate</#00DFFD>'
-    - '&fKamu butuh %key_name%'
-    - '&f★ Level reward: %level_reward%'
-    - '&f★ Keys kamu: <#2FF1FD>%keys% keys'
-    - '&fBeli keys di &b/key shop &fatau dari owner.'
+    - '<#2FF1FD>&l%crate_display% CRATE</#00DFFD>'
+    - '&7Crate rewards'
+    - ''
+    - '&fBuka peti ini untuk mendapat item dan command reward.'
+    - '&fKamu butuh <#2FF1FD>%key_name%</#00DFFD>'
+    - ''
+    - '&fLevel reward: %level_reward%'
+    - '&fKeys kamu: <#2FF1FD>%keys% keys'
+    - ''
+    - '<#2FF1FD>Beli di &f/key shop <#00DFFD>atau dari owner'
 
 shop:
   title: '&8Key Shop'
   quantity-title: '&8Beli %key%'
   filler: BLACK_STAINED_GLASS_PANE
+
+editor:
+  default-weight: 10
 
 no-key:
   knockback:
