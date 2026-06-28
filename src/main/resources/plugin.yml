@@ -1,6 +1,6 @@
 name: VelioraGacha
 main: id.velioragardens.velioragacha.VelioraGachaPlugin
-version: 1.0.0
+version: 2.0.0
 api-version: '1.21'
 author: XandMe
 softdepend:
@@ -34,4 +34,6 @@ permissions:
   velioragacha.break:
     default: op
   velioragacha.place:
+    default: op
+  velioragacha.debug:
     default: op
