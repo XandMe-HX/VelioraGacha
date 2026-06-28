@@ -1,0 +1,91 @@
+# ==================================================
+# VelioraGacha Rewards
+# Reward default aman, tidak OP.
+# type: ITEM atau COMMAND
+# ==================================================
+rewards:
+  kinzai:
+    common:
+      - type: ITEM
+        material: IRON_INGOT
+        amount: 8
+        weight: 50
+      - type: ITEM
+        material: EMERALD
+        amount: 4
+        weight: 35
+      - type: ITEM
+        material: GOLDEN_APPLE
+        amount: 1
+        weight: 15
+    rare:
+      - type: ITEM
+        material: DIAMOND
+        amount: 2
+        weight: 20
+      - type: COMMAND
+        command: 'eco give %player% 25000'
+        display: '&aMoney 25.000'
+        material: EMERALD
+        amount: 1
+        weight: 10
+  kagekari:
+    common:
+      - type: ITEM
+        material: ENDER_PEARL
+        amount: 8
+        weight: 40
+      - type: ITEM
+        material: EXPERIENCE_BOTTLE
+        amount: 16
+        weight: 30
+    rare:
+      - type: ITEM
+        material: DIAMOND
+        amount: 1
+        weight: 10
+  tenshiyoro:
+    common:
+      - type: ITEM
+        material: GOLD_INGOT
+        amount: 8
+        weight: 40
+      - type: ITEM
+        material: HONEY_BOTTLE
+        amount: 8
+        weight: 30
+    rare:
+      - type: ITEM
+        material: GOLDEN_APPLE
+        amount: 1
+        weight: 10
+  kouzan:
+    common:
+      - type: ITEM
+        material: OAK_LOG
+        amount: 32
+        weight: 40
+      - type: ITEM
+        material: BONE_MEAL
+        amount: 32
+        weight: 30
+    rare:
+      - type: ITEM
+        material: EMERALD
+        amount: 6
+        weight: 10
+  shinjuore:
+    common:
+      - type: ITEM
+        material: QUARTZ
+        amount: 16
+        weight: 40
+      - type: ITEM
+        material: AMETHYST_SHARD
+        amount: 12
+        weight: 30
+    rare:
+      - type: ITEM
+        material: DIAMOND
+        amount: 1
+        weight: 10
