@@ -1,0 +1,37 @@
+name: VelioraGacha
+main: id.velioragardens.velioragacha.VelioraGachaPlugin
+version: 1.0.0
+api-version: '1.21'
+author: XandMe
+softdepend:
+  - Vault
+  - DecentHolograms
+  - PlaceholderAPI
+commands:
+  vgcreate:
+    description: Main admin command VelioraGacha
+    aliases:
+      - vgcrate
+    usage: /vgcreate
+  key:
+    description: Key shop command
+    usage: /key shop
+permissions:
+  velioragacha.admin:
+    default: op
+  velioragacha.givekey:
+    default: op
+  velioragacha.reload:
+    default: op
+  velioragacha.gui:
+    default: op
+  velioragacha.use:
+    default: true
+  velioragacha.shop:
+    default: true
+  velioragacha.open:
+    default: true
+  velioragacha.break:
+    default: op
+  velioragacha.place:
+    default: op
