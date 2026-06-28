@@ -1,0 +1,71 @@
+# ==================================================
+# VelioraGacha Configuration
+# Plugin standalone gacha crate untuk Veliora Gardens.
+# ==================================================
+settings:
+  prefix: '&8[&dVelioraGacha&8] '
+  storage: YAML
+  max-shop-amount: 64
+
+economy:
+  enabled: true
+  money-format: '#,###'
+
+messages:
+  no-permission: '%prefix% &cKamu tidak punya izin.'
+  player-only: '%prefix% &cCommand ini hanya untuk player.'
+  reload-success: '%prefix% &aVelioraGacha berhasil direload.'
+  invalid-key: '%prefix% &cKey tidak valid: &f%key%'
+  invalid-crate: '%prefix% &cCrate tidak valid: &f%crate%'
+  key-given: '%prefix% &aBerhasil memberi &f%amount%x %key% &ake &f%player%&a.'
+  key-received: '%prefix% &aKamu menerima &f%amount%x %key%&a.'
+  key-bought: '%prefix% &aBerhasil membeli &f%amount%x %key% &adengan harga &f%price%&a.'
+  not-enough-money: '%prefix% &cUang kamu kurang. Butuh &f%price%&c.'
+  economy-missing: '%prefix% &cEconomy Vault tidak tersedia.'
+  no-key: '%prefix% &cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.'
+  crate-placed: '%prefix% &aCrate &f%crate% &aberhasil dibuat.'
+  crate-broken: '%prefix% &eCrate &f%crate% &edihapus.'
+  reward-received: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
+  animation-running: '%prefix% &cKamu sedang membuka crate.'
+
+animation:
+  enabled: true
+  gui-size: 45
+  title: '&8Opening %crate%'
+  indicator-slot: 22
+  duration-ticks: 120
+  start-speed-ticks: 2
+  end-speed-ticks: 10
+  sound-tick: BLOCK_NOTE_BLOCK_HAT
+  sound-finish: ENTITY_PLAYER_LEVELUP
+
+effects:
+  enabled: true
+  interval-ticks: 8
+  radius: 1.25
+  height-step: 0.12
+
+hologram:
+  enabled: true
+  # DecentHolograms support dibuat optional. Kalau API tidak cocok, plugin tetap jalan.
+  lines:
+    - '<#2FF1FD>&l%crate% Crate</#00DFFD>'
+    - '&fKamu butuh %key_name%'
+    - '&f★ Level reward: %level_reward%'
+    - '&f★ Keys kamu: <#2FF1FD>%keys% keys'
+    - '&fBeli keys di &b/key shop &fatau dari owner.'
+
+shop:
+  title: '&8Key Shop'
+  quantity-title: '&8Beli %key%'
+  filler: BLACK_STAINED_GLASS_PANE
+
+no-key:
+  knockback:
+    enabled: true
+    strength: 0.65
+    y: 0.25
+  sound: ENTITY_VILLAGER_NO
+
+crates:
+  drop-on-break: true
