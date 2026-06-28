@@ -1,14 +1,49 @@
 # ==================================================
 # VelioraGacha Crates
+# Urutan GUI final:
+# 10/20 Shinjuore putih, 11/21 Tenshiyoro kuning, 13/22 Kinzai merah,
+# 15/23 Kagekari biru, 16/24 Kouzan pink.
+# Ubah effect crate di crates.<id>.effect atau lewat /vgcreate gui > Crate Settings.
+# Effect tersedia: fire_spiral, cherry_spiral, end_rod_spiral, oak_leaf_spiral, smoke_spiral, bubble_spiral.
 # ==================================================
 crates:
+  shinjuore:
+    enabled: true
+    display: 'Shinjuore'
+    block: WHITE_SHULKER_BOX
+    key: shinjuore_key
+    effect: bubble_spiral
+    gui-slot: 10
+    level-reward: 'Pearl Ore'
+    hologram-enabled: true
+    rarity-chance:
+      common: 60.0
+      uncommon: 25.0
+      rare: 10.0
+      epic: 4.0
+      legendary: 1.0
+  tenshiyoro:
+    enabled: true
+    display: 'Tenshiyoro'
+    block: YELLOW_SHULKER_BOX
+    key: tenshiyoro_key
+    effect: cherry_spiral
+    gui-slot: 11
+    level-reward: 'Cherry'
+    hologram-enabled: true
+    rarity-chance:
+      common: 60.0
+      uncommon: 25.0
+      rare: 10.0
+      epic: 4.0
+      legendary: 1.0
   kinzai:
     enabled: true
     display: 'Kinzai'
     block: RED_SHULKER_BOX
     key: kinzai_key
     effect: fire_spiral
-    gui-slot: 10
+    gui-slot: 13
     level-reward: 'OP / Merah'
     hologram-enabled: true
     rarity-chance:
@@ -23,23 +58,8 @@ crates:
     block: LIGHT_BLUE_SHULKER_BOX
     key: kagekari_key
     effect: end_rod_spiral
-    gui-slot: 12
+    gui-slot: 15
     level-reward: 'End Rod'
-    hologram-enabled: true
-    rarity-chance:
-      common: 60.0
-      uncommon: 25.0
-      rare: 10.0
-      epic: 4.0
-      legendary: 1.0
-  tenshiyoro:
-    enabled: true
-    display: 'Tenshiyoro'
-    block: YELLOW_SHULKER_BOX
-    key: tenshiyoro_key
-    effect: cherry_spiral
-    gui-slot: 14
-    level-reward: 'Cherry'
     hologram-enabled: true
     rarity-chance:
       common: 60.0
@@ -55,21 +75,6 @@ crates:
     effect: oak_leaf_spiral
     gui-slot: 16
     level-reward: 'Nature'
-    hologram-enabled: true
-    rarity-chance:
-      common: 60.0
-      uncommon: 25.0
-      rare: 10.0
-      epic: 4.0
-      legendary: 1.0
-  shinjuore:
-    enabled: true
-    display: 'Shinjuore'
-    block: WHITE_SHULKER_BOX
-    key: shinjuore_key
-    effect: bubble_spiral
-    gui-slot: 22
-    level-reward: 'Pearl Ore'
     hologram-enabled: true
     rarity-chance:
       common: 60.0
