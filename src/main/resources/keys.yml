@@ -1,34 +1,57 @@
 # ==================================================
 # VelioraGacha Keys
+# Semua key sekarang item fisik, bukan virtual YAML.
+# Cara ubah harga key: edit keys.<id>.price lalu /vgcreate reload.
+# Key item memakai PersistentDataContainer velioragacha_key_id.
 # ==================================================
 keys:
-  kinzai_key:
-    display-name: '<#FF4444>&lKinzai Key</#FF8888>'
-    material: TRIPWIRE_HOOK
-    price: 150000
-    lore:
-      - '&7Virtual key untuk membuka Kinzai Crate.'
-  kagekari_key:
-    display-name: '<#2FF1FD>&lKagekari Key</#00DFFD>'
-    material: TRIPWIRE_HOOK
-    price: 150000
-    lore:
-      - '&7Virtual key untuk membuka Kagekari Crate.'
-  tenshiyoro_key:
-    display-name: '<#FFE066>&lTenshiyoro Key</#FFD43B>'
-    material: TRIPWIRE_HOOK
-    price: 150000
-    lore:
-      - '&7Virtual key untuk membuka Tenshiyoro Crate.'
-  kouzan_key:
-    display-name: '<#FF7AD9>&lKouzan Key</#FFB3EA>'
-    material: TRIPWIRE_HOOK
-    price: 150000
-    lore:
-      - '&7Virtual key untuk membuka Kouzan Crate.'
   shinjuore_key:
     display-name: '<#FFFFFF>&lShinjuore Key</#DDEEFF>'
     material: TRIPWIRE_HOOK
     price: 150000
+    glow: true
     lore:
-      - '&7Virtual key untuk membuka Shinjuore Crate.'
+      - '&7Gunakan untuk membuka:'
+      - '&fShinjuore Crate'
+      - ''
+      - '&ePegang key ini lalu klik crate.'
+  tenshiyoro_key:
+    display-name: '<#FFE066>&lTenshiyoro Key</#FFD43B>'
+    material: TRIPWIRE_HOOK
+    price: 150000
+    glow: true
+    lore:
+      - '&7Gunakan untuk membuka:'
+      - '&eTenshiyoro Crate'
+      - ''
+      - '&ePegang key ini lalu klik crate.'
+  kinzai_key:
+    display-name: '<#FF4444>&lKinzai Key</#FF8888>'
+    material: TRIPWIRE_HOOK
+    price: 150000
+    glow: true
+    lore:
+      - '&7Gunakan untuk membuka:'
+      - '&cKinzai Crate'
+      - ''
+      - '&ePegang key ini lalu klik crate.'
+  kagekari_key:
+    display-name: '<#2FF1FD>&lKagekari Key</#00DFFD>'
+    material: TRIPWIRE_HOOK
+    price: 150000
+    glow: true
+    lore:
+      - '&7Gunakan untuk membuka:'
+      - '&bKagekari Crate'
+      - ''
+      - '&ePegang key ini lalu klik crate.'
+  kouzan_key:
+    display-name: '<#FF7AD9>&lKouzan Key</#FFB3EA>'
+    material: TRIPWIRE_HOOK
+    price: 150000
+    glow: true
+    lore:
+      - '&7Gunakan untuk membuka:'
+      - '&dKouzan Crate'
+      - ''
+      - '&ePegang key ini lalu klik crate.'
