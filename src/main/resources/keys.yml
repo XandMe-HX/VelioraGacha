@@ -55,3 +55,13 @@ keys:
       - '&dKouzan Crate'
       - ''
       - '&ePegang key ini lalu klik crate.'
+  test_key:
+    display-name: '<#B56CFF>&lTest Key</#E0B3FF>'
+    material: TRIPWIRE_HOOK
+    price: 0
+    glow: true
+    lore:
+      - '&7Gunakan untuk membuka:'
+      - '&dTest Crate'
+      - ''
+      - '&eKey admin untuk test V2.5.'
