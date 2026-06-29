@@ -1,65 +1,24 @@
 # ==================================================
-# VelioraGacha Crates V3.1
+# VelioraGacha Crates V3.2
+# Urutan warna:
+# 1. Merah  = Kinzai
+# 2. Biru   = Kagekari
+# 3. Kuning = Tenshiyoro
+# 4. Pink   = Kouzan
+# 5. Putih  = Shinjuore
+#
 # Effect tersedia:
 # fire_spiral, cherry_spiral, end_rod_spiral, oak_leaf_spiral, bubble_spiral,
 # bonemeal_star_spiral, soul_fire_spiral, sparkle_spiral, portal_spiral, crit_spiral, note_spiral
 # ==================================================
 crates:
-  shinjuore:
-    enabled: true
-    display: 'Shinjuore'
-    block: WHITE_SHULKER_BOX
-    key: shinjuore_key
-    effect: bubble_spiral
-    gui-slot: 10
-    level-reward: '&fEasy &7-> &dImpossible'
-    hologram-enabled: true
-    display-colors:
-      prefix: '&f'
-      suffix: ''
-    effect-settings:
-      radius: 0.85
-      radius-top: 0.35
-      height: 1.45
-      points-per-tick: 5
-      rings: 3
-    rarity-chance:
-      uncommon: 58.0
-      common: 28.0
-      rare: 10.0
-      epic: 3.5
-      mythic: 0.5
-  tenshiyoro:
-    enabled: true
-    display: 'Tenshiyoro'
-    block: YELLOW_SHULKER_BOX
-    key: tenshiyoro_key
-    effect: cherry_spiral
-    gui-slot: 11
-    level-reward: '&eEasy &7-> &5Impossible &8(&cJackpot 0.01%&8)'
-    hologram-enabled: true
-    display-colors:
-      prefix: '&e'
-      suffix: ''
-    effect-settings:
-      radius: 0.85
-      radius-top: 0.35
-      height: 1.45
-      points-per-tick: 5
-      rings: 3
-    rarity-chance:
-      uncommon: 66.0
-      common: 24.0
-      rare: 8.0
-      epic: 1.9
-      mythic: 0.1
   kinzai:
     enabled: true
-    display: 'Kinzai'
+    display: 'Kinzai Arsenal'
     block: RED_SHULKER_BOX
     key: kinzai_key
     effect: fire_spiral
-    gui-slot: 13
+    gui-slot: 10
     level-reward: '&cMedium &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
@@ -79,11 +38,11 @@ crates:
       mythic: 1.0
   kagekari:
     enabled: true
-    display: 'Kagekari'
+    display: 'Kagekari Guardian'
     block: LIGHT_BLUE_SHULKER_BOX
     key: kagekari_key
     effect: end_rod_spiral
-    gui-slot: 15
+    gui-slot: 11
     level-reward: '&bMedium &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
@@ -101,13 +60,37 @@ crates:
       rare: 13.0
       epic: 5.0
       mythic: 1.0
+  tenshiyoro:
+    enabled: true
+    display: 'Tenshiyoro Fortune'
+    block: YELLOW_SHULKER_BOX
+    key: tenshiyoro_key
+    effect: bonemeal_star_spiral
+    gui-slot: 13
+    level-reward: '&eEasy &7-> &5Impossible &8(&cJackpot 0.01%&8)'
+    hologram-enabled: true
+    display-colors:
+      prefix: '&e'
+      suffix: ''
+    effect-settings:
+      radius: 0.85
+      radius-top: 0.35
+      height: 1.45
+      points-per-tick: 5
+      rings: 3
+    rarity-chance:
+      uncommon: 66.0
+      common: 24.0
+      rare: 8.0
+      epic: 1.9
+      mythic: 0.1
   kouzan:
     enabled: true
-    display: 'Kouzan'
+    display: 'Kouzan Mastery'
     block: PINK_SHULKER_BOX
     key: kouzan_key
-    effect: bonemeal_star_spiral
-    gui-slot: 16
+    effect: cherry_spiral
+    gui-slot: 15
     level-reward: '&dEasy &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
@@ -125,9 +108,33 @@ crates:
       rare: 11.0
       epic: 4.2
       mythic: 0.8
+  shinjuore:
+    enabled: true
+    display: 'Shinjuore Treasury'
+    block: WHITE_SHULKER_BOX
+    key: shinjuore_key
+    effect: crit_spiral
+    gui-slot: 16
+    level-reward: '&fEasy &7-> &dImpossible'
+    hologram-enabled: true
+    display-colors:
+      prefix: '&f'
+      suffix: ''
+    effect-settings:
+      radius: 0.85
+      radius-top: 0.35
+      height: 1.45
+      points-per-tick: 5
+      rings: 3
+    rarity-chance:
+      uncommon: 58.0
+      common: 28.0
+      rare: 10.0
+      epic: 3.5
+      mythic: 0.5
   test:
     enabled: true
-    display: 'Test Crate'
+    display: 'Veliora Test Crate'
     block: PURPLE_SHULKER_BOX
     key: test_key
     effect: end_rod_spiral
