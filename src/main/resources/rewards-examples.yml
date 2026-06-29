@@ -1,0 +1,109 @@
+# ==================================================
+# VelioraGacha Rewards Examples
+# File ini hanya contoh. Tidak dibaca otomatis oleh plugin.
+# Copy bagian yang kamu mau ke rewards.yml.
+# ==================================================
+
+rewards:
+  # ==================================================
+  # CONTOH REWARD AMAN ANTI-INFLASI
+  # ==================================================
+  kinzai:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 16, display: '&fBread x16', weight: 40 }
+      - { type: ITEM, material: IRON_INGOT, amount: 6, display: '&fIron Ingot x6', weight: 35 }
+    common:
+      - { type: ITEM, material: EMERALD, amount: 3, display: '&aEmerald x3', weight: 35 }
+      - { type: COMMAND, command: 'eco give %player% 5000', display: '&aMoney 5.000', material: EMERALD, amount: 1, weight: 15 }
+    rare:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
+      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 8 }
+    epic:
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 7 }
+      - { type: ITEM, material: DIAMOND, amount: 2, display: '&bDiamond x2', weight: 5 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+
+  # ==================================================
+  # CONTOH BUILD / DECOR REWARD
+  # ==================================================
+  kouzan:
+    uncommon:
+      - { type: ITEM, material: OAK_LOG, amount: 32, display: '&6Oak Log x32', weight: 35 }
+      - { type: ITEM, material: COBBLESTONE, amount: 64, display: '&7Cobblestone x64', weight: 35 }
+    common:
+      - { type: ITEM, material: STONE, amount: 64, display: '&fStone x64', weight: 30 }
+      - { type: ITEM, material: GRASS_BLOCK, amount: 16, display: '&aGrass Block x16', weight: 25 }
+    rare:
+      - { type: ITEM, material: CHERRY_LOG, amount: 32, display: '&dCherry Log x32', weight: 15 }
+    epic:
+      - { type: ITEM, material: SEA_LANTERN, amount: 8, display: '&bSea Lantern x8', weight: 6 }
+    mythic:
+      - { type: ITEM, material: BEACON, amount: 1, display: '&bBeacon x1', weight: 1 }
+
+  # ==================================================
+  # CONTOH FOOD REWARD
+  # ==================================================
+  tenshiyoro:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 32, display: '&fBread x32', weight: 40 }
+      - { type: ITEM, material: COOKED_BEEF, amount: 16, display: '&fCooked Beef x16', weight: 35 }
+    common:
+      - { type: ITEM, material: GOLDEN_CARROT, amount: 16, display: '&6Golden Carrot x16', weight: 25 }
+    rare:
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 10 }
+
+  # ==================================================
+  # CONTOH TOOLS KECIL
+  # ==================================================
+  shinjuore:
+    uncommon:
+      - { type: ITEM, material: STONE_PICKAXE, amount: 1, display: '&7Stone Pickaxe', weight: 20 }
+      - { type: ITEM, material: STONE_AXE, amount: 1, display: '&7Stone Axe', weight: 20 }
+    common:
+      - { type: ITEM, material: IRON_PICKAXE, amount: 1, display: '&fIron Pickaxe', weight: 15 }
+    rare:
+      - { type: ITEM, material: DIAMOND_PICKAXE, amount: 1, display: '&bDiamond Pickaxe', weight: 4 }
+
+  # ==================================================
+  # CONTOH COMMAND REWARD MONEY
+  # ==================================================
+  kagekari:
+    uncommon:
+      - type: COMMAND
+        command: 'eco give %player% 3000'
+        display: '&aMoney 3.000'
+        material: EMERALD
+        amount: 1
+        weight: 30
+    common:
+      - type: COMMAND
+        command: 'eco give %player% 7500'
+        display: '&aMoney 7.500'
+        material: EMERALD
+        amount: 1
+        weight: 15
+
+  # ==================================================
+  # CONTOH COMMAND REWARD CRATE KEY
+  # ==================================================
+  example_key:
+    rare:
+      - type: COMMAND
+        command: 'vgcreate givekey %player% kinzai_key 1'
+        display: '&cKinzai Key x1'
+        material: TRIPWIRE_HOOK
+        amount: 1
+        weight: 4
+
+# ==================================================
+# CONTOH REWARD PERMISSION
+# Untuk permission reward, pakai command permission plugin kamu sendiri.
+# Contoh format:
+# type: COMMAND
+# command: '<command permission plugin> %player% <permission> <durasi>'
+# display: '&ePermission Reward'
+# material: NAME_TAG
+# amount: 1
+# weight: 3
+# ==================================================
