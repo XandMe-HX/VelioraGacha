@@ -58,8 +58,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private DecimalFormat moneyFormat = new DecimalFormat("#,###");
     private BukkitTask effectTask, hologramTask;
 
-    @Override
-    public void onEnable() {
+    @Override public void onEnable() {
         crateKey = new NamespacedKey(this, "velioragacha_crate_id");
         keyKey = new NamespacedKey(this, "velioragacha_key_id");
         logsDir = new File(getDataFolder(), "logs");
@@ -84,8 +83,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
-    @Override
-    public void onDisable() {
+    @Override public void onDisable() {
         openings.values().forEach(Opening::cancel);
         openings.clear();
         if (effectTask != null) effectTask.cancel();
@@ -125,13 +123,8 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         loadRewards();
     }
 
-    private boolean showTestCrate() {
-        return getConfig().getBoolean("settings.show-test-crate", true);
-    }
-
-    private boolean testRewardsEnabled() {
-        return getConfig().getBoolean("settings.test-crate-has-default-rewards", true);
-    }
+    private boolean showTestCrate() { return getConfig().getBoolean("settings.show-test-crate", true); }
+    private boolean testRewardsEnabled() { return getConfig().getBoolean("settings.test-crate-has-default-rewards", true); }
 
     private void loadKeys() {
         keys.clear();
@@ -141,16 +134,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         for (String id : root.getKeys(false)) {
             String path = "keys." + id;
             String display = keysYml.getString(path + ".display-name", id);
-            tmp.put(normal(id), new KeyDef(
-                    normal(id), display,
-                    keysYml.getString(path + ".short-name", shortKeyName(display)),
-                    keysYml.getString(path + ".prefix", ""),
-                    keysYml.getString(path + ".suffix", ""),
-                    parseMaterial(keysYml.getString(path + ".material"), Material.TRIPWIRE_HOOK, "key material " + id),
-                    keysYml.getDouble(path + ".price", 150000.0D),
-                    keysYml.getBoolean(path + ".glow", true),
-                    keysYml.getStringList(path + ".lore")
-            ));
+            tmp.put(normal(id), new KeyDef(normal(id), display, keysYml.getString(path + ".short-name", shortKeyName(display)), keysYml.getString(path + ".prefix", ""), keysYml.getString(path + ".suffix", ""), parseMaterial(keysYml.getString(path + ".material"), Material.TRIPWIRE_HOOK, "key material " + id), keysYml.getDouble(path + ".price", 150000.0D), keysYml.getBoolean(path + ".glow", true), keysYml.getStringList(path + ".lore")));
         }
         for (String crate : PLAYER_ORDER) {
             String id = crate + "_key";
@@ -169,17 +153,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             for (String id : root.getKeys(false)) {
                 String path = "crates." + id;
                 if (!cratesYml.getBoolean(path + ".enabled", true)) continue;
-                tmp.put(normal(id), new CrateDef(
-                        normal(id),
-                        cratesYml.getString(path + ".display", id),
-                        parseMaterial(cratesYml.getString(path + ".block"), Material.CHEST, "crate block " + id),
-                        normal(cratesYml.getString(path + ".key", id + "_key")),
-                        normalizeEffect(cratesYml.getString(path + ".effect", "end_rod_spiral"), id),
-                        cratesYml.getString(path + ".level-reward", "Default"),
-                        cratesYml.getBoolean(path + ".hologram-enabled", true),
-                        cratesYml.getString(path + ".display-colors.prefix", ""),
-                        cratesYml.getString(path + ".display-colors.suffix", "")
-                ));
+                tmp.put(normal(id), new CrateDef(normal(id), cratesYml.getString(path + ".display", id), parseMaterial(cratesYml.getString(path + ".block"), Material.CHEST, "crate block " + id), normal(cratesYml.getString(path + ".key", id + "_key")), normalizeEffect(cratesYml.getString(path + ".effect", "end_rod_spiral"), id), cratesYml.getString(path + ".level-reward", "Default"), cratesYml.getBoolean(path + ".hologram-enabled", true), cratesYml.getString(path + ".display-colors.prefix", ""), cratesYml.getString(path + ".display-colors.suffix", "")));
             }
         }
         for (String id : PLAYER_ORDER) if (tmp.containsKey(id)) crates.put(id, tmp.remove(id));
@@ -189,13 +163,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         ConfigurationSection locs = cratesYml.getConfigurationSection("locations");
         if (locs != null) {
             for (String key : locs.getKeys(false)) {
-                locations.put(key, new CrateLoc(
-                        normal(cratesYml.getString("locations." + key + ".crate", "")),
-                        cratesYml.getString("locations." + key + ".world", "world"),
-                        cratesYml.getInt("locations." + key + ".x"),
-                        cratesYml.getInt("locations." + key + ".y"),
-                        cratesYml.getInt("locations." + key + ".z")
-                ));
+                locations.put(key, new CrateLoc(normal(cratesYml.getString("locations." + key + ".crate", "")), cratesYml.getString("locations." + key + ".world", "world"), cratesYml.getInt("locations." + key + ".x"), cratesYml.getInt("locations." + key + ".y"), cratesYml.getInt("locations." + key + ".z")));
             }
         }
     }
@@ -269,8 +237,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         }
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    @Override public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         try {
             if (cmd.getName().equalsIgnoreCase("key")) return handleKeyCommand(sender, args);
             return handleAdminCommand(sender, args);
@@ -378,8 +345,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         }.runTaskTimer(this, 1L, 3L);
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("key")) return args.length == 1 ? filter(List.of("shop"), args[0]) : List.of();
         if (args.length == 1) return filter(List.of("gui", "givekey", "effecttest", "reload", "debug", "dump"), args[0]);
         if (args.length == 2 && args[0].equalsIgnoreCase("effecttest")) return filter(new ArrayList<>(crates.keySet()), args[1]);
@@ -430,16 +396,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private List<String> settingsLore(CrateDef crate) {
         int count = rewardCount(crate.id);
         List<String> rarities = rewardRarities(crate.id);
-        return List.of(
-                "&7Reward status: " + (count > 0 ? "&aREADY" : "&cEMPTY / BELUM DIISI"),
-                "&7Total reward: &f" + count,
-                "&7Rarity isi: &f" + (rarities.isEmpty() ? "-" : String.join(", ", rarities)),
-                "&7Effect: &f" + crate.effect,
-                "&7Hologram: &f" + (crate.hologram ? "ON" : "OFF"),
-                "&7Key: &f" + crate.key,
-                "",
-                "&eKlik untuk detail setting."
-        );
+        return List.of("&7Reward status: " + (count > 0 ? "&aREADY" : "&cEMPTY / BELUM DIISI"), "&7Total reward: &f" + count, "&7Rarity isi: &f" + (rarities.isEmpty() ? "-" : String.join(", ", rarities)), "&7Effect: &f" + crate.effect, "&7Hologram: &f" + (crate.hologram ? "ON" : "OFF"), "&7Key: &f" + crate.key, "", "&eKlik untuk detail setting.");
     }
 
     private void openDetail(Player player, String crateId) {
@@ -535,8 +492,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         player.openInventory(inv);
     }
 
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    @EventHandler public void onClick(InventoryClickEvent event) {
         try {
             if (!(event.getWhoClicked() instanceof Player player) || !(event.getInventory().getHolder() instanceof Holder holder)) return;
             if (holder.type.equals("rewardedit")) return;
@@ -601,8 +557,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         openQty(player, holder.id, amount);
     }
 
-    @EventHandler
-    public void onClose(InventoryCloseEvent event) {
+    @EventHandler public void onClose(InventoryCloseEvent event) {
         try {
             if (!(event.getInventory().getHolder() instanceof Holder holder)) return;
             if (holder.type.equals("rewardedit")) {
@@ -611,7 +566,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             }
             if (holder.type.equals("roulette") && event.getPlayer() instanceof Player player) {
                 Opening opening = openings.get(player.getUniqueId());
-                if (opening != null && getConfig().getString("animation.close-behavior", "COMPLETE_REWARD").equalsIgnoreCase("COMPLETE_REWARD")) finishOpening(player, opening);
+                if (opening != null && getConfig().getString("animation.close-behavior", "COMPLETE_REWARD").equalsIgnoreCase("COMPLETE_REWARD")) finishOpening(player, opening, false);
             }
         } catch (Throwable throwable) {
             logError("inventory close", event.getPlayer() instanceof Player player ? player : null, null, throwable);
@@ -648,8 +603,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         openQty(player, keyId, amount);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlace(BlockPlaceEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST) public void onPlace(BlockPlaceEvent event) {
         try {
             String crateId = pdc(event.getItemInHand(), crateKey);
             if (crateId == null) return;
@@ -670,8 +624,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBreak(BlockBreakEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST) public void onBreak(BlockBreakEvent event) {
         try {
             String key = locKey(event.getBlock().getLocation());
             CrateLoc loc = locations.get(key);
@@ -690,8 +643,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInteract(PlayerInteractEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST) public void onInteract(PlayerInteractEvent event) {
         try {
             if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
             Block block = event.getClickedBlock();
@@ -721,13 +673,16 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             return false;
         }
         Reward finalReward = chooseReward(crate.id, true);
-        Inventory inv = gui(new Holder("roulette", crate.id, null, 1), invSize(getConfig().getInt("animation.gui-size", 45)), getConfig().getString("animation.title", "&8Opening %crate%").replace("%crate%", crate.name));
+        int size = invSize(getConfig().getInt("animation.gui-size", 54));
+        Inventory inv = gui(new Holder("roulette", crate.id, null, 1), size, getConfig().getString("animation.title", "&8Opening %crate%").replace("%crate%", crate.name));
         fill(inv);
+        renderMarker(inv, modeMarkerSlot(normalizeAnimationMode(getConfig().getString("animation.mode", "BOX"))));
         player.openInventory(inv);
+
         int duration = Math.max(20, getConfig().getInt("animation.duration-ticks", 120));
         int start = Math.max(1, getConfig().getInt("animation.start-speed-ticks", 1));
         int end = Math.max(start, getConfig().getInt("animation.end-speed-ticks", 9));
-        int closeDelay = Math.max(1, getConfig().getInt("animation.close-delay-ticks", 35));
+        int closeDelay = Math.max(1, getConfig().getInt("animation.result.keep-open-ticks", getConfig().getInt("animation.close-delay-ticks", 45)));
         Sound tickSound = sound(getConfig().getString("animation.sound-tick"), Sound.BLOCK_NOTE_BLOCK_HAT);
         Opening opening = new Opening(player.getUniqueId(), crate, finalReward, inv, preview);
         BukkitTask task = new BukkitRunnable() {
@@ -740,11 +695,11 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
                     double progress = Math.min(1.0D, (double) ticks / duration);
                     int delay = start + (int) Math.round((end - start) * progress);
                     next = ticks + delay;
-                    renderAnimation(inv, crate, finalReward, ticks >= duration, cursor++);
+                    renderAnimation(inv, crate, finalReward, ticks >= duration, cursor++, progress);
                     player.playSound(player.getLocation(), tickSound, 0.35F, 1.5F);
                 }
                 if (ticks >= duration) {
-                    finishOpening(player, opening);
+                    finishOpening(player, opening, true);
                     Bukkit.getScheduler().runTaskLater(VelioraGachaPlugin.this, () -> {
                         if (player.isOnline() && player.getOpenInventory().getTopInventory().equals(inv)) player.closeInventory();
                     }, closeDelay);
@@ -756,72 +711,112 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         return true;
     }
 
-    private void renderAnimation(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick) {
+    private void renderAnimation(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick, double progress) {
         clearAnimationSlots(inv);
-        String mode = normalizeAnimationMode(getConfig().getString("animation.mode", "SPIRAL"));
+        String mode = normalizeAnimationMode(getConfig().getString("animation.mode", "BOX"));
+        renderMarker(inv, modeMarkerSlot(mode));
         switch (mode) {
-            case "SNAKE" -> renderSnake(inv, crate, finalReward, finished, tick);
-            case "SIMPLE" -> renderSimple(inv, crate, finalReward, finished, tick);
-            case "BOX" -> renderBox(inv, crate, finalReward, finished, tick);
-            default -> renderSpiral(inv, crate, finalReward, finished, tick);
+            case "SPIRAL" -> renderSpiral(inv, crate, finalReward, finished, tick, progress);
+            case "SNAKE" -> renderSnake(inv, crate, finalReward, finished, tick, progress);
+            case "SIMPLE" -> renderSimple(inv, crate, finalReward, finished, tick, progress);
+            default -> renderBox(inv, crate, finalReward, finished, tick, progress);
         }
+        if (finished) renderResultScreen(inv, crate, finalReward);
     }
 
-    private void renderSpiral(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick) {
-        List<Integer> ring = intList("animation.spiral.ring-slots", List.of(10, 11, 12, 13, 14, 23, 32, 31, 30, 29, 28, 21));
-        int indicator = getConfig().getInt("animation.spiral.indicator-slot", 19);
-        int center = getConfig().getInt("animation.spiral.center-slot", 22);
-        for (int i = 0; i < ring.size(); i++) set(inv, ring.get((i + tick) % ring.size()), chooseReward(crate.id, true).icon());
-        set(inv, center, item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aFOKUS"));
-        set(inv, indicator, finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.spiral.indicator-material"), Material.LIME_STAINED_GLASS_PANE, "indicator"), getConfig().getString("animation.spiral.indicator-name", "&a▶ HADIAH")));
+    private void renderMarker(Inventory inv, int markerSlot) {
+        Material marker = parseMaterial(getConfig().getString("animation.marker-material"), Material.TORCH, "animation marker");
+        set(inv, markerSlot, item(marker, getConfig().getString("animation.marker-name", "&a▼ HADIAH ▼")));
     }
 
-    private void renderSnake(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick) {
-        List<Integer> path = intList("animation.snake.path-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 33, 32, 31, 30, 29, 28, 19, 20, 21, 22, 23, 24));
-        int head = path.get(Math.floorMod(tick, path.size()));
-        for (int i = 0; i < Math.min(7, path.size()); i++) set(inv, path.get(Math.floorMod(tick - i, path.size())), chooseReward(crate.id, true).icon());
-        set(inv, head, finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.snake.head-material"), Material.LIME_STAINED_GLASS_PANE, "snake head"), getConfig().getString("animation.snake.head-name", "&a▶")));
-        if (finished) set(inv, path.get(path.size() - 1), finalReward.icon());
+    private void renderBox(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick, double progress) {
+        List<Integer> slots = intList("animation.box.box-slots", List.of(11, 12, 13, 14, 15, 24, 33, 42, 41, 40, 39, 38, 29, 20));
+        int offset = Math.floorMod(tick, slots.size());
+        for (int i = 0; i < slots.size(); i++) set(inv, slots.get(i), rewardForSpin(crate, finalReward, progress, i == offset));
+        set(inv, modeResultSlot("BOX"), finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aFOKUS HADIAH"));
     }
 
-    private void renderSimple(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick) {
+    private void renderSpiral(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick, double progress) {
+        List<Integer> ring = intList("animation.spiral.ring-slots", List.of(12, 13, 14, 23, 32, 41, 40, 39, 30, 21));
+        int offset = Math.floorMod(tick, ring.size());
+        for (int i = 0; i < ring.size(); i++) set(inv, ring.get((i + offset) % ring.size()), rewardForSpin(crate, finalReward, progress, i == 0));
+        int result = modeResultSlot("SPIRAL");
+        set(inv, result, finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aPUSAT HADIAH"));
+    }
+
+    private void renderSnake(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick, double progress) {
+        List<Integer> path = intList("animation.snake.path-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 43, 42, 41, 40, 39, 38, 37, 28, 19, 20, 21, 22, 23, 24));
+        int headIndex = Math.floorMod(tick, path.size());
+        int length = Math.min(7, path.size());
+        for (int i = 0; i < length; i++) set(inv, path.get(Math.floorMod(headIndex - i, path.size())), rewardForSpin(crate, finalReward, progress, i == 0));
+        int head = path.get(headIndex);
+        if (!finished) set(inv, head, item(parseMaterial(getConfig().getString("animation.snake.head-material"), Material.LIME_STAINED_GLASS_PANE, "snake head"), getConfig().getString("animation.snake.head-name", "&a▶")));
+        set(inv, modeResultSlot("SNAKE"), finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aTARGET"));
+    }
+
+    private void renderSimple(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick, double progress) {
         List<Integer> slots = intList("animation.simple.slots", List.of(20, 21, 22, 23, 24));
-        int indicator = getConfig().getInt("animation.simple.indicator-slot", 22);
-        for (int i = 0; i < slots.size(); i++) set(inv, slots.get(i), chooseReward(crate.id, true).icon());
-        set(inv, indicator, finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aHADIAH"));
+        int offset = Math.floorMod(tick, slots.size());
+        for (int i = 0; i < slots.size(); i++) set(inv, slots.get(i), rewardForSpin(crate, finalReward, progress, i == offset));
+        set(inv, modeResultSlot("SIMPLE"), finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&aHADIAH"));
     }
 
-    private void renderBox(Inventory inv, CrateDef crate, Reward finalReward, boolean finished, int tick) {
-        List<Integer> box = intList("animation.box.box-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 33, 32, 31, 30, 29, 28, 19));
-        int indicator = getConfig().getInt("animation.box.indicator-slot", 19);
-        for (int i = 0; i < box.size(); i++) set(inv, box.get((i + tick) % box.size()), chooseReward(crate.id, true).icon());
-        set(inv, indicator, finished ? finalReward.icon() : item(parseMaterial(getConfig().getString("animation.highlight-material"), Material.LIME_STAINED_GLASS_PANE, "highlight"), "&a▶ HADIAH"));
+    private ItemStack rewardForSpin(CrateDef crate, Reward finalReward, double progress, boolean focus) {
+        if (focus && progress > 0.72D && random.nextDouble() < progress) return finalReward.icon();
+        return chooseReward(crate.id, true).icon();
     }
 
     private void clearAnimationSlots(Inventory inv) {
         Set<Integer> slots = new HashSet<>();
-        slots.addAll(intList("animation.spiral.ring-slots", List.of(10, 11, 12, 13, 14, 23, 32, 31, 30, 29, 28, 21)));
-        slots.addAll(intList("animation.snake.path-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 33, 32, 31, 30, 29, 28, 19, 20, 21, 22, 23, 24)));
+        slots.addAll(intList("animation.box.box-slots", List.of(11, 12, 13, 14, 15, 24, 33, 42, 41, 40, 39, 38, 29, 20)));
+        slots.addAll(intList("animation.spiral.ring-slots", List.of(12, 13, 14, 23, 32, 41, 40, 39, 30, 21)));
+        slots.addAll(intList("animation.snake.path-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 43, 42, 41, 40, 39, 38, 37, 28, 19, 20, 21, 22, 23, 24)));
         slots.addAll(intList("animation.simple.slots", List.of(20, 21, 22, 23, 24)));
-        slots.addAll(intList("animation.box.box-slots", List.of(10, 11, 12, 13, 14, 15, 16, 25, 34, 33, 32, 31, 30, 29, 28, 19)));
-        slots.add(getConfig().getInt("animation.spiral.indicator-slot", 19));
-        slots.add(getConfig().getInt("animation.spiral.center-slot", 22));
-        slots.add(getConfig().getInt("animation.simple.indicator-slot", 22));
-        slots.add(getConfig().getInt("animation.box.indicator-slot", 19));
-        ItemStack filler = item(parseMaterial(getConfig().getString("animation.filler-material"), Material.BLACK_STAINED_GLASS_PANE, "animation filler"), " ");
-        for (int slot : slots) if (slot >= 0 && slot < inv.getSize()) inv.setItem(slot, filler);
+        slots.add(getConfig().getInt("animation.marker-slot", 4));
+        slots.add(getConfig().getInt("animation.result-slot", 22));
+        slots.addAll(List.of(13, 31, 40));
+        ItemStack empty = item(parseMaterial(getConfig().getString("animation.empty-material"), Material.BLACK_STAINED_GLASS_PANE, "animation empty"), " ");
+        for (int slot : slots) set(inv, slot, empty);
     }
 
-    private void finishOpening(Player player, Opening opening) {
+    private void renderResultScreen(Inventory inv, CrateDef crate, Reward finalReward) {
+        fill(inv);
+        renderMarker(inv, getConfig().getInt("animation.marker-slot", 4));
+        set(inv, getConfig().getInt("animation.result-slot", 22), finalReward.icon());
+        set(inv, 13, item(Material.LIME_STAINED_GLASS_PANE, "&aKamu Mendapatkan", List.of("&7Reward berhenti di slot hadiah.")));
+        set(inv, 31, item(Material.BOOK, "&7Crate: &f" + plain(crate.name), List.of("&7Rarity: &f" + prettyRarity(finalReward.rarity))));
+        set(inv, 40, item(Material.OAK_SIGN, "&eESC untuk tutup", List.of("&7Reward sudah masuk.", "&7Aman, tidak akan dobel.")));
+    }
+
+    private void finishOpening(Player player, Opening opening, boolean showResultScreen) {
         if (opening.rewarded) return;
         opening.rewarded = true;
         openings.remove(player.getUniqueId());
         opening.cancel();
         if (!player.isOnline()) return;
         if (!opening.preview) giveReward(player, opening.crate, opening.reward);
-        player.playSound(player.getLocation(), sound(getConfig().getString("animation.sound-finish"), Sound.ENTITY_PLAYER_LEVELUP), 1F, 1F);
-        if (opening.preview) msg(player, "&aPreview selesai: &f" + plain(opening.reward.display));
-        else msg(player, msg("reward-received", "&aKamu mendapatkan reward: &f%reward%&a.").replace("%reward%", plain(opening.reward.display)));
+        Sound finishSound = sound(getConfig().getString("animation.result.sound", getConfig().getString("animation.sound-finish")), Sound.ENTITY_PLAYER_LEVELUP);
+        player.playSound(player.getLocation(), finishSound, 1F, 1F);
+        if (showResultScreen && player.getOpenInventory().getTopInventory().equals(opening.inventory)) renderResultScreen(opening.inventory, opening.crate, opening.reward);
+        sendResultNotifications(player, opening);
+    }
+
+    private void sendResultNotifications(Player player, Opening opening) {
+        if (!getConfig().getBoolean("animation.result.enabled", true)) {
+            if (!opening.preview) msg(player, msg("reward-received", "&aKamu mendapatkan reward: &f%reward%&a.").replace("%reward%", plain(opening.reward.display)));
+            return;
+        }
+        String title = resultText(getConfig().getString("animation.result.title", "&aKamu Mendapatkan!"), player, opening);
+        String subtitle = resultText(getConfig().getString("animation.result.subtitle", "&f%reward%"), player, opening);
+        String actionbar = resultText(getConfig().getString("animation.result.actionbar", "&aReward: &f%reward%"), player, opening);
+        String chat = resultText(getConfig().getString("animation.result.chat", msg("reward-received", "&aKamu mendapatkan reward: &f%reward%&a.")), player, opening);
+        if (getConfig().getBoolean("animation.result.show-title", true)) sendTitle(player, title, subtitle);
+        if (getConfig().getBoolean("animation.result.show-actionbar", true)) sendActionBar(player, actionbar);
+        if (getConfig().getBoolean("animation.result.send-chat", true) && !opening.preview) msg(player, chat);
+    }
+
+    private String resultText(String raw, Player player, Opening opening) {
+        return raw.replace("%prefix%", getConfig().getString("settings.prefix", "&8[&dVelioraGacha&8] ")).replace("%player%", player.getName()).replace("%reward%", plain(opening.reward.display)).replace("%rarity%", prettyRarity(opening.reward.rarity)).replace("%crate%", opening.crate.id).replace("%crate_display%", plain(opening.crate.name));
     }
 
     private void giveReward(Player player, CrateDef crate, Reward reward) {
@@ -971,18 +966,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         if (nearest != null) keysText = String.valueOf(countPhysicalKeys(nearest, crate.key));
         KeyDef key = keys.get(crate.key);
         String keyName = key == null ? crate.key : plain(key.name);
-        return String.join("\n", hologramLines())
-                .replace("%crate%", crate.id)
-                .replace("%crate_display%", crate.name)
-                .replace("%crate_prefix%", crate.prefix)
-                .replace("%crate_suffix%", crate.suffix)
-                .replace("%key%", crate.key)
-                .replace("%key_name%", keyName)
-                .replace("%key_short_name%", key == null ? shortKeyName(keyName) : key.shortName)
-                .replace("%keys%", keysText)
-                .replace("%level_reward%", crate.level)
-                .replace("%permission_open%", "velioragacha.open")
-                .replace("%permission_shop%", "velioragacha.shop");
+        return String.join("\n", hologramLines()).replace("%crate%", crate.id).replace("%crate_display%", crate.name).replace("%crate_prefix%", crate.prefix).replace("%crate_suffix%", crate.suffix).replace("%key%", crate.key).replace("%key_name%", keyName).replace("%key_short_name%", key == null ? shortKeyName(keyName) : key.shortName).replace("%keys%", keysText).replace("%level_reward%", crate.level).replace("%permission_open%", "velioragacha.open").replace("%permission_shop%", "velioragacha.shop");
     }
 
     private List<String> hologramLines() {
@@ -1129,15 +1113,14 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         msg(sender, "&7server: &f" + Bukkit.getVersion());
         msg(sender, "&7java: &f" + System.getProperty("java.version"));
         msg(sender, "&7vault hooked: &f" + (economy != null));
+        msg(sender, "&7animation mode: &f" + normalizeAnimationMode(getConfig().getString("animation.mode", "BOX")));
         msg(sender, "&7crate count: &f" + crates.size());
         msg(sender, "&7location count: &f" + locations.size());
         msg(sender, "&7hologram billboard: &f" + getConfig().getString("hologram.billboard", "FIXED"));
         msg(sender, "&7active hologram count: &f" + holograms.size());
         msg(sender, "&7active opening count: &f" + openings.size());
         if (sender instanceof Player player) {
-            for (String permission : List.of("velioragacha.shop", "velioragacha.open", "velioragacha.gui", "velioragacha.givekey", "velioragacha.reload", "velioragacha.break", "velioragacha.place", "velioragacha.debug")) {
-                msg(sender, "&7perm " + permission + ": &f" + player.hasPermission(permission));
-            }
+            for (String permission : List.of("velioragacha.shop", "velioragacha.open", "velioragacha.gui", "velioragacha.givekey", "velioragacha.reload", "velioragacha.break", "velioragacha.place", "velioragacha.debug")) msg(sender, "&7perm " + permission + ": &f" + player.hasPermission(permission));
         }
         msg(sender, "&7latest log: &f" + new File(logsDir, "latest.log").getPath());
     }
@@ -1151,7 +1134,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             out.println("server=" + Bukkit.getVersion());
             out.println("java=" + System.getProperty("java.version"));
             out.println("vault=" + (economy != null));
-            out.println("animationMode=" + normalizeAnimationMode(getConfig().getString("animation.mode", "SPIRAL")));
+            out.println("animationMode=" + normalizeAnimationMode(getConfig().getString("animation.mode", "BOX")));
             out.println("hologramBillboard=" + getConfig().getString("hologram.billboard", "FIXED"));
             out.println("crates=" + crates.keySet());
             out.println("locations=" + locations);
@@ -1195,6 +1178,12 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         return best;
     }
 
+    private int modeMarkerSlot(String mode) {
+        return getConfig().getInt("animation." + mode.toLowerCase(Locale.ROOT) + ".marker-slot", getConfig().getInt("animation.marker-slot", 4));
+    }
+    private int modeResultSlot(String mode) {
+        return getConfig().getInt("animation." + mode.toLowerCase(Locale.ROOT) + ".result-slot", getConfig().getInt("animation.result-slot", 22));
+    }
     private List<CrateDef> playerCrates() { List<CrateDef> out = new ArrayList<>(); for (String id : PLAYER_ORDER) if (crates.containsKey(id)) out.add(crates.get(id)); return out; }
     private List<CrateDef> adminCrates() { List<CrateDef> out = playerCrates(); if (showTestCrate() && crates.containsKey("test")) out.add(crates.get("test")); return out; }
     private String crateName(String id) { CrateDef crate = crates.get(id); return crate == null ? id : plain(crate.name); }
@@ -1234,7 +1223,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
 
     private List<String> filter(List<String> input, String prefix) { String p = prefix == null ? "" : prefix.toLowerCase(Locale.ROOT); return input.stream().filter(s -> s.toLowerCase(Locale.ROOT).startsWith(p)).toList(); }
     private Inventory gui(Holder holder, int size, String title) { Inventory inv = Bukkit.createInventory(holder, invSize(size), color(title)); holder.inv = inv; return inv; }
-    private void fill(Inventory inv) { ItemStack filler = item(parseMaterial(getConfig().getString("animation.filler-material", getConfig().getString("shop.filler")), Material.BLACK_STAINED_GLASS_PANE, "filler"), " "); for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, filler); }
+    private void fill(Inventory inv) { ItemStack filler = item(parseMaterial(getConfig().getString("animation.filler-material", getConfig().getString("shop.filler")), Material.GRAY_STAINED_GLASS_PANE, "filler"), " "); for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, filler); }
     private void set(Inventory inv, int slot, ItemStack item) { if (slot >= 0 && slot < inv.getSize()) inv.setItem(slot, item); }
     private ItemStack item(Material material, String name) { return item(material, name, List.of()); }
     private ItemStack item(Material material, String name, List<String> lore) { ItemStack item = new ItemStack(material == null ? Material.STONE : material); ItemMeta meta = item.getItemMeta(); if (meta != null) { meta.setDisplayName(color(name)); if (!lore.isEmpty()) meta.setLore(lore.stream().map(this::color).toList()); item.setItemMeta(meta); } return item; }
