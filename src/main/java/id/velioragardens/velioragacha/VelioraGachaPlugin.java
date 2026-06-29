@@ -695,7 +695,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             if (rawLines instanceof List<?> list) {
                 List<String> out = new ArrayList<>();
                 for (Object row : list) {
-                    if (row instanceof Map<?, ?> map) out.add(String.valueOf(map.getOrDefault("content", "")));
+                    if (row instanceof Map<?, ?> map) { Object content = map.get("content"); out.add(content == null ? "" : String.valueOf(content)); }
                     else out.add(String.valueOf(row));
                 }
                 if (!out.isEmpty()) return out;
