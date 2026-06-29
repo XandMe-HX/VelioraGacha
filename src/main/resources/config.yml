@@ -1,5 +1,5 @@
 # ==================================================
-# VelioraGacha V3.1 Configuration
+# VelioraGacha V3.2 Configuration
 # File utama plugin.
 # File examples.yml dan rewards-examples.yml hanya contoh, tidak dibaca otomatis.
 # ==================================================
@@ -169,30 +169,42 @@ effects:
 hologram:
   enabled: true
   provider: AUTO
-  y-offset: 2.25
+  y-offset: 2.45
   billboard: CENTER
   # FIXED / CENTER / VERTICAL / HORIZONTAL
-  line-spacing: 0.22
+  line-spacing: 0.24
   update-ticks: 40
   nearest-player-radius: 8
   pages:
     - lines:
-        - content: '%crate_prefix%&l⚡ %crate_display% Crate ⚡%crate_suffix%'
-          height: 0.22
-        - content: '&7Tier: %level_reward%'
-          height: 0.22
-        - content: '&fKey: %crate_prefix%%key_short_name% Key%crate_suffix%'
-          height: 0.22
-        - content: '&fKeys Kamu: %crate_prefix%%keys% key%crate_suffix%'
-          height: 0.22
-        - content: '&eKlik pakai key &7| &f/key shop'
-          height: 0.22
+        - content: '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
+          height: 0.24
+        - content: '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
+          height: 0.24
+        - content: '&7━━━━━━━━━━━━━━━━'
+          height: 0.24
+        - content: '&fTier Reward: %level_reward%'
+          height: 0.24
+        - content: '&fRequired Key: %crate_prefix%%key_short_name% Key%crate_suffix%'
+          height: 0.24
+        - content: '&fYour Keys: %crate_prefix%%keys% key%crate_suffix%'
+          height: 0.24
+        - content: '&7Gunakan key sesuai warna crate.'
+          height: 0.24
+        - content: '&eKlik crate sambil pegang key.'
+          height: 0.24
+        - content: '&f/key shop &7untuk membeli key'
+          height: 0.24
   lines:
-    - '%crate_prefix%&l⚡ %crate_display% Crate ⚡%crate_suffix%'
-    - '&7Tier: %level_reward%'
-    - '&fKey: %crate_prefix%%key_short_name% Key%crate_suffix%'
-    - '&fKeys Kamu: %crate_prefix%%keys% key%crate_suffix%'
-    - '&eKlik pakai key &7| &f/key shop'
+    - '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
+    - '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
+    - '&7━━━━━━━━━━━━━━━━'
+    - '&fTier Reward: %level_reward%'
+    - '&fRequired Key: %crate_prefix%%key_short_name% Key%crate_suffix%'
+    - '&fYour Keys: %crate_prefix%%keys% key%crate_suffix%'
+    - '&7Gunakan key sesuai warna crate.'
+    - '&eKlik crate sambil pegang key.'
+    - '&f/key shop &7untuk membeli key'
 
 shop:
   title: '&8Key Shop'
