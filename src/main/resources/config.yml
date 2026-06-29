@@ -1,15 +1,14 @@
 # ==================================================
-# VelioraGacha V2.6 Configuration
-# - No-key/wrong-key/no-reward bisa ACTIONBAR/TITLE/CHAT/BOTH
-# - Animation mode: SLIDE / SPIN / SHUFFLE / TORNADO / WHEEL
-# - Effect crate memakai tornado spiral kecil di sekitar shulker
-# - Hologram support pages + fallback lines
+# VelioraGacha V2.7 Configuration
+# File utama plugin.
+# File examples.yml dan rewards-examples.yml hanya contoh, tidak dibaca otomatis.
 # ==================================================
 settings:
   prefix: '&8[&dVelioraGacha&8] '
   storage: YAML
   max-shop-amount: 64
   show-test-crate: true
+  test-crate-has-default-rewards: true
 
 economy:
   enabled: true
@@ -45,37 +44,100 @@ messages:
 
 animation:
   enabled: true
-  mode: TORNADO
-  # SLIDE / SPIN / SHUFFLE / TORNADO / WHEEL
+  mode: SPIRAL
+  # SPIRAL / SNAKE / SIMPLE / BOX
+  # Alias lama tetap aman:
+  # TORNADO/SPIN -> SPIRAL, WHEEL -> BOX, SLIDE/SHUFFLE -> SIMPLE
   gui-size: 45
   title: '&8Opening %crate%'
-  indicator-slot: 22
-  duration-ticks: 130
+  duration-ticks: 120
   start-speed-ticks: 1
   end-speed-ticks: 9
   close-delay-ticks: 35
   close-behavior: COMPLETE_REWARD
   sound-tick: BLOCK_NOTE_BLOCK_HAT
   sound-finish: ENTITY_PLAYER_LEVELUP
-  filler-mode: CLEAN
-  clean-background-material: BLACK_STAINED_GLASS_PANE
+  filler-material: BLACK_STAINED_GLASS_PANE
   highlight-material: LIME_STAINED_GLASS_PANE
   final-glow: true
-  marker:
-    enabled: true
-    top-slot: 13
-    bottom-slot: 31
-    material: LIME_STAINED_GLASS_PANE
-    top-name: '&a▼ HADIAH ▼'
-    bottom-name: '&a▲ HADIAH ▲'
+  spiral:
+    indicator-slot: 19
+    center-slot: 22
+    ring-slots:
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 23
+      - 32
+      - 31
+      - 30
+      - 29
+      - 28
+      - 21
+    indicator-material: LIME_STAINED_GLASS_PANE
+    indicator-name: '&a▶ HADIAH'
+  snake:
+    path-slots:
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 25
+      - 34
+      - 33
+      - 32
+      - 31
+      - 30
+      - 29
+      - 28
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+    head-material: LIME_STAINED_GLASS_PANE
+    head-name: '&a▶'
+  simple:
+    slots:
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+    indicator-slot: 22
+  box:
+    indicator-slot: 19
+    box-slots:
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 25
+      - 34
+      - 33
+      - 32
+      - 31
+      - 30
+      - 29
+      - 28
+      - 19
 
 effects:
   enabled: true
   interval-ticks: 3
-  radius: 0.95
-  radius-top: 0.45
-  height: 1.85
-  points-per-tick: 7
+  radius: 0.85
+  radius-top: 0.35
+  height: 1.45
+  points-per-tick: 5
   rings: 3
   speed: 0.32
   y-speed: 0.05
@@ -83,45 +145,50 @@ effects:
   center-spark: true
   max-crates-per-tick: 40
   view-distance: 32
+  bonemeal-star-count: 2
+  bonemeal-star-extra: 0.02
 
 hologram:
   enabled: true
   provider: AUTO
-  y-offset: 1.8
+  y-offset: 2.35
+  billboard: FIXED
+  # FIXED / CENTER / VERTICAL / HORIZONTAL
+  line-spacing: 0.3
   update-ticks: 40
   nearest-player-radius: 8
   pages:
     - lines:
-        - content: '%crate_prefix%&l%crate_display% CRATE%crate_suffix%'
+        - content: '%crate_prefix%&l⚡ %crate_display% ⚡%crate_suffix%'
           height: 0.3
-        - content: '&7Crate rewards'
-          height: 0.3
-        - content: ''
-          height: 0.3
-        - content: '&fBuka peti ini untuk mendapatkan'
-          height: 0.3
-        - content: '&fitem common dan %crate_prefix%reward spesial%crate_suffix%'
-          height: 0.3
-        - content: '&fButuh %key_short_name% keys untuk membuka crate ini'
+        - content: '&7ᴄʀᴀᴛᴇ ʀᴇᴡᴀʀᴅs'
           height: 0.3
         - content: ''
           height: 0.3
-        - content: '&fLevel reward: %level_reward%'
+        - content: '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ'
           height: 0.3
-        - content: '&fKeys kamu: %crate_prefix%%keys% keys%crate_suffix%'
+        - content: '&fɪᴛᴇᴍs ᴄᴏᴍᴍᴏɴ, %crate_prefix%ᴋᴀᴍᴜ ʙᴜᴛᴜʜ%crate_suffix%'
+          height: 0.3
+        - content: '&fʀᴇᴡᴀʀᴅѕ %key_short_name% ᴋᴇʏѕ ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴜᴋᴀ ᴄʀᴀᴛᴇ ɪɴɪ'
           height: 0.3
         - content: ''
           height: 0.3
-        - content: '&fDapatkan keys reward dengan cara'
+        - content: '&f★ ʟᴇᴠᴇʟ ʀᴇᴡᴀʀᴅ: %level_reward%'
           height: 0.3
-        - content: '%crate_prefix%membeli di &f/key shop %crate_suffix%(/key shop)'
+        - content: '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
+          height: 0.3
+        - content: ''
+          height: 0.3
+        - content: '&fᴅᴀᴘᴀᴛᴋᴀɴ ᴋᴇʏѕ ʀᴇᴡᴀʀᴅ ᴅᴇɴɢᴀɴ ᴄᴀʀᴀ'
+          height: 0.3
+        - content: '%crate_prefix%ᴍᴇᴍʙᴇʟɪ ᴅɪ &f/key shop %crate_suffix%(/key shop)'
           height: 0.3
   lines:
-    - '%crate_prefix%&l%crate_display% CRATE%crate_suffix%'
-    - '&7Crate rewards'
-    - '&fKamu butuh %key_short_name% key'
-    - '&fKeys kamu: %keys% keys'
-    - '&fBeli di /key shop atau dari owner'
+    - '%crate_prefix%&l⚡ %crate_display% ⚡%crate_suffix%'
+    - '&7ᴄʀᴀᴛᴇ ʀᴇᴡᴀʀᴅs'
+    - '&fʀᴇᴡᴀʀᴅѕ %key_short_name% ᴋᴇʏѕ'
+    - '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %keys% ᴋᴇʏs'
+    - '&f/key shop'
 
 shop:
   title: '&8Key Shop'
