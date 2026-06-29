@@ -1,5 +1,5 @@
 # ==================================================
-# VelioraGacha V3 Configuration
+# VelioraGacha V3.1 Configuration
 # File utama plugin.
 # File examples.yml dan rewards-examples.yml hanya contoh, tidak dibaca otomatis.
 # ==================================================
@@ -169,44 +169,30 @@ effects:
 hologram:
   enabled: true
   provider: AUTO
-  y-offset: 2.35
-  billboard: FIXED
+  y-offset: 2.25
+  billboard: CENTER
   # FIXED / CENTER / VERTICAL / HORIZONTAL
-  line-spacing: 0.3
+  line-spacing: 0.22
   update-ticks: 40
   nearest-player-radius: 8
   pages:
     - lines:
-        - content: '%crate_prefix%&l⚡ %crate_display% ⚡%crate_suffix%'
-          height: 0.3
-        - content: '&7ᴄʀᴀᴛᴇ ʀᴇᴡᴀʀᴅs'
-          height: 0.3
-        - content: ''
-          height: 0.3
-        - content: '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ'
-          height: 0.3
-        - content: '&fɪᴛᴇᴍs ᴄᴏᴍᴍᴏɴ, %crate_prefix%ᴋᴀᴍᴜ ʙᴜᴛᴜʜ%crate_suffix%'
-          height: 0.3
-        - content: '&fʀᴇᴡᴀʀᴅѕ %key_short_name% ᴋᴇʏѕ ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴜᴋᴀ ᴄʀᴀᴛᴇ ɪɴɪ'
-          height: 0.3
-        - content: ''
-          height: 0.3
-        - content: '&f★ ʟᴇᴠᴇʟ ʀᴇᴡᴀʀᴅ: %level_reward%'
-          height: 0.3
-        - content: '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
-          height: 0.3
-        - content: ''
-          height: 0.3
-        - content: '&fᴅᴀᴘᴀᴛᴋᴀɴ ᴋᴇʏѕ ʀᴇᴡᴀʀᴅ ᴅᴇɴɢᴀɴ ᴄᴀʀᴀ'
-          height: 0.3
-        - content: '%crate_prefix%ᴍᴇᴍʙᴇʟɪ ᴅɪ &f/key shop %crate_suffix%(/key shop)'
-          height: 0.3
+        - content: '%crate_prefix%&l⚡ %crate_display% Crate ⚡%crate_suffix%'
+          height: 0.22
+        - content: '&7Tier: %level_reward%'
+          height: 0.22
+        - content: '&fKey: %crate_prefix%%key_short_name% Key%crate_suffix%'
+          height: 0.22
+        - content: '&fKeys Kamu: %crate_prefix%%keys% key%crate_suffix%'
+          height: 0.22
+        - content: '&eKlik pakai key &7| &f/key shop'
+          height: 0.22
   lines:
-    - '%crate_prefix%&l⚡ %crate_display% ⚡%crate_suffix%'
-    - '&7ᴄʀᴀᴛᴇ ʀᴇᴡᴀʀᴅs'
-    - '&fʀᴇᴡᴀʀᴅѕ %key_short_name% ᴋᴇʏѕ'
-    - '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %keys% ᴋᴇʏs'
-    - '&f/key shop'
+    - '%crate_prefix%&l⚡ %crate_display% Crate ⚡%crate_suffix%'
+    - '&7Tier: %level_reward%'
+    - '&fKey: %crate_prefix%%key_short_name% Key%crate_suffix%'
+    - '&fKeys Kamu: %crate_prefix%%keys% key%crate_suffix%'
+    - '&eKlik pakai key &7| &f/key shop'
 
 shop:
   title: '&8Key Shop'
