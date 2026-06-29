@@ -1,6 +1,5 @@
 # ==================================================
-# VelioraGacha Crates V2.7
-# Smoke effect sudah tidak dipakai.
+# VelioraGacha Crates V3.1
 # Effect tersedia:
 # fire_spiral, cherry_spiral, end_rod_spiral, oak_leaf_spiral, bubble_spiral,
 # bonemeal_star_spiral, soul_fire_spiral, sparkle_spiral, portal_spiral, crit_spiral, note_spiral
@@ -13,11 +12,11 @@ crates:
     key: shinjuore_key
     effect: bubble_spiral
     gui-slot: 10
-    level-reward: '<#FFFFFF>●● &7- <#DDEEFF>●●●'
+    level-reward: '&fEasy &7-> &dImpossible'
     hologram-enabled: true
     display-colors:
-      prefix: '<#FFFFFF>'
-      suffix: '</#DDEEFF>'
+      prefix: '&f'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
@@ -25,11 +24,11 @@ crates:
       points-per-tick: 5
       rings: 3
     rarity-chance:
-      uncommon: 25.0
-      common: 60.0
+      uncommon: 58.0
+      common: 28.0
       rare: 10.0
-      epic: 4.0
-      mythic: 1.0
+      epic: 3.5
+      mythic: 0.5
   tenshiyoro:
     enabled: true
     display: 'Tenshiyoro'
@@ -37,11 +36,11 @@ crates:
     key: tenshiyoro_key
     effect: cherry_spiral
     gui-slot: 11
-    level-reward: '<#FFE066>●●● &7- <#FFD43B>●●'
+    level-reward: '&eEasy &7-> &5Impossible &8(&cJackpot 0.01%&8)'
     hologram-enabled: true
     display-colors:
-      prefix: '<#FFE066>'
-      suffix: '</#FFD43B>'
+      prefix: '&e'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
@@ -49,11 +48,11 @@ crates:
       points-per-tick: 5
       rings: 3
     rarity-chance:
-      uncommon: 25.0
-      common: 60.0
-      rare: 10.0
-      epic: 4.0
-      mythic: 1.0
+      uncommon: 66.0
+      common: 24.0
+      rare: 8.0
+      epic: 1.9
+      mythic: 0.1
   kinzai:
     enabled: true
     display: 'Kinzai'
@@ -61,11 +60,11 @@ crates:
     key: kinzai_key
     effect: fire_spiral
     gui-slot: 13
-    level-reward: '<#FF4444>●●●●●</#FF8888>'
+    level-reward: '&cMedium &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
-      prefix: '<#FF4444>'
-      suffix: '</#FF8888>'
+      prefix: '&c'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
@@ -73,11 +72,11 @@ crates:
       points-per-tick: 5
       rings: 3
     rarity-chance:
-      uncommon: 25.0
-      common: 55.0
-      rare: 12.0
-      epic: 6.0
-      mythic: 2.0
+      uncommon: 52.0
+      common: 30.0
+      rare: 13.0
+      epic: 4.0
+      mythic: 1.0
   kagekari:
     enabled: true
     display: 'Kagekari'
@@ -85,11 +84,11 @@ crates:
     key: kagekari_key
     effect: end_rod_spiral
     gui-slot: 15
-    level-reward: '<#2FF1FD>●●●● &7- <#00DFFD>●'
+    level-reward: '&bMedium &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
-      prefix: '<#2FF1FD>'
-      suffix: '</#00DFFD>'
+      prefix: '&b'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
@@ -97,10 +96,10 @@ crates:
       points-per-tick: 5
       rings: 3
     rarity-chance:
-      uncommon: 25.0
-      common: 60.0
-      rare: 10.0
-      epic: 4.0
+      uncommon: 50.0
+      common: 31.0
+      rare: 13.0
+      epic: 5.0
       mythic: 1.0
   kouzan:
     enabled: true
@@ -109,11 +108,11 @@ crates:
     key: kouzan_key
     effect: bonemeal_star_spiral
     gui-slot: 16
-    level-reward: '<#FF7AD9>●●● &7- <#FFB3EA>●●'
+    level-reward: '&dEasy &7-> &5Impossible'
     hologram-enabled: true
     display-colors:
-      prefix: '<#FF7AD9>'
-      suffix: '</#FFB3EA>'
+      prefix: '&d'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
@@ -121,11 +120,11 @@ crates:
       points-per-tick: 5
       rings: 3
     rarity-chance:
-      uncommon: 25.0
-      common: 60.0
-      rare: 10.0
-      epic: 4.0
-      mythic: 1.0
+      uncommon: 54.0
+      common: 30.0
+      rare: 11.0
+      epic: 4.2
+      mythic: 0.8
   test:
     enabled: true
     display: 'Test Crate'
@@ -133,11 +132,11 @@ crates:
     key: test_key
     effect: end_rod_spiral
     gui-slot: 22
-    level-reward: '<#B56CFF>TEST</#E0B3FF>'
+    level-reward: '&5TEST'
     hologram-enabled: true
     display-colors:
-      prefix: '<#B56CFF>'
-      suffix: '</#E0B3FF>'
+      prefix: '&5'
+      suffix: ''
     effect-settings:
       radius: 0.85
       radius-top: 0.35
