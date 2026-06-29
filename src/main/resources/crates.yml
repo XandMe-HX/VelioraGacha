@@ -1,11 +1,8 @@
 # ==================================================
-# VelioraGacha Crates
-# Urutan GUI player:
-# 10/20 Shinjuore putih, 11/21 Tenshiyoro kuning, 13/22 Kinzai merah,
-# 15/23 Kagekari biru, 16/24 Kouzan pink.
+# VelioraGacha Crates V2.6
 # Test crate hanya muncul di GUI admin kalau settings.show-test-crate: true.
 # Effect tersedia: fire_spiral, cherry_spiral, end_rod_spiral, oak_leaf_spiral, smoke_spiral, bubble_spiral.
-# Per-crate override effect: crates.<id>.effect-settings.radius/height/points-per-tick
+# Per-crate override effect: effect-settings radius/radius-top/height/points-per-tick/rings
 # ==================================================
 crates:
   shinjuore:
@@ -15,12 +12,17 @@ crates:
     key: shinjuore_key
     effect: bubble_spiral
     gui-slot: 10
-    level-reward: '<#FFFFFF>Level 2</#DDEEFF>'
+    level-reward: '<#FFFFFF>Level II</#DDEEFF>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#FFFFFF>'
+      suffix: '</#DDEEFF>'
     effect-settings:
-      radius: 0.8
-      height: 1.45
-      points-per-tick: 4
+      radius: 0.95
+      radius-top: 0.45
+      height: 1.85
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 25.0
       common: 60.0
@@ -34,12 +36,17 @@ crates:
     key: tenshiyoro_key
     effect: cherry_spiral
     gui-slot: 11
-    level-reward: '<#FFE066>Level 3</#FFD43B>'
+    level-reward: '<#FFE066>Level III</#FFD43B>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#FFE066>'
+      suffix: '</#FFD43B>'
     effect-settings:
-      radius: 0.8
-      height: 1.45
-      points-per-tick: 4
+      radius: 0.95
+      radius-top: 0.45
+      height: 1.85
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 25.0
       common: 60.0
@@ -53,12 +60,17 @@ crates:
     key: kinzai_key
     effect: fire_spiral
     gui-slot: 13
-    level-reward: '<#FF4444>Level 5</#FF8888>'
+    level-reward: '<#FF4444>Level V</#FF8888>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#FF4444>'
+      suffix: '</#FF8888>'
     effect-settings:
-      radius: 0.75
-      height: 1.35
-      points-per-tick: 4
+      radius: 0.9
+      radius-top: 0.45
+      height: 1.75
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 25.0
       common: 55.0
@@ -72,12 +84,17 @@ crates:
     key: kagekari_key
     effect: end_rod_spiral
     gui-slot: 15
-    level-reward: '<#2FF1FD>Level 4</#00DFFD>'
+    level-reward: '<#2FF1FD>Level IV</#00DFFD>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#2FF1FD>'
+      suffix: '</#00DFFD>'
     effect-settings:
-      radius: 0.8
-      height: 1.6
-      points-per-tick: 4
+      radius: 0.95
+      radius-top: 0.45
+      height: 1.85
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 25.0
       common: 60.0
@@ -91,12 +108,17 @@ crates:
     key: kouzan_key
     effect: oak_leaf_spiral
     gui-slot: 16
-    level-reward: '<#FF7AD9>Level 3</#FFB3EA>'
+    level-reward: '<#FF7AD9>Level III</#FFB3EA>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#FF7AD9>'
+      suffix: '</#FFB3EA>'
     effect-settings:
-      radius: 0.8
-      height: 1.45
-      points-per-tick: 4
+      radius: 0.95
+      radius-top: 0.45
+      height: 1.85
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 25.0
       common: 60.0
@@ -112,10 +134,15 @@ crates:
     gui-slot: 22
     level-reward: '<#B56CFF>TEST</#E0B3FF>'
     hologram-enabled: true
+    display-colors:
+      prefix: '<#B56CFF>'
+      suffix: '</#E0B3FF>'
     effect-settings:
-      radius: 0.8
-      height: 1.6
-      points-per-tick: 4
+      radius: 0.95
+      radius-top: 0.45
+      height: 1.85
+      points-per-tick: 7
+      rings: 3
     rarity-chance:
       uncommon: 30.0
       common: 45.0
