@@ -1,17 +1,17 @@
 # ==================================================
-# VelioraGacha V2 Configuration
-# Cara pakai cepat:
+# VelioraGacha V2.5 Configuration
 # - Ubah harga key di keys.yml
 # - Ubah effect crate di crates.yml atau /vgcreate gui > Crate Settings
-# - Ubah hologram di hologram.lines
-# - Ubah durasi animasi di animation
+# - Ubah hologram di hologram.pages atau fallback hologram.lines
+# - Ubah durasi/mode animasi di animation
 # - Ubah reward item/command manual di rewards.yml
-# - Ubah reward item via GUI, hasilnya tersimpan di rewards-gui.yml
+# - Reward item dari GUI disimpan di rewards-gui.yml
 # ==================================================
 settings:
   prefix: '&8[&dVelioraGacha&8] '
   storage: YAML
   max-shop-amount: 64
+  show-test-crate: true
 
 economy:
   enabled: true
@@ -30,6 +30,7 @@ messages:
   economy-missing: '%prefix% &cEconomy Vault tidak tersedia.'
   no-key: '%prefix% &cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.'
   wrong-key: '%prefix% &cKey ini tidak cocok untuk crate ini.'
+  crate-no-reward: '%prefix% &cCrate ini belum punya reward. Hubungi admin.'
   crate-placed: '%prefix% &aCrate &f%crate% &aberhasil dibuat.'
   crate-broken: '%prefix% &eCrate &f%crate% &edihapus.'
   reward-received: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
@@ -37,25 +38,36 @@ messages:
 
 animation:
   enabled: true
+  mode: SLIDE
+  # SLIDE / SPIN / SHUFFLE
   gui-size: 45
   title: '&8Opening %crate%'
   indicator-slot: 22
   duration-ticks: 120
   start-speed-ticks: 2
   end-speed-ticks: 10
-  close-delay-ticks: 30
+  close-delay-ticks: 35
   close-behavior: COMPLETE_REWARD
   sound-tick: BLOCK_NOTE_BLOCK_HAT
   sound-finish: ENTITY_PLAYER_LEVELUP
+  marker:
+    enabled: true
+    top-slot: 13
+    bottom-slot: 31
+    material: LIME_STAINED_GLASS_PANE
+    top-name: '&a▼ HADIAH ▼'
+    bottom-name: '&a▲ HADIAH ▲'
 
 effects:
   enabled: true
   interval-ticks: 4
-  radius: 0.85
-  height: 1.6
-  points-per-tick: 3
-  speed: 0.18
+  radius: 0.8
+  height: 1.45
+  points-per-tick: 4
+  speed: 0.22
   y-speed: 0.035
+  vertical-wave: true
+  show-center-spark: true
 
 hologram:
   enabled: true
@@ -63,17 +75,34 @@ hologram:
   y-offset: 1.8
   update-ticks: 40
   nearest-player-radius: 8
+  pages:
+    - lines:
+        - content: '<#2FF1FD>&l%crate_display% CRATE</#00DFFD>'
+          height: 0.3
+        - content: '&7Crate rewards'
+          height: 0.3
+        - content: ''
+          height: 0.3
+        - content: '&fBuka peti ini untuk mendapatkan item dan command reward.'
+          height: 0.3
+        - content: '&fKamu butuh <#2FF1FD>%key_name%</#00DFFD>'
+          height: 0.3
+        - content: ''
+          height: 0.3
+        - content: '&fLevel reward: %level_reward%'
+          height: 0.3
+        - content: '&fKeys kamu: <#2FF1FD>%keys% keys'
+          height: 0.3
+        - content: ''
+          height: 0.3
+        - content: '<#2FF1FD>Beli di &f/key shop <#00DFFD>atau dari owner'
+          height: 0.3
   lines:
     - '<#2FF1FD>&l%crate_display% CRATE</#00DFFD>'
     - '&7Crate rewards'
-    - ''
-    - '&fBuka peti ini untuk mendapat item dan command reward.'
-    - '&fKamu butuh <#2FF1FD>%key_name%</#00DFFD>'
-    - ''
-    - '&fLevel reward: %level_reward%'
-    - '&fKeys kamu: <#2FF1FD>%keys% keys'
-    - ''
-    - '<#2FF1FD>Beli di &f/key shop <#00DFFD>atau dari owner'
+    - '&fKamu butuh %key_name%'
+    - '&fKeys kamu: %keys% keys'
+    - '&fBeli di /key shop atau dari owner'
 
 shop:
   title: '&8Key Shop'
