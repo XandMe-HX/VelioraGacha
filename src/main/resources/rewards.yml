@@ -1,14 +1,57 @@
 # ==================================================
-# VelioraGacha Rewards
-# Default sengaja dikosongkan agar gacha tidak otomatis berisi reward.
+# VelioraGacha Rewards V2.7
+# Default crate utama sengaja EMPTY agar owner bisa setting sendiri.
 # Kalau crate reward kosong, player tidak bisa membuka crate dan key tidak berkurang.
+# Test crate punya reward default hanya jika config:
+# settings.test-crate-has-default-rewards: true
 #
 # Cara isi:
 # 1. Pakai /vgcreate gui > Crate Settings > Reward Editor
-# 2. Atau copy contoh dari reward-examples.yml ke file ini
+# 2. Atau copy contoh dari rewards-examples.yml ke file ini
 #
 # Rarity final: uncommon, common, rare, epic, mythic
 # Type reward: ITEM atau COMMAND
 # Placeholder command: %player%, %crate%, %crate_display%, %reward%, %key%
 # ==================================================
-rewards: {}
+rewards:
+  shinjuore:
+    uncommon: []
+    common: []
+    rare: []
+    epic: []
+    mythic: []
+  tenshiyoro:
+    uncommon: []
+    common: []
+    rare: []
+    epic: []
+    mythic: []
+  kinzai:
+    uncommon: []
+    common: []
+    rare: []
+    epic: []
+    mythic: []
+  kagekari:
+    uncommon: []
+    common: []
+    rare: []
+    epic: []
+    mythic: []
+  kouzan:
+    uncommon: []
+    common: []
+    rare: []
+    epic: []
+    mythic: []
+  test:
+    uncommon:
+      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 45 }
+    common:
+      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald x4', weight: 30 }
+    rare:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 15 }
+    epic:
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
