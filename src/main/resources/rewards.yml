@@ -1,126 +1,98 @@
 # ==================================================
-# VelioraGacha Rewards
-# Reward default aman, tidak OP.
-#
-# Manual reward source utama:
-# rewards.<crate>.<rarity>:
-#   - type: ITEM
-#     material: IRON_INGOT
-#     amount: 8
-#     display: '&fIron Ingot x8'
-#     weight: 50
-#
-#   - type: COMMAND
-#     command: 'eco give %player% 25000'
-#     display: '&aMoney 25.000'
-#     material: EMERALD
-#     amount: 1
-#     weight: 10
-#
-# Placeholder command:
-# %player%, %crate%, %crate_display%, %reward%, %key%
-# Weight tidak harus total 100. Semakin besar weight, semakin sering keluar.
-# Item dari GUI editor tersimpan di rewards-gui.yml dan digabung dengan file ini.
+# VelioraGacha Rewards V2.5
+# Reward default aman dan tidak OP.
+# Semua crate wajib punya minimal 1 reward valid sebelum bisa dibuka.
+# Rarity final: uncommon, common, rare, epic, mythic.
+# Alias lama legendary/legend/mythical tetap diterima sebagai mythic oleh loader.
+# Placeholder command: %player%, %crate%, %crate_display%, %reward%, %key%
+# Weight tidak harus total 100.
+# Reward item dari GUI editor tersimpan di rewards-gui.yml dan digabung dengan file ini.
 # ==================================================
 rewards:
-  kinzai:
-    common:
-      - type: ITEM
-        material: IRON_INGOT
-        amount: 8
-        display: '&fIron Ingot x8'
-        weight: 50
-      - type: ITEM
-        material: EMERALD
-        amount: 4
-        display: '&aEmerald x4'
-        weight: 35
-      - type: ITEM
-        material: GOLDEN_APPLE
-        amount: 1
-        display: '&6Golden Apple x1'
-        weight: 15
-    rare:
-      - type: ITEM
-        material: DIAMOND
-        amount: 2
-        display: '&bDiamond x2'
-        weight: 20
-      - type: COMMAND
-        command: 'eco give %player% 25000'
-        display: '&aMoney 25.000'
-        material: EMERALD
-        amount: 1
-        weight: 10
-  kagekari:
-    common:
-      - type: ITEM
-        material: ENDER_PEARL
-        amount: 8
-        display: '&dEnder Pearl x8'
-        weight: 40
-      - type: ITEM
-        material: EXPERIENCE_BOTTLE
-        amount: 16
-        display: '&aExperience Bottle x16'
-        weight: 30
-    rare:
-      - type: ITEM
-        material: DIAMOND
-        amount: 1
-        display: '&bDiamond x1'
-        weight: 10
-  tenshiyoro:
-    common:
-      - type: ITEM
-        material: GOLD_INGOT
-        amount: 8
-        display: '&eGold Ingot x8'
-        weight: 40
-      - type: ITEM
-        material: HONEY_BOTTLE
-        amount: 8
-        display: '&6Honey Bottle x8'
-        weight: 30
-    rare:
-      - type: ITEM
-        material: GOLDEN_APPLE
-        amount: 1
-        display: '&6Golden Apple x1'
-        weight: 10
-  kouzan:
-    common:
-      - type: ITEM
-        material: OAK_LOG
-        amount: 32
-        display: '&6Oak Log x32'
-        weight: 40
-      - type: ITEM
-        material: BONE_MEAL
-        amount: 32
-        display: '&fBone Meal x32'
-        weight: 30
-    rare:
-      - type: ITEM
-        material: EMERALD
-        amount: 6
-        display: '&aEmerald x6'
-        weight: 10
   shinjuore:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 16, display: '&fBread x16', weight: 40 }
+      - { type: ITEM, material: QUARTZ, amount: 16, display: '&fQuartz x16', weight: 40 }
     common:
-      - type: ITEM
-        material: QUARTZ
-        amount: 16
-        display: '&fQuartz x16'
-        weight: 40
-      - type: ITEM
-        material: AMETHYST_SHARD
-        amount: 12
-        display: '&dAmethyst Shard x12'
-        weight: 30
+      - { type: ITEM, material: AMETHYST_SHARD, amount: 12, display: '&dAmethyst Shard x12', weight: 45 }
+      - { type: ITEM, material: IRON_INGOT, amount: 6, display: '&fIron Ingot x6', weight: 35 }
     rare:
-      - type: ITEM
-        material: DIAMOND
-        amount: 1
-        display: '&bDiamond x1'
-        weight: 10
+      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald x4', weight: 25 }
+      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 10 }
+    epic:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+  tenshiyoro:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 24, display: '&fBread x24', weight: 40 }
+      - { type: ITEM, material: HONEY_BOTTLE, amount: 6, display: '&6Honey Bottle x6', weight: 35 }
+    common:
+      - { type: ITEM, material: GOLD_INGOT, amount: 8, display: '&eGold Ingot x8', weight: 45 }
+      - { type: ITEM, material: COOKED_BEEF, amount: 12, display: '&fCooked Beef x12', weight: 35 }
+    rare:
+      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald x4', weight: 25 }
+      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 10 }
+    epic:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+  kinzai:
+    uncommon:
+      - { type: ITEM, material: COOKED_BEEF, amount: 16, display: '&fCooked Beef x16', weight: 40 }
+      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 40 }
+    common:
+      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald x4', weight: 35 }
+      - { type: ITEM, material: IRON_INGOT, amount: 12, display: '&fIron Ingot x12', weight: 35 }
+    rare:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 20 }
+      - { type: COMMAND, command: 'eco give %player% 15000', display: '&aMoney 15.000', material: EMERALD, amount: 1, weight: 10 }
+    epic:
+      - { type: ITEM, material: DIAMOND, amount: 2, display: '&bDiamond x2', weight: 10 }
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+      - { type: COMMAND, command: 'eco give %player% 25000', display: '&aMoney 25.000', material: EMERALD, amount: 1, weight: 2 }
+  kagekari:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 16, display: '&fBread x16', weight: 40 }
+      - { type: ITEM, material: ENDER_PEARL, amount: 6, display: '&dEnder Pearl x6', weight: 35 }
+    common:
+      - { type: ITEM, material: EXPERIENCE_BOTTLE, amount: 12, display: '&aEXP Bottle x12', weight: 35 }
+      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 35 }
+    rare:
+      - { type: ITEM, material: EMERALD, amount: 5, display: '&aEmerald x5', weight: 20 }
+      - { type: COMMAND, command: 'eco give %player% 12000', display: '&aMoney 12.000', material: EMERALD, amount: 1, weight: 10 }
+    epic:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+  kouzan:
+    uncommon:
+      - { type: ITEM, material: BREAD, amount: 16, display: '&fBread x16', weight: 40 }
+      - { type: ITEM, material: OAK_LOG, amount: 32, display: '&6Oak Log x32', weight: 40 }
+    common:
+      - { type: ITEM, material: BONE_MEAL, amount: 32, display: '&fBone Meal x32', weight: 35 }
+      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 35 }
+    rare:
+      - { type: ITEM, material: EMERALD, amount: 6, display: '&aEmerald x6', weight: 20 }
+      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 10 }
+    epic:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+  test:
+    uncommon:
+      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald x4', weight: 30 }
+    common:
+      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 45 }
+    rare:
+      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 15 }
+    epic:
+      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 8 }
+    mythic:
+      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
