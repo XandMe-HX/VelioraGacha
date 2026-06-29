@@ -1,0 +1,136 @@
+# ==================================================
+# VelioraGacha Examples
+# File ini hanya contoh. Tidak dibaca otomatis oleh plugin.
+# Copy bagian yang kamu mau ke config.yml / crates.yml / keys.yml / rewards.yml.
+# ==================================================
+
+# ==================================================
+# CONTOH HOLOGRAM SMALL CAPS
+# Copy ke config.yml > hologram
+# ==================================================
+hologram-example:
+  enabled: true
+  provider: AUTO
+  y-offset: 2.35
+  billboard: FIXED
+  # FIXED / CENTER / VERTICAL / HORIZONTAL
+  line-spacing: 0.3
+  update-ticks: 40
+  nearest-player-radius: 8
+  pages:
+    - lines:
+        - content: '%crate_prefix%&l⚡ %crate_display% ⚡%crate_suffix%'
+          height: 0.3
+        - content: '&7ᴄʀᴀᴛᴇ ʀᴇᴡᴀʀᴅs'
+          height: 0.3
+        - content: ''
+          height: 0.3
+        - content: '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ'
+          height: 0.3
+        - content: '&fɪᴛᴇᴍs ᴄᴏᴍᴍᴏɴ, %crate_prefix%ᴋᴀᴍᴜ ʙᴜᴛᴜʜ%crate_suffix%'
+          height: 0.3
+        - content: '&fʀᴇᴡᴀʀᴅѕ %key_short_name% ᴋᴇʏѕ ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴜᴋᴀ ᴄʀᴀᴛᴇ ɪɴɪ'
+          height: 0.3
+        - content: '&f★ ʟᴇᴠᴇʟ ʀᴇᴡᴀʀᴅ: %level_reward%'
+          height: 0.3
+        - content: '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
+          height: 0.3
+        - content: '%crate_prefix%ᴍᴇᴍʙᴇʟɪ ᴅɪ &f/key shop %crate_suffix%(/key shop)'
+          height: 0.3
+
+# ==================================================
+# CONTOH ANIMATION MODE
+# Copy ke config.yml > animation
+# ==================================================
+animation-example:
+  enabled: true
+  mode: SPIRAL
+  # SPIRAL / SNAKE / SIMPLE / BOX
+  gui-size: 45
+  duration-ticks: 120
+  start-speed-ticks: 1
+  end-speed-ticks: 9
+  close-delay-ticks: 35
+  close-behavior: COMPLETE_REWARD
+  sound-tick: BLOCK_NOTE_BLOCK_HAT
+  sound-finish: ENTITY_PLAYER_LEVELUP
+  filler-material: BLACK_STAINED_GLASS_PANE
+  highlight-material: LIME_STAINED_GLASS_PANE
+  final-glow: true
+
+# ==================================================
+# CONTOH EFFECT SETTINGS
+# Copy ke config.yml > effects
+# ==================================================
+effects-example:
+  enabled: true
+  interval-ticks: 3
+  radius: 0.85
+  radius-top: 0.35
+  height: 1.45
+  points-per-tick: 5
+  rings: 3
+  speed: 0.32
+  y-speed: 0.05
+  tornado-shape: true
+  center-spark: true
+  max-crates-per-tick: 40
+  view-distance: 32
+  bonemeal-star-count: 2
+  bonemeal-star-extra: 0.02
+
+# ==================================================
+# CONTOH CRATE DISPLAY COLORS
+# Copy ke crates.yml > crates.<id>
+# ==================================================
+crate-display-colors-example:
+  display-colors:
+    prefix: '<#FF4444>'
+    suffix: '</#FF8888>'
+  level-reward: '<#FF4444>●●●●●</#FF8888>'
+
+# ==================================================
+# CONTOH KEY PREFIX/SUFFIX
+# Copy ke keys.yml > keys.<id>
+# ==================================================
+key-prefix-suffix-example:
+  short-name: 'Kinzai'
+  prefix: '<#FF4444>'
+  suffix: '</#FF8888>'
+  lore:
+    - '&7Gunakan untuk membuka:'
+    - '%key_prefix%Kinzai Crate%key_suffix%'
+    - ''
+    - '&ePegang key ini lalu klik crate.'
+
+# ==================================================
+# CONTOH SETTING ACTIONBAR / TITLE / CHAT
+# Copy ke config.yml > messages
+# ==================================================
+message-delivery-example:
+  delivery:
+    no-key: ACTIONBAR
+    wrong-key: TITLE
+    no-reward: BOTH
+  cooldown:
+    no-key-chat-seconds: 3
+    wrong-key-chat-seconds: 3
+    no-reward-chat-seconds: 5
+
+# ==================================================
+# CONTOH DISABLE TEST REWARD
+# Copy ke config.yml > settings
+# ==================================================
+disable-test-reward-example:
+  show-test-crate: true
+  test-crate-has-default-rewards: false
+
+# ==================================================
+# CONTOH REWARD COPY-PASTE
+# Copy ke rewards.yml > rewards.<crate>.<rarity>
+# ==================================================
+reward-copy-paste-example:
+  common:
+    - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 45 }
+  rare:
+    - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 10 }
