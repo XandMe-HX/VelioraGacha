@@ -1,10 +1,11 @@
 # ==================================================
 # VelioraGacha Crates
-# Urutan GUI final:
+# Urutan GUI player:
 # 10/20 Shinjuore putih, 11/21 Tenshiyoro kuning, 13/22 Kinzai merah,
 # 15/23 Kagekari biru, 16/24 Kouzan pink.
-# Ubah effect crate di crates.<id>.effect atau lewat /vgcreate gui > Crate Settings.
+# Test crate hanya muncul di GUI admin kalau settings.show-test-crate: true.
 # Effect tersedia: fire_spiral, cherry_spiral, end_rod_spiral, oak_leaf_spiral, smoke_spiral, bubble_spiral.
+# Per-crate override effect: crates.<id>.effect-settings.radius/height/points-per-tick
 # ==================================================
 crates:
   shinjuore:
@@ -14,14 +15,18 @@ crates:
     key: shinjuore_key
     effect: bubble_spiral
     gui-slot: 10
-    level-reward: 'Pearl Ore'
+    level-reward: '<#FFFFFF>Level 2</#DDEEFF>'
     hologram-enabled: true
+    effect-settings:
+      radius: 0.8
+      height: 1.45
+      points-per-tick: 4
     rarity-chance:
-      common: 60.0
       uncommon: 25.0
+      common: 60.0
       rare: 10.0
       epic: 4.0
-      legendary: 1.0
+      mythic: 1.0
   tenshiyoro:
     enabled: true
     display: 'Tenshiyoro'
@@ -29,14 +34,18 @@ crates:
     key: tenshiyoro_key
     effect: cherry_spiral
     gui-slot: 11
-    level-reward: 'Cherry'
+    level-reward: '<#FFE066>Level 3</#FFD43B>'
     hologram-enabled: true
+    effect-settings:
+      radius: 0.8
+      height: 1.45
+      points-per-tick: 4
     rarity-chance:
-      common: 60.0
       uncommon: 25.0
+      common: 60.0
       rare: 10.0
       epic: 4.0
-      legendary: 1.0
+      mythic: 1.0
   kinzai:
     enabled: true
     display: 'Kinzai'
@@ -44,14 +53,18 @@ crates:
     key: kinzai_key
     effect: fire_spiral
     gui-slot: 13
-    level-reward: 'OP / Merah'
+    level-reward: '<#FF4444>Level 5</#FF8888>'
     hologram-enabled: true
+    effect-settings:
+      radius: 0.75
+      height: 1.35
+      points-per-tick: 4
     rarity-chance:
-      common: 55.0
       uncommon: 25.0
+      common: 55.0
       rare: 12.0
       epic: 6.0
-      legendary: 2.0
+      mythic: 2.0
   kagekari:
     enabled: true
     display: 'Kagekari'
@@ -59,14 +72,18 @@ crates:
     key: kagekari_key
     effect: end_rod_spiral
     gui-slot: 15
-    level-reward: 'End Rod'
+    level-reward: '<#2FF1FD>Level 4</#00DFFD>'
     hologram-enabled: true
+    effect-settings:
+      radius: 0.8
+      height: 1.6
+      points-per-tick: 4
     rarity-chance:
-      common: 60.0
       uncommon: 25.0
+      common: 60.0
       rare: 10.0
       epic: 4.0
-      legendary: 1.0
+      mythic: 1.0
   kouzan:
     enabled: true
     display: 'Kouzan'
@@ -74,12 +91,35 @@ crates:
     key: kouzan_key
     effect: oak_leaf_spiral
     gui-slot: 16
-    level-reward: 'Nature'
+    level-reward: '<#FF7AD9>Level 3</#FFB3EA>'
     hologram-enabled: true
+    effect-settings:
+      radius: 0.8
+      height: 1.45
+      points-per-tick: 4
     rarity-chance:
-      common: 60.0
       uncommon: 25.0
+      common: 60.0
       rare: 10.0
       epic: 4.0
-      legendary: 1.0
+      mythic: 1.0
+  test:
+    enabled: true
+    display: 'Test Crate'
+    block: PURPLE_SHULKER_BOX
+    key: test_key
+    effect: end_rod_spiral
+    gui-slot: 22
+    level-reward: '<#B56CFF>TEST</#E0B3FF>'
+    hologram-enabled: true
+    effect-settings:
+      radius: 0.8
+      height: 1.6
+      points-per-tick: 4
+    rarity-chance:
+      uncommon: 30.0
+      common: 45.0
+      rare: 15.0
+      epic: 8.0
+      mythic: 2.0
 locations: {}
