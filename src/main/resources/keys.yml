@@ -6,6 +6,8 @@
 # 3. Kuning = Tenshiyoro
 # 4. Pink   = Kouzan
 # 5. Putih  = Shinjuore
+#
+# Harga dibuat lebih ramah player baru, tapi masih anti-inflasi.
 # ==================================================
 keys:
   kinzai_key:
@@ -14,7 +16,7 @@ keys:
     prefix: '&c'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 200000
+    price: 75000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -30,7 +32,7 @@ keys:
     prefix: '&b'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 250000
+    price: 90000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -46,7 +48,7 @@ keys:
     prefix: '&e'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 250000
+    price: 85000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -62,7 +64,7 @@ keys:
     prefix: '&d'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 200000
+    price: 70000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -78,7 +80,7 @@ keys:
     prefix: '&f'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 125000
+    price: 45000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
