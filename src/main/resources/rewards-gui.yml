@@ -1,8 +1,10 @@
 # ==================================================
-# VelioraGacha GUI Rewards
+# VelioraGacha GUI Rewards V2.5
 # File ini otomatis diisi dari /vgcreate gui > Crate Settings > Reward Editor.
-# Jangan perlu edit manual kecuali paham format Bukkit ItemStack serialization.
-# Setiap item GUI memakai default weight editor.default-weight dari config.yml.
+# Rarity final: uncommon, common, rare, epic, mythic.
+# Alias lama legendary/legend/mythical tetap dibaca sebagai mythic.
+# Jangan edit manual kecuali paham format Bukkit ItemStack serialization.
+# Filler, AIR, dan tombol plugin tidak akan disimpan sebagai reward.
 # Reward command tetap diedit manual di rewards.yml.
 # ==================================================
 editor:
