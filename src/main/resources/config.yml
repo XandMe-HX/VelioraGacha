@@ -1,11 +1,9 @@
 # ==================================================
-# VelioraGacha V2.5 Configuration
-# - Ubah harga key di keys.yml
-# - Ubah effect crate di crates.yml atau /vgcreate gui > Crate Settings
-# - Ubah hologram di hologram.pages atau fallback hologram.lines
-# - Ubah durasi/mode animasi di animation
-# - Ubah reward item/command manual di rewards.yml
-# - Reward item dari GUI disimpan di rewards-gui.yml
+# VelioraGacha V2.6 Configuration
+# - No-key/wrong-key/no-reward bisa ACTIONBAR/TITLE/CHAT/BOTH
+# - Animation mode: SLIDE / SPIN / SHUFFLE / TORNADO / WHEEL
+# - Effect crate memakai tornado spiral kecil di sekitar shulker
+# - Hologram support pages + fallback lines
 # ==================================================
 settings:
   prefix: '&8[&dVelioraGacha&8] '
@@ -18,6 +16,14 @@ economy:
   money-format: '#,###'
 
 messages:
+  delivery:
+    no-key: ACTIONBAR
+    wrong-key: ACTIONBAR
+    no-reward: ACTIONBAR
+  cooldown:
+    no-key-chat-seconds: 3
+    wrong-key-chat-seconds: 3
+    no-reward-chat-seconds: 5
   no-permission: '%prefix% &cKamu tidak punya izin.'
   player-only: '%prefix% &cCommand ini hanya untuk player.'
   reload-success: '%prefix% &aVelioraGacha berhasil direload.'
@@ -30,7 +36,8 @@ messages:
   economy-missing: '%prefix% &cEconomy Vault tidak tersedia.'
   no-key: '%prefix% &cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.'
   wrong-key: '%prefix% &cKey ini tidak cocok untuk crate ini.'
-  crate-no-reward: '%prefix% &cCrate ini belum punya reward. Hubungi admin.'
+  no-reward: '%prefix% &cCrate ini belum punya reward. Isi dulu di &f/vgcreate gui &c-> Crate Settings.'
+  crate-no-reward: '%prefix% &cCrate ini belum punya reward. Isi dulu di &f/vgcreate gui &c-> Crate Settings.'
   crate-placed: '%prefix% &aCrate &f%crate% &aberhasil dibuat.'
   crate-broken: '%prefix% &eCrate &f%crate% &edihapus.'
   reward-received: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
@@ -38,18 +45,22 @@ messages:
 
 animation:
   enabled: true
-  mode: SLIDE
-  # SLIDE / SPIN / SHUFFLE
+  mode: TORNADO
+  # SLIDE / SPIN / SHUFFLE / TORNADO / WHEEL
   gui-size: 45
   title: '&8Opening %crate%'
   indicator-slot: 22
-  duration-ticks: 120
-  start-speed-ticks: 2
-  end-speed-ticks: 10
+  duration-ticks: 130
+  start-speed-ticks: 1
+  end-speed-ticks: 9
   close-delay-ticks: 35
   close-behavior: COMPLETE_REWARD
   sound-tick: BLOCK_NOTE_BLOCK_HAT
   sound-finish: ENTITY_PLAYER_LEVELUP
+  filler-mode: CLEAN
+  clean-background-material: BLACK_STAINED_GLASS_PANE
+  highlight-material: LIME_STAINED_GLASS_PANE
+  final-glow: true
   marker:
     enabled: true
     top-slot: 13
@@ -60,14 +71,18 @@ animation:
 
 effects:
   enabled: true
-  interval-ticks: 4
-  radius: 0.8
-  height: 1.45
-  points-per-tick: 4
-  speed: 0.22
-  y-speed: 0.035
-  vertical-wave: true
-  show-center-spark: true
+  interval-ticks: 3
+  radius: 0.95
+  radius-top: 0.45
+  height: 1.85
+  points-per-tick: 7
+  rings: 3
+  speed: 0.32
+  y-speed: 0.05
+  tornado-shape: true
+  center-spark: true
+  max-crates-per-tick: 40
+  view-distance: 32
 
 hologram:
   enabled: true
@@ -77,30 +92,34 @@ hologram:
   nearest-player-radius: 8
   pages:
     - lines:
-        - content: '<#2FF1FD>&l%crate_display% CRATE</#00DFFD>'
+        - content: '%crate_prefix%&l%crate_display% CRATE%crate_suffix%'
           height: 0.3
         - content: '&7Crate rewards'
           height: 0.3
         - content: ''
           height: 0.3
-        - content: '&fBuka peti ini untuk mendapatkan item dan command reward.'
+        - content: '&fBuka peti ini untuk mendapatkan'
           height: 0.3
-        - content: '&fKamu butuh <#2FF1FD>%key_name%</#00DFFD>'
+        - content: '&fitem common dan %crate_prefix%reward spesial%crate_suffix%'
+          height: 0.3
+        - content: '&fButuh %key_short_name% keys untuk membuka crate ini'
           height: 0.3
         - content: ''
           height: 0.3
         - content: '&fLevel reward: %level_reward%'
           height: 0.3
-        - content: '&fKeys kamu: <#2FF1FD>%keys% keys'
+        - content: '&fKeys kamu: %crate_prefix%%keys% keys%crate_suffix%'
           height: 0.3
         - content: ''
           height: 0.3
-        - content: '<#2FF1FD>Beli di &f/key shop <#00DFFD>atau dari owner'
+        - content: '&fDapatkan keys reward dengan cara'
+          height: 0.3
+        - content: '%crate_prefix%membeli di &f/key shop %crate_suffix%(/key shop)'
           height: 0.3
   lines:
-    - '<#2FF1FD>&l%crate_display% CRATE</#00DFFD>'
+    - '%crate_prefix%&l%crate_display% CRATE%crate_suffix%'
     - '&7Crate rewards'
-    - '&fKamu butuh %key_name%'
+    - '&fKamu butuh %key_short_name% key'
     - '&fKeys kamu: %keys% keys'
     - '&fBeli di /key shop atau dari owner'
 
