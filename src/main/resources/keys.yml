@@ -1,43 +1,15 @@
 # ==================================================
-# VelioraGacha Keys V3.1
-# Semua key adalah item fisik memakai PersistentDataContainer velioragacha_key_id.
-# Harga tiap key beda supaya ekonomi tidak gampang inflasi.
+# VelioraGacha Keys V3.2
+# Urutan warna shop/crate:
+# 1. Merah  = Kinzai
+# 2. Biru   = Kagekari
+# 3. Kuning = Tenshiyoro
+# 4. Pink   = Kouzan
+# 5. Putih  = Shinjuore
 # ==================================================
 keys:
-  shinjuore_key:
-    display-name: '&f&lShinjuore Key'
-    short-name: 'Shinjuore'
-    prefix: '&f'
-    suffix: ''
-    material: TRIPWIRE_HOOK
-    price: 125000
-    glow: true
-    lore:
-      - '&7Untuk membuka:'
-      - '&fShinjuore Crate'
-      - ''
-      - '&7Fokus reward: &fOre, ingot, mining material'
-      - '&7Tier: &fEasy &7-> &dImpossible'
-      - ''
-      - '&ePegang key ini lalu klik crate.'
-  tenshiyoro_key:
-    display-name: '&e&lTenshiyoro Key'
-    short-name: 'Tenshiyoro'
-    prefix: '&e'
-    suffix: ''
-    material: TRIPWIRE_HOOK
-    price: 250000
-    glow: true
-    lore:
-      - '&7Untuk membuka:'
-      - '&eTenshiyoro Crate'
-      - ''
-      - '&7Fokus reward: &eMoney, voucher, key ekonomi'
-      - '&7Anti inflasi: &cJackpot super rare'
-      - ''
-      - '&ePegang key ini lalu klik crate.'
   kinzai_key:
-    display-name: '&c&lKinzai Key'
+    display-name: '&c&lKinzai Hunter Arsenal Key'
     short-name: 'Kinzai'
     prefix: '&c'
     suffix: ''
@@ -45,15 +17,15 @@ keys:
     price: 200000
     glow: true
     lore:
-      - '&7Untuk membuka:'
-      - '&cKinzai Crate'
+      - '&8Veliora Gardens Gacha Key'
       - ''
-      - '&7Fokus reward: &cWeapon pemburu'
-      - '&7Tier enchant: &aEasy &7-> &5Impossible'
+      - '&7Crate Color: &cRed Shulker Box'
+      - '&7Reward Focus: &fHunter weapons, sword, bow, trident, mace'
+      - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik crate.'
+      - '&ePegang key ini lalu klik Kinzai Crate.'
   kagekari_key:
-    display-name: '&b&lKagekari Key'
+    display-name: '&b&lKagekari Guardian Armor Key'
     short-name: 'Kagekari'
     prefix: '&b'
     suffix: ''
@@ -61,15 +33,31 @@ keys:
     price: 250000
     glow: true
     lore:
-      - '&7Untuk membuka:'
-      - '&bKagekari Crate'
+      - '&8Veliora Gardens Gacha Key'
       - ''
-      - '&7Fokus reward: &bArmor set'
-      - '&7Tier enchant: &aEasy &7-> &5Impossible'
+      - '&7Crate Color: &bLight Blue Shulker Box'
+      - '&7Reward Focus: &fArmor pieces and protection sets'
+      - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik crate.'
+      - '&ePegang key ini lalu klik Kagekari Crate.'
+  tenshiyoro_key:
+    display-name: '&e&lTenshiyoro Fortune Economy Key'
+    short-name: 'Tenshiyoro'
+    prefix: '&e'
+    suffix: ''
+    material: TRIPWIRE_HOOK
+    price: 250000
+    glow: true
+    lore:
+      - '&8Veliora Gardens Gacha Key'
+      - ''
+      - '&7Crate Color: &eYellow Shulker Box'
+      - '&7Reward Focus: &fMoney, vouchers, bonus keys'
+      - '&7Economy Mode: &cAnti inflation, jackpot super rare'
+      - ''
+      - '&ePegang key ini lalu klik Tenshiyoro Crate.'
   kouzan_key:
-    display-name: '&d&lKouzan Key'
+    display-name: '&d&lKouzan Master Tools Key'
     short-name: 'Kouzan'
     prefix: '&d'
     suffix: ''
@@ -77,15 +65,31 @@ keys:
     price: 200000
     glow: true
     lore:
-      - '&7Untuk membuka:'
-      - '&dKouzan Crate'
+      - '&8Veliora Gardens Gacha Key'
       - ''
-      - '&7Fokus reward: &dTools mining/building'
-      - '&7Tier enchant: &aEasy &7-> &5Impossible'
+      - '&7Crate Color: &dPink Shulker Box'
+      - '&7Reward Focus: &fPickaxe, axe, shovel, hoe, tool sets'
+      - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik crate.'
+      - '&ePegang key ini lalu klik Kouzan Crate.'
+  shinjuore_key:
+    display-name: '&f&lShinjuore Mining Treasury Key'
+    short-name: 'Shinjuore'
+    prefix: '&f'
+    suffix: ''
+    material: TRIPWIRE_HOOK
+    price: 125000
+    glow: true
+    lore:
+      - '&8Veliora Gardens Gacha Key'
+      - ''
+      - '&7Crate Color: &fWhite Shulker Box'
+      - '&7Reward Focus: &fOre, ingot, mining materials'
+      - '&7Resource Mode: &fBalanced survival material'
+      - ''
+      - '&ePegang key ini lalu klik Shinjuore Crate.'
   test_key:
-    display-name: '&5&lTest Key'
+    display-name: '&5&lVeliora Test Crate Key'
     short-name: 'Test'
     prefix: '&5'
     suffix: ''
@@ -93,7 +97,9 @@ keys:
     price: 0
     glow: true
     lore:
+      - '&8Veliora Gardens Admin Key'
+      - ''
       - '&7Gunakan untuk membuka:'
       - '&5Test Crate'
       - ''
-      - '&eKey admin untuk test V3.1.'
+      - '&eKey admin untuk test V3.2.'
