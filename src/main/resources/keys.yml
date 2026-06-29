@@ -1,84 +1,99 @@
 # ==================================================
-# VelioraGacha Keys V2.6
+# VelioraGacha Keys V3.1
 # Semua key adalah item fisik memakai PersistentDataContainer velioragacha_key_id.
-# short-name/prefix/suffix dipakai untuk hologram, pesan, dan lore key.
+# Harga tiap key beda supaya ekonomi tidak gampang inflasi.
 # ==================================================
 keys:
   shinjuore_key:
-    display-name: '<#FFFFFF>&lShinjuore Key</#DDEEFF>'
+    display-name: '&f&lShinjuore Key'
     short-name: 'Shinjuore'
-    prefix: '<#FFFFFF>'
-    suffix: '</#DDEEFF>'
+    prefix: '&f'
+    suffix: ''
     material: TRIPWIRE_HOOK
-    price: 150000
+    price: 125000
     glow: true
     lore:
-      - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Shinjuore Crate%key_suffix%'
+      - '&7Untuk membuka:'
+      - '&fShinjuore Crate'
+      - ''
+      - '&7Fokus reward: &fOre, ingot, mining material'
+      - '&7Tier: &fEasy &7-> &dImpossible'
       - ''
       - '&ePegang key ini lalu klik crate.'
   tenshiyoro_key:
-    display-name: '<#FFE066>&lTenshiyoro Key</#FFD43B>'
+    display-name: '&e&lTenshiyoro Key'
     short-name: 'Tenshiyoro'
-    prefix: '<#FFE066>'
-    suffix: '</#FFD43B>'
+    prefix: '&e'
+    suffix: ''
     material: TRIPWIRE_HOOK
-    price: 150000
+    price: 250000
     glow: true
     lore:
-      - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Tenshiyoro Crate%key_suffix%'
+      - '&7Untuk membuka:'
+      - '&eTenshiyoro Crate'
+      - ''
+      - '&7Fokus reward: &eMoney, voucher, key ekonomi'
+      - '&7Anti inflasi: &cJackpot super rare'
       - ''
       - '&ePegang key ini lalu klik crate.'
   kinzai_key:
-    display-name: '<#FF4444>&lKinzai Key</#FF8888>'
+    display-name: '&c&lKinzai Key'
     short-name: 'Kinzai'
-    prefix: '<#FF4444>'
-    suffix: '</#FF8888>'
+    prefix: '&c'
+    suffix: ''
     material: TRIPWIRE_HOOK
-    price: 150000
+    price: 200000
     glow: true
     lore:
-      - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Kinzai Crate%key_suffix%'
+      - '&7Untuk membuka:'
+      - '&cKinzai Crate'
+      - ''
+      - '&7Fokus reward: &cWeapon pemburu'
+      - '&7Tier enchant: &aEasy &7-> &5Impossible'
       - ''
       - '&ePegang key ini lalu klik crate.'
   kagekari_key:
-    display-name: '<#2FF1FD>&lKagekari Key</#00DFFD>'
+    display-name: '&b&lKagekari Key'
     short-name: 'Kagekari'
-    prefix: '<#2FF1FD>'
-    suffix: '</#00DFFD>'
+    prefix: '&b'
+    suffix: ''
     material: TRIPWIRE_HOOK
-    price: 150000
+    price: 250000
     glow: true
     lore:
-      - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Kagekari Crate%key_suffix%'
+      - '&7Untuk membuka:'
+      - '&bKagekari Crate'
+      - ''
+      - '&7Fokus reward: &bArmor set'
+      - '&7Tier enchant: &aEasy &7-> &5Impossible'
       - ''
       - '&ePegang key ini lalu klik crate.'
   kouzan_key:
-    display-name: '<#FF7AD9>&lKouzan Key</#FFB3EA>'
+    display-name: '&d&lKouzan Key'
     short-name: 'Kouzan'
-    prefix: '<#FF7AD9>'
-    suffix: '</#FFB3EA>'
+    prefix: '&d'
+    suffix: ''
     material: TRIPWIRE_HOOK
-    price: 150000
+    price: 200000
     glow: true
     lore:
-      - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Kouzan Crate%key_suffix%'
+      - '&7Untuk membuka:'
+      - '&dKouzan Crate'
+      - ''
+      - '&7Fokus reward: &dTools mining/building'
+      - '&7Tier enchant: &aEasy &7-> &5Impossible'
       - ''
       - '&ePegang key ini lalu klik crate.'
   test_key:
-    display-name: '<#B56CFF>&lTest Key</#E0B3FF>'
+    display-name: '&5&lTest Key'
     short-name: 'Test'
-    prefix: '<#B56CFF>'
-    suffix: '</#E0B3FF>'
+    prefix: '&5'
+    suffix: ''
     material: TRIPWIRE_HOOK
     price: 0
     glow: true
     lore:
       - '&7Gunakan untuk membuka:'
-      - '%key_prefix%Test Crate%key_suffix%'
+      - '&5Test Crate'
       - ''
-      - '&eKey admin untuk test V2.6.'
+      - '&eKey admin untuk test V3.1.'
