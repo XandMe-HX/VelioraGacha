@@ -1,6 +1,6 @@
 # ==================================================
-# VelioraGacha Rewards V3.3
-# Balanced survival, anti-inflasi, reward lebih banyak + zonk.
+# VelioraGacha Rewards V3.4
+# Balanced survival, anti-inflasi, reward banyak + zonk.
 #
 # Tier:
 # uncommon = Easy
@@ -9,10 +9,11 @@
 # epic     = Hard
 # mythic   = Impossible / Full EC
 #
-# Catatan:
-# - material Bukkit tetap pakai underscore.
-# - display item player-friendly, tanpa underscore.
-# - Zonk sengaja banyak supaya gacha tidak terlalu OP.
+# Tambahan V3.4:
+# - Kagekari ditambah armor no enchant lengkap.
+# - Kouzan ditambah tools no enchant lengkap.
+# - Shinjuore ditambah ore/material lebih banyak.
+# - Tenshiyoro ditambah uang dari 100 sampai 150k.
 # ==================================================
 rewards:
   shinjuore:
@@ -20,7 +21,7 @@ rewards:
       - { type: ITEM, material: COBBLESTONE, amount: 32, display: '&7Zonk Stone Pile', lore: ['&7Zonk kecil, masih bisa buat build.'], weight: 1500 }
       - { type: ITEM, material: DIRT, amount: 32, display: '&7Zonk Dirt Pack', lore: ['&7Zonk kecil, jangan sedih.'], weight: 1200 }
       - { type: ITEM, material: GRAVEL, amount: 24, display: '&7Zonk Gravel Pack', lore: ['&7Zonk kecil, bisa cari flint.'], weight: 900 }
-      - { type: ITEM, material: COAL, amount: 16, display: '&8Coal Bundle', lore: ['&7Tier: &aEasy', '&7Mining material kecil.'], weight: 1200 }
+      - { type: ITEM, material: COAL, amount: 16, display: '&8Coal Bundle', lore: ['&7Tier: &aEasy'], weight: 1200 }
       - { type: ITEM, material: CHARCOAL, amount: 16, display: '&7Charcoal Bundle', lore: ['&7Tier: &aEasy'], weight: 900 }
       - { type: ITEM, material: RAW_COPPER, amount: 24, display: '&6Raw Copper Pack', lore: ['&7Tier: &aEasy'], weight: 850 }
       - { type: ITEM, material: COPPER_INGOT, amount: 24, display: '&6Copper Ingot Pack', lore: ['&7Tier: &aEasy'], weight: 800 }
@@ -28,6 +29,8 @@ rewards:
       - { type: ITEM, material: REDSTONE, amount: 24, display: '&cRedstone Dust Pack', lore: ['&7Tier: &aEasy'], weight: 700 }
       - { type: ITEM, material: FLINT, amount: 8, display: '&7Flint Bundle', lore: ['&7Tier: &aEasy'], weight: 650 }
       - { type: ITEM, material: CLAY_BALL, amount: 16, display: '&fClay Ball Pack', lore: ['&7Tier: &aEasy'], weight: 550 }
+      - { type: ITEM, material: COAL_ORE, amount: 4, display: '&8Coal Ore Pack', lore: ['&7Tier: &aEasy'], weight: 450 }
+      - { type: ITEM, material: COPPER_ORE, amount: 4, display: '&6Copper Ore Pack', lore: ['&7Tier: &aEasy'], weight: 430 }
     common:
       - { type: ITEM, material: STONE, amount: 48, display: '&7Smooth Stone Pack', lore: ['&7Tier: &eMedium'], weight: 900 }
       - { type: ITEM, material: IRON_NUGGET, amount: 24, display: '&fIron Nugget Pouch', lore: ['&7Tier: &eMedium'], weight: 850 }
@@ -39,6 +42,10 @@ rewards:
       - { type: ITEM, material: AMETHYST_SHARD, amount: 12, display: '&dAmethyst Shard Pack', lore: ['&7Tier: &eMedium'], weight: 450 }
       - { type: ITEM, material: GLOWSTONE_DUST, amount: 12, display: '&eGlowstone Dust Pack', lore: ['&7Tier: &eMedium'], weight: 400 }
       - { type: ITEM, material: PRISMARINE_CRYSTALS, amount: 6, display: '&bPrismarine Crystal Pack', lore: ['&7Tier: &eMedium'], weight: 300 }
+      - { type: ITEM, material: IRON_ORE, amount: 3, display: '&fIron Ore Pack', lore: ['&7Tier: &eMedium'], weight: 390 }
+      - { type: ITEM, material: GOLD_ORE, amount: 3, display: '&6Gold Ore Pack', lore: ['&7Tier: &eMedium'], weight: 330 }
+      - { type: ITEM, material: DEEPSLATE_COPPER_ORE, amount: 4, display: '&6Deepslate Copper Ore Pack', lore: ['&7Tier: &eMedium'], weight: 300 }
+      - { type: ITEM, material: DEEPSLATE_COAL_ORE, amount: 4, display: '&8Deepslate Coal Ore Pack', lore: ['&7Tier: &eMedium'], weight: 300 }
     rare:
       - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond Shard', lore: ['&7Tier: &bNormal'], weight: 240 }
       - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald Treasure', lore: ['&7Tier: &bNormal'], weight: 220 }
@@ -47,13 +54,20 @@ rewards:
       - { type: ITEM, material: COPPER_BLOCK, amount: 3, display: '&6Copper Block Pack', lore: ['&7Tier: &bNormal'], weight: 130 }
       - { type: ITEM, material: EXPERIENCE_BOTTLE, amount: 8, display: '&aMining EXP Bottle', lore: ['&7Tier: &bNormal'], weight: 100 }
       - { type: ITEM, material: ECHO_SHARD, amount: 1, display: '&3Echo Shard', lore: ['&7Tier: &bNormal'], weight: 45 }
+      - { type: ITEM, material: DIAMOND_ORE, amount: 1, display: '&bDiamond Ore', lore: ['&7Tier: &bNormal'], weight: 65 }
+      - { type: ITEM, material: EMERALD_ORE, amount: 1, display: '&aEmerald Ore', lore: ['&7Tier: &bNormal'], weight: 55 }
+      - { type: ITEM, material: REDSTONE_ORE, amount: 3, display: '&cRedstone Ore Pack', lore: ['&7Tier: &bNormal'], weight: 75 }
+      - { type: ITEM, material: LAPIS_ORE, amount: 2, display: '&9Lapis Ore Pack', lore: ['&7Tier: &bNormal'], weight: 70 }
     epic:
       - { type: ITEM, material: DIAMOND, amount: 2, display: '&bDiamond Treasure', lore: ['&7Tier: &cHard'], weight: 55 }
       - { type: ITEM, material: EMERALD, amount: 8, display: '&aEmerald Treasure Box', lore: ['&7Tier: &cHard'], weight: 45 }
       - { type: ITEM, material: DIAMOND_BLOCK, amount: 1, display: '&bDiamond Block', lore: ['&7Tier: &cHard'], weight: 12 }
+      - { type: ITEM, material: EMERALD_BLOCK, amount: 1, display: '&aEmerald Block', lore: ['&7Tier: &cHard'], weight: 10 }
       - { type: ITEM, material: ANCIENT_DEBRIS, amount: 1, display: '&6Ancient Debris Fragment', lore: ['&7Tier: &cHard'], weight: 24 }
       - { type: ITEM, material: NETHERITE_SCRAP, amount: 1, display: '&8Netherite Scrap', lore: ['&7Tier: &cHard'], weight: 15 }
       - { type: ITEM, material: EXPERIENCE_BOTTLE, amount: 24, display: '&aLarge Mining EXP Bottle', lore: ['&7Tier: &cHard'], weight: 20 }
+      - { type: ITEM, material: DEEPSLATE_DIAMOND_ORE, amount: 1, display: '&bDeepslate Diamond Ore', lore: ['&7Tier: &cHard'], weight: 18 }
+      - { type: ITEM, material: DEEPSLATE_EMERALD_ORE, amount: 1, display: '&aDeepslate Emerald Ore', lore: ['&7Tier: &cHard'], weight: 14 }
     mythic:
       - { type: ITEM, material: NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount: 1, display: '&dNetherite Upgrade Material', lore: ['&7Tier: &5Impossible', '&7Super rare, tidak sering keluar.'], weight: 5 }
       - { type: ITEM, material: NETHERITE_INGOT, amount: 1, display: '&5Netherite Ingot', lore: ['&7Tier: &5Impossible', '&7Jackpot material.'], weight: 2 }
@@ -64,32 +78,39 @@ rewards:
       - { type: COMMAND, command: 'minecraft:tellraw %player% {"text":"Zonk... kamu belum hoki di Tenshiyoro.","color":"gray"}', display: '&7Zonk Empty Pouch', material: BARRIER, amount: 1, weight: 2200 }
       - { type: ITEM, material: PAPER, amount: 1, display: '&7Zonk Torn Ticket', lore: ['&7Tiket sobek, belum hoki.'], weight: 1500 }
       - { type: ITEM, material: STICK, amount: 4, display: '&7Zonk Lucky Stick', lore: ['&7Katanya lucky, tapi zonk.'], weight: 1200 }
-      - { type: COMMAND, command: 'eco give %player% 500', display: '&aMoney 500', material: EMERALD, amount: 1, weight: 1600 }
-      - { type: COMMAND, command: 'eco give %player% 1000', display: '&aMoney 1.000', material: EMERALD, amount: 1, weight: 2000 }
-      - { type: COMMAND, command: 'eco give %player% 2000', display: '&aMoney 2.000', material: EMERALD, amount: 1, weight: 1800 }
-      - { type: COMMAND, command: 'eco give %player% 3000', display: '&aMoney 3.000', material: EMERALD, amount: 1, weight: 1200 }
-      - { type: COMMAND, command: 'eco give %player% 5000', display: '&aLucky Money Pouch', material: EMERALD, amount: 1, weight: 500 }
+      - { type: COMMAND, command: 'eco give %player% 100', display: '&aMoney 100', material: EMERALD, amount: 1, weight: 2400 }
+      - { type: COMMAND, command: 'eco give %player% 250', display: '&aMoney 250', material: EMERALD, amount: 1, weight: 2200 }
+      - { type: COMMAND, command: 'eco give %player% 500', display: '&aMoney 500', material: EMERALD, amount: 1, weight: 2000 }
+      - { type: COMMAND, command: 'eco give %player% 750', display: '&aMoney 750', material: EMERALD, amount: 1, weight: 1800 }
+      - { type: COMMAND, command: 'eco give %player% 1000', display: '&aMoney 1.000', material: EMERALD, amount: 1, weight: 1700 }
+      - { type: COMMAND, command: 'eco give %player% 1500', display: '&aMoney 1.500', material: EMERALD, amount: 1, weight: 1450 }
+      - { type: COMMAND, command: 'eco give %player% 2000', display: '&aMoney 2.000', material: EMERALD, amount: 1, weight: 1300 }
+      - { type: COMMAND, command: 'eco give %player% 3000', display: '&aMoney 3.000', material: EMERALD, amount: 1, weight: 1050 }
     common:
       - { type: COMMAND, command: 'minecraft:tellraw %player% {"text":"Zonk kecil... coba lagi nanti.","color":"gray"}', display: '&7Zonk Dusty Voucher', material: PAPER, amount: 1, weight: 800 }
       - { type: COMMAND, command: 'eco give %player% 5000', display: '&aMoney 5.000', material: EMERALD, amount: 1, weight: 1300 }
       - { type: COMMAND, command: 'eco give %player% 7500', display: '&aMoney 7.500', material: EMERALD, amount: 1, weight: 900 }
       - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 700 }
       - { type: COMMAND, command: 'eco give %player% 12500', display: '&aMoney 12.500', material: EMERALD, amount: 1, weight: 450 }
+      - { type: COMMAND, command: 'eco give %player% 15000', display: '&aMoney 15.000', material: EMERALD, amount: 1, weight: 350 }
       - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key Voucher', material: TRIPWIRE_HOOK, amount: 1, weight: 100 }
       - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 1', display: '&dKouzan Key Voucher', material: TRIPWIRE_HOOK, amount: 1, weight: 80 }
     rare:
-      - { type: COMMAND, command: 'eco give %player% 15000', display: '&aMoney 15.000', material: EMERALD, amount: 1, weight: 500 }
+      - { type: COMMAND, command: 'eco give %player% 20000', display: '&aMoney 20.000', material: EMERALD_BLOCK, amount: 1, weight: 420 }
       - { type: COMMAND, command: 'eco give %player% 25000', display: '&aMoney 25.000', material: EMERALD_BLOCK, amount: 1, weight: 350 }
+      - { type: COMMAND, command: 'eco give %player% 30000', display: '&aMoney 30.000', material: EMERALD_BLOCK, amount: 1, weight: 250 }
       - { type: COMMAND, command: 'eco give %player% 35000', display: '&aMoney 35.000', material: EMERALD_BLOCK, amount: 1, weight: 160 }
       - { type: COMMAND, command: 'vgcreate givekey %player% kinzai_key 1', display: '&cKinzai Key Voucher', material: TRIPWIRE_HOOK, amount: 1, weight: 70 }
       - { type: COMMAND, command: 'vgcreate givekey %player% kagekari_key 1', display: '&bKagekari Key Voucher', material: TRIPWIRE_HOOK, amount: 1, weight: 50 }
     epic:
       - { type: COMMAND, command: 'eco give %player% 50000', display: '&aMoney 50.000', material: EMERALD_BLOCK, amount: 1, weight: 150 }
-      - { type: COMMAND, command: 'eco give %player% 75000', display: '&6Premium Economy Ticket', material: PAPER, amount: 1, weight: 40 }
+      - { type: COMMAND, command: 'eco give %player% 65000', display: '&6Money 65.000', material: EMERALD_BLOCK, amount: 1, weight: 70 }
+      - { type: COMMAND, command: 'eco give %player% 75000', display: '&6Money 75.000', material: EMERALD_BLOCK, amount: 1, weight: 40 }
       - { type: COMMAND, command: 'eco give %player% 85000', display: '&6Golden Fortune Ticket', material: GOLD_INGOT, amount: 1, weight: 25 }
       - { type: COMMAND, command: 'vgcreate givekey %player% tenshiyoro_key 1', display: '&ePremium Key Voucher', material: TRIPWIRE_HOOK, amount: 1, weight: 15 }
     mythic:
       - { type: COMMAND, command: 'eco give %player% 100000', display: '&6Money 100.000', material: EMERALD_BLOCK, amount: 1, weight: 20 }
+      - { type: COMMAND, command: 'eco give %player% 125000', display: '&6Money 125.000', material: EMERALD_BLOCK, amount: 1, weight: 14 }
       - { type: COMMAND, command: 'eco give %player% 150000', display: '&6Money 150.000', material: EMERALD_BLOCK, amount: 1, weight: 10 }
       - { type: COMMAND, command: 'eco give %player% 250000', display: '&5Money 250.000', material: NETHER_STAR, amount: 1, weight: 4 }
       - { type: COMMAND, command: 'eco give %player% 1000000', display: '&5Money 1.000.000', material: NETHER_STAR, amount: 1, weight: 1 }
@@ -228,6 +249,14 @@ rewards:
     uncommon:
       - { type: ITEM, material: LEATHER_HELMET, amount: 1, display: '&7Zonk Old Helmet', lore: ['&7Armor lama, tapi masih bisa dipakai.'], weight: 900 }
       - { type: ITEM, material: LEATHER_BOOTS, amount: 1, display: '&7Zonk Old Boots', lore: ['&7Boots bekas petualang.'], weight: 900 }
+      - { type: ITEM, material: LEATHER_HELMET, amount: 1, display: '&aLeather Helmet', lore: ['&7No enchant armor.'], weight: 650 }
+      - { type: ITEM, material: LEATHER_CHESTPLATE, amount: 1, display: '&aLeather Chestplate', lore: ['&7No enchant armor.'], weight: 620 }
+      - { type: ITEM, material: LEATHER_LEGGINGS, amount: 1, display: '&aLeather Leggings', lore: ['&7No enchant armor.'], weight: 620 }
+      - { type: ITEM, material: LEATHER_BOOTS, amount: 1, display: '&aLeather Boots', lore: ['&7No enchant armor.'], weight: 650 }
+      - { type: ITEM, material: CHAINMAIL_HELMET, amount: 1, display: '&aChainmail Helmet', lore: ['&7No enchant armor.'], weight: 480 }
+      - { type: ITEM, material: CHAINMAIL_CHESTPLATE, amount: 1, display: '&aChainmail Chestplate', lore: ['&7No enchant armor.'], weight: 440 }
+      - { type: ITEM, material: CHAINMAIL_LEGGINGS, amount: 1, display: '&aChainmail Leggings', lore: ['&7No enchant armor.'], weight: 440 }
+      - { type: ITEM, material: CHAINMAIL_BOOTS, amount: 1, display: '&aChainmail Boots', lore: ['&7No enchant armor.'], weight: 480 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:iron_helmet[minecraft:enchantments={levels:{"minecraft:protection":1,"minecraft:unbreaking":1}}] 1'
         display: '&aIron Helmet &7(Easy)'
@@ -253,6 +282,14 @@ rewards:
         amount: 1
         weight: 800
     common:
+      - { type: ITEM, material: GOLDEN_HELMET, amount: 1, display: '&eGolden Helmet', lore: ['&7No enchant armor.'], weight: 420 }
+      - { type: ITEM, material: GOLDEN_CHESTPLATE, amount: 1, display: '&eGolden Chestplate', lore: ['&7No enchant armor.'], weight: 380 }
+      - { type: ITEM, material: GOLDEN_LEGGINGS, amount: 1, display: '&eGolden Leggings', lore: ['&7No enchant armor.'], weight: 380 }
+      - { type: ITEM, material: GOLDEN_BOOTS, amount: 1, display: '&eGolden Boots', lore: ['&7No enchant armor.'], weight: 420 }
+      - { type: ITEM, material: IRON_HELMET, amount: 1, display: '&fIron Helmet', lore: ['&7No enchant armor.'], weight: 520 }
+      - { type: ITEM, material: IRON_CHESTPLATE, amount: 1, display: '&fIron Chestplate', lore: ['&7No enchant armor.'], weight: 460 }
+      - { type: ITEM, material: IRON_LEGGINGS, amount: 1, display: '&fIron Leggings', lore: ['&7No enchant armor.'], weight: 460 }
+      - { type: ITEM, material: IRON_BOOTS, amount: 1, display: '&fIron Boots', lore: ['&7No enchant armor.'], weight: 520 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:diamond_helmet[minecraft:enchantments={levels:{"minecraft:protection":2,"minecraft:unbreaking":2}}] 1'
         display: '&eDiamond Helmet &7(Medium)'
@@ -278,6 +315,10 @@ rewards:
         amount: 1
         weight: 420
     rare:
+      - { type: ITEM, material: DIAMOND_HELMET, amount: 1, display: '&bDiamond Helmet', lore: ['&7No enchant armor.'], weight: 130 }
+      - { type: ITEM, material: DIAMOND_CHESTPLATE, amount: 1, display: '&bDiamond Chestplate', lore: ['&7No enchant armor.'], weight: 95 }
+      - { type: ITEM, material: DIAMOND_LEGGINGS, amount: 1, display: '&bDiamond Leggings', lore: ['&7No enchant armor.'], weight: 95 }
+      - { type: ITEM, material: DIAMOND_BOOTS, amount: 1, display: '&bDiamond Boots', lore: ['&7No enchant armor.'], weight: 130 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:diamond_leggings[minecraft:enchantments={levels:{"minecraft:protection":3,"minecraft:unbreaking":2}}] 1'
         display: '&bGuardian Leggings &7(Normal)'
@@ -303,6 +344,10 @@ rewards:
         amount: 1
         weight: 110
     epic:
+      - { type: ITEM, material: NETHERITE_HELMET, amount: 1, display: '&8Netherite Helmet', lore: ['&7No enchant armor.'], weight: 12 }
+      - { type: ITEM, material: NETHERITE_CHESTPLATE, amount: 1, display: '&8Netherite Chestplate', lore: ['&7No enchant armor.'], weight: 7 }
+      - { type: ITEM, material: NETHERITE_LEGGINGS, amount: 1, display: '&8Netherite Leggings', lore: ['&7No enchant armor.'], weight: 7 }
+      - { type: ITEM, material: NETHERITE_BOOTS, amount: 1, display: '&8Netherite Boots', lore: ['&7No enchant armor.'], weight: 12 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:netherite_boots[minecraft:enchantments={levels:{"minecraft:protection":3,"minecraft:feather_falling":4,"minecraft:unbreaking":3}}] 1'
         display: '&cNetherite Boots &7(Hard)'
@@ -353,6 +398,12 @@ rewards:
     uncommon:
       - { type: ITEM, material: WOODEN_PICKAXE, amount: 1, display: '&7Zonk Wooden Pickaxe', lore: ['&7Alat pemula, zonk kecil.'], weight: 1200 }
       - { type: ITEM, material: STONE_SHOVEL, amount: 1, display: '&7Zonk Stone Shovel', lore: ['&7Masih bisa buat gali tanah.'], weight: 900 }
+      - { type: ITEM, material: WOODEN_AXE, amount: 1, display: '&7Wooden Axe', lore: ['&7No enchant tool.'], weight: 850 }
+      - { type: ITEM, material: WOODEN_SHOVEL, amount: 1, display: '&7Wooden Shovel', lore: ['&7No enchant tool.'], weight: 850 }
+      - { type: ITEM, material: WOODEN_HOE, amount: 1, display: '&7Wooden Hoe', lore: ['&7No enchant tool.'], weight: 800 }
+      - { type: ITEM, material: STONE_PICKAXE, amount: 1, display: '&7Stone Pickaxe', lore: ['&7No enchant tool.'], weight: 760 }
+      - { type: ITEM, material: STONE_AXE, amount: 1, display: '&7Stone Axe', lore: ['&7No enchant tool.'], weight: 720 }
+      - { type: ITEM, material: STONE_HOE, amount: 1, display: '&7Stone Hoe', lore: ['&7No enchant tool.'], weight: 680 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:iron_pickaxe[minecraft:enchantments={levels:{"minecraft:efficiency":1,"minecraft:unbreaking":1}}] 1'
         display: '&aMiner Pickaxe &7(Easy)'
@@ -378,6 +429,14 @@ rewards:
         amount: 1
         weight: 650
     common:
+      - { type: ITEM, material: IRON_PICKAXE, amount: 1, display: '&fIron Pickaxe', lore: ['&7No enchant tool.'], weight: 600 }
+      - { type: ITEM, material: IRON_AXE, amount: 1, display: '&fIron Axe', lore: ['&7No enchant tool.'], weight: 560 }
+      - { type: ITEM, material: IRON_SHOVEL, amount: 1, display: '&fIron Shovel', lore: ['&7No enchant tool.'], weight: 540 }
+      - { type: ITEM, material: IRON_HOE, amount: 1, display: '&fIron Hoe', lore: ['&7No enchant tool.'], weight: 500 }
+      - { type: ITEM, material: GOLDEN_PICKAXE, amount: 1, display: '&eGolden Pickaxe', lore: ['&7No enchant tool.'], weight: 480 }
+      - { type: ITEM, material: GOLDEN_AXE, amount: 1, display: '&eGolden Axe', lore: ['&7No enchant tool.'], weight: 450 }
+      - { type: ITEM, material: GOLDEN_SHOVEL, amount: 1, display: '&eGolden Shovel', lore: ['&7No enchant tool.'], weight: 430 }
+      - { type: ITEM, material: GOLDEN_HOE, amount: 1, display: '&eGolden Hoe', lore: ['&7No enchant tool.'], weight: 400 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:diamond_pickaxe[minecraft:enchantments={levels:{"minecraft:efficiency":2,"minecraft:unbreaking":2}}] 1'
         display: '&eDiamond Miner Pickaxe &7(Medium)'
@@ -409,6 +468,10 @@ rewards:
         amount: 1
         weight: 260
     rare:
+      - { type: ITEM, material: DIAMOND_PICKAXE, amount: 1, display: '&bDiamond Pickaxe', lore: ['&7No enchant tool.'], weight: 135 }
+      - { type: ITEM, material: DIAMOND_AXE, amount: 1, display: '&bDiamond Axe', lore: ['&7No enchant tool.'], weight: 125 }
+      - { type: ITEM, material: DIAMOND_SHOVEL, amount: 1, display: '&bDiamond Shovel', lore: ['&7No enchant tool.'], weight: 120 }
+      - { type: ITEM, material: DIAMOND_HOE, amount: 1, display: '&bDiamond Hoe', lore: ['&7No enchant tool.'], weight: 105 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:diamond_pickaxe[minecraft:enchantments={levels:{"minecraft:efficiency":3,"minecraft:fortune":2,"minecraft:unbreaking":2}}] 1'
         display: '&bFortune Pickaxe &7(Normal)'
@@ -434,6 +497,10 @@ rewards:
         amount: 1
         weight: 100
     epic:
+      - { type: ITEM, material: NETHERITE_PICKAXE, amount: 1, display: '&8Netherite Pickaxe', lore: ['&7No enchant tool.'], weight: 10 }
+      - { type: ITEM, material: NETHERITE_AXE, amount: 1, display: '&8Netherite Axe', lore: ['&7No enchant tool.'], weight: 8 }
+      - { type: ITEM, material: NETHERITE_SHOVEL, amount: 1, display: '&8Netherite Shovel', lore: ['&7No enchant tool.'], weight: 8 }
+      - { type: ITEM, material: NETHERITE_HOE, amount: 1, display: '&8Netherite Hoe', lore: ['&7No enchant tool.'], weight: 7 }
       - type: COMMAND
         command: 'minecraft:give %player% minecraft:diamond_pickaxe[minecraft:enchantments={levels:{"minecraft:efficiency":4,"minecraft:fortune":3,"minecraft:unbreaking":3}}] 1'
         display: '&cDeep Mine Pickaxe &7(Hard)'
