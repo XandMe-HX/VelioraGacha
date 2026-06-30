@@ -169,42 +169,51 @@ effects:
 hologram:
   enabled: true
   provider: AUTO
-  y-offset: 2.45
+  y-offset: 2.65
   billboard: CENTER
   # FIXED / CENTER / VERTICAL / HORIZONTAL
-  line-spacing: 0.24
+  line-spacing: 0.30
   update-ticks: 40
   nearest-player-radius: 8
   pages:
     - lines:
         - content: '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
-          height: 0.24
+          height: 0.30
         - content: '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
-          height: 0.24
-        - content: '&7━━━━━━━━━━━━━━━━'
-          height: 0.24
-        - content: '&fTier Reward: %level_reward%'
-          height: 0.24
-        - content: '&fRequired Key: %crate_prefix%%key_short_name% Key%crate_suffix%'
-          height: 0.24
-        - content: '&fYour Keys: %crate_prefix%%keys% key%crate_suffix%'
-          height: 0.24
-        - content: '&7Gunakan key sesuai warna crate.'
-          height: 0.24
-        - content: '&eKlik crate sambil pegang key.'
-          height: 0.24
-        - content: '&f/key shop &7untuk membeli key'
-          height: 0.24
+          height: 0.30
+        - content: ''
+          height: 0.30
+        - content: '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ'
+          height: 0.30
+        - content: '&fᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ ʀᴇᴡᴀʀᴅ'
+          height: 0.30
+        - content: '%crate_prefix%ᴅᴀʀɪ ᴛɪᴇʀ %level_reward%%crate_suffix%'
+          height: 0.30
+        - content: ''
+          height: 0.30
+        - content: '&f★ ᴋᴇʏ ᴅɪʙᴜᴛᴜʜᴋᴀɴ: %crate_prefix%%key_short_name%%crate_suffix%'
+          height: 0.30
+        - content: '&f★ ᴋᴇʏs ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
+          height: 0.30
+        - content: ''
+          height: 0.30
+        - content: '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
+          height: 0.30
+        - content: '&f/key shop &7ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴇʟɪ ᴋᴇʏ'
+          height: 0.30
   lines:
     - '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
     - '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
-    - '&7━━━━━━━━━━━━━━━━'
-    - '&fTier Reward: %level_reward%'
-    - '&fRequired Key: %crate_prefix%%key_short_name% Key%crate_suffix%'
-    - '&fYour Keys: %crate_prefix%%keys% key%crate_suffix%'
-    - '&7Gunakan key sesuai warna crate.'
-    - '&eKlik crate sambil pegang key.'
-    - '&f/key shop &7untuk membeli key'
+    - ''
+    - '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ'
+    - '&fᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ ʀᴇᴡᴀʀᴅ'
+    - '%crate_prefix%ᴅᴀʀɪ ᴛɪᴇʀ %level_reward%%crate_suffix%'
+    - ''
+    - '&f★ ᴋᴇʏ ᴅɪʙᴜᴛᴜʜᴋᴀɴ: %crate_prefix%%key_short_name%%crate_suffix%'
+    - '&f★ ᴋᴇʏs ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
+    - ''
+    - '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
+    - '&f/key shop &7ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴇʟɪ ᴋᴇʏ'
 
 shop:
   title: '&8Key Shop'
