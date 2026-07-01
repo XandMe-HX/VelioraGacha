@@ -7,7 +7,7 @@
 # 4. Pink   = Kouzan
 # 5. Putih  = Shinjuore
 #
-# Harga dibuat lebih ramah player baru, tapi masih anti-inflasi.
+# Harga dibuat lebih ramah player baru, range 30K-50K.
 # ==================================================
 keys:
   kinzai_key:
@@ -16,7 +16,7 @@ keys:
     prefix: '&c'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 75000
+    price: 40000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -32,7 +32,7 @@ keys:
     prefix: '&b'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 90000
+    price: 50000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -48,7 +48,7 @@ keys:
     prefix: '&e'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 85000
+    price: 45000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -64,7 +64,7 @@ keys:
     prefix: '&d'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 70000
+    price: 35000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -80,7 +80,7 @@ keys:
     prefix: '&f'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 45000
+    price: 30000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
