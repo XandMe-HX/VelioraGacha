@@ -40,6 +40,7 @@ messages:
   crate-placed: '%prefix% &aCrate &f%crate% &aberhasil dibuat.'
   crate-broken: '%prefix% &eCrate &f%crate% &edihapus.'
   reward-received: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
+  reward-broadcast: '&8[&dVelioraGacha&8] &f%player% &aberhasil mendapatkan &f%reward% &7[&f%rarity%&7] &adari &f%crate_display%&a. Selamat!'
   animation-running: '%prefix% &cKamu sedang membuka crate.'
 
 animation:
@@ -76,6 +77,9 @@ animation:
     actionbar: '&aReward: &f%reward%'
     chat: '%prefix% &aKamu mendapatkan reward: &f%reward%&a.'
     sound: ENTITY_PLAYER_LEVELUP
+    broadcast:
+      enabled: true
+      message: '%reward_broadcast%'
   box:
     marker-slot: 4
     result-slot: 22

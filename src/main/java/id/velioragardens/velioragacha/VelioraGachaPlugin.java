@@ -153,7 +153,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             for (String id : root.getKeys(false)) {
                 String path = "crates." + id;
                 if (!cratesYml.getBoolean(path + ".enabled", true)) continue;
-                tmp.put(normal(id), new CrateDef(normal(id), cratesYml.getString(path + ".display", id), parseMaterial(cratesYml.getString(path + ".block"), Material.CHEST, "crate block " + id), normal(cratesYml.getString(path + ".key", id + "_key")), normalizeEffect(cratesYml.getString(path + ".effect", "end_rod_spiral"), id), cratesYml.getString(path + ".level-reward", "Default"), cratesYml.getBoolean(path + ".hologram-enabled", true), cratesYml.getString(path + ".display-colors.prefix", ""), cratesYml.getString(path + ".display-colors.suffix", "")));
+                tmp.put(normal(id), new CrateDef(normal(id), cratesYml.getString(path + ".display", id), parseMaterial(cratesYml.getString(path + ".block"), Material.CHEST, "crate block " + id), normal(cratesYml.getString(path + ".key", id + "_key")), normalizeEffect(cratesYml.getString(path + ".effect", "end_rod_spiral"), id), cratesYml.getString(path + ".level-reward", "Default"), cratesYml.getBoolean(path + ".hologram-enabled", true), cratesYml.getString(path + ".display-colors.prefix", ""), cratesYml.getString(path + ".display-colors.suffix", ""), rarityChances(path)));
             }
         }
         for (String id : PLAYER_ORDER) if (tmp.containsKey(id)) crates.put(id, tmp.remove(id));
@@ -672,7 +672,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             logWarningOnce("empty-crate-" + crate.id, "Crate " + crate.id + " has no valid rewards.");
             return false;
         }
-        Reward finalReward = chooseReward(crate.id, true);
+        Reward finalReward = chooseReward(crate, true);
         int size = invSize(getConfig().getInt("animation.gui-size", 54));
         Inventory inv = gui(new Holder("roulette", crate.id, null, 1), size, getConfig().getString("animation.title", "&8Opening %crate%").replace("%crate%", crate.name));
         fill(inv);
@@ -763,7 +763,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
 
     private ItemStack rewardForSpin(CrateDef crate, Reward finalReward, double progress, boolean focus) {
         if (focus && progress > 0.72D && random.nextDouble() < progress) return finalReward.icon();
-        return chooseReward(crate.id, true).icon();
+        return chooseReward(crate, true).icon();
     }
 
     private void clearAnimationSlots(Inventory inv) {
@@ -813,6 +813,13 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         if (getConfig().getBoolean("animation.result.show-title", true)) sendTitle(player, title, subtitle);
         if (getConfig().getBoolean("animation.result.show-actionbar", true)) sendActionBar(player, actionbar);
         if (getConfig().getBoolean("animation.result.send-chat", true) && !opening.preview) msg(player, chat);
+        if (!opening.preview && getConfig().getBoolean("animation.result.broadcast.enabled", true)) {
+            String configured = getConfig().getString("animation.result.broadcast.message", "%reward_broadcast%");
+            String template = configured.equals("%reward_broadcast%")
+                    ? getConfig().getString("messages.reward-broadcast", "&8[&dVelioraGacha&8] &f%player% &aberhasil mendapatkan &f%reward% &7[&f%rarity%&7] &adari &f%crate_display%&a. Selamat!")
+                    : configured;
+            Bukkit.broadcastMessage(color(resultText(template, player, opening)));
+        }
     }
 
     private String resultText(String raw, Player player, Opening opening) {
@@ -837,10 +844,15 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private int rewardCount(String crate, String rarity) { return (int) rewards.getOrDefault(crate, List.of()).stream().filter(r -> normalizeRarity(r.rarity).equals(normalizeRarity(rarity))).count(); }
     private List<String> rewardRarities(String crate) { List<String> out = new ArrayList<>(); for (String rarity : RARITIES) if (rewardCount(crate, rarity) > 0) out.add(prettyRarity(rarity)); return out; }
 
-    private Reward chooseReward(String crate, boolean fallback) {
-        List<Reward> list = rewards.getOrDefault(crate, List.of());
+    private Reward chooseReward(CrateDef crate, boolean fallback) {
+        List<Reward> list = rewards.getOrDefault(crate.id, List.of());
         if (list.isEmpty()) return fallback ? fallbackReward() : null;
-        int total = list.stream().mapToInt(r -> Math.max(1, r.weight)).sum();
+        String selectedRarity = chooseRarity(crate.rarityChances);
+        List<Reward> selectedTier = list.stream()
+                .filter(reward -> normalizeRarity(reward.rarity).equals(selectedRarity))
+                .toList();
+        if (!selectedTier.isEmpty()) list = selectedTier;
+        int total = list.stream().mapToInt(reward -> Math.max(1, reward.weight)).sum();
         int roll = random.nextInt(total) + 1;
         int current = 0;
         for (Reward reward : list) {
@@ -848,6 +860,28 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             if (roll <= current) return reward;
         }
         return list.get(0);
+    }
+
+    private String chooseRarity(Map<String, Double> chances) {
+        double total = chances.values().stream().mapToDouble(value -> Math.max(0.0D, value)).sum();
+        if (total <= 0.0D) return "uncommon";
+        double roll = random.nextDouble() * total;
+        double current = 0.0D;
+        for (String rarity : RARITIES) {
+            current += Math.max(0.0D, chances.getOrDefault(rarity, 0.0D));
+            if (roll < current) return rarity;
+        }
+        return RARITIES.get(RARITIES.size() - 1);
+    }
+
+    private Map<String, Double> rarityChances(String cratePath) {
+        Map<String, Double> chances = new LinkedHashMap<>();
+        double[] defaults = {55.0D, 30.0D, 10.0D, 4.0D, 1.0D};
+        for (int i = 0; i < RARITIES.size(); i++) {
+            String rarity = RARITIES.get(i);
+            chances.put(rarity, Math.max(0.0D, cratesYml.getDouble(cratePath + ".rarity-chance." + rarity, defaults[i])));
+        }
+        return Map.copyOf(chances);
     }
 
     private Reward fallbackReward() { return new Reward(RewardType.ITEM, "IRON_INGOT x8", Material.IRON_INGOT, 8, 10, List.of(), new ItemStack(Material.IRON_INGOT, 8), "common"); }
@@ -1259,7 +1293,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private enum RewardType { ITEM, COMMAND }
     private enum KeyState { OK, WRONG, NONE }
     private record KeyDef(String id, String name, String shortName, String prefix, String suffix, Material icon, double price, boolean glow, List<String> lore) { }
-    private record CrateDef(String id, String name, Material block, String key, String effect, String level, boolean hologram, String prefix, String suffix) { }
+    private record CrateDef(String id, String name, Material block, String key, String effect, String level, boolean hologram, String prefix, String suffix, Map<String, Double> rarityChances) { }
     private record CrateLoc(String crate, String world, int x, int y, int z) { }
     private record Reward(RewardType type, String display, Material material, int amount, int weight, List<String> commands, ItemStack item, String rarity) { ItemStack icon() { ItemStack copy = item == null ? new ItemStack(material, Math.max(1, Math.min(64, amount))) : item.clone(); copy.setAmount(Math.max(1, Math.min(64, copy.getAmount()))); ItemMeta meta = copy.getItemMeta(); if (meta != null && !meta.hasDisplayName()) { meta.setDisplayName(ChatColor.WHITE + ChatColor.stripColor(display)); copy.setItemMeta(meta); } return copy; } }
     private record KeyCheck(KeyState state, ItemStack stack) { }
