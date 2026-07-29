@@ -1,4 +1,5 @@
 name: Maven Build
+run-name: Build VelioraGacha plugin
 
 on:
   push:
