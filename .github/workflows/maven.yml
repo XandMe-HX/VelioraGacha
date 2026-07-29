@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - clean
   pull_request:
     branches:
       - main
@@ -24,3 +25,10 @@ jobs:
 
       - name: Build
         run: mvn clean package
+
+      - name: Upload plugin JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: VelioraGacha
+          path: target/VelioraGacha-*.jar
+          if-no-files-found: error
