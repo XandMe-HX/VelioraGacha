@@ -267,6 +267,15 @@ disable-test-reward-example:
 # ==================================================
 reward-copy-paste-example:
   common:
-    - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot x8', weight: 45 }
+    - display: "&fIron Ingot x8"
+      amount: 8
+      material: "IRON_INGOT"
+      weight: 45
+      type: "ITEM"
   rare:
-    - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 10 }
+    - display: "&aMoney 10.000"
+      amount: 1
+      material: "EMERALD"
+      weight: 10
+      type: "COMMAND"
+      command: "eco give %player% 10000"

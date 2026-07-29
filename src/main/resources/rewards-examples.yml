@@ -10,60 +10,158 @@ rewards:
   # ==================================================
   kinzai:
     uncommon:
-      - { type: ITEM, material: BREAD, amount: 16, display: '&fBread x16', weight: 40 }
-      - { type: ITEM, material: IRON_INGOT, amount: 6, display: '&fIron Ingot x6', weight: 35 }
+      - display: "&fBread x16"
+        amount: 16
+        material: "BREAD"
+        weight: 40
+        type: "ITEM"
+      - display: "&fIron Ingot x6"
+        amount: 6
+        material: "IRON_INGOT"
+        weight: 35
+        type: "ITEM"
     common:
-      - { type: ITEM, material: EMERALD, amount: 3, display: '&aEmerald x3', weight: 35 }
-      - { type: COMMAND, command: 'eco give %player% 5000', display: '&aMoney 5.000', material: EMERALD, amount: 1, weight: 15 }
+      - display: "&aEmerald x3"
+        amount: 3
+        material: "EMERALD"
+        weight: 35
+        type: "ITEM"
+      - display: "&aMoney 5.000"
+        amount: 1
+        material: "EMERALD"
+        weight: 15
+        type: "COMMAND"
+        command: "eco give %player% 5000"
     rare:
-      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond x1', weight: 12 }
-      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 8 }
+      - display: "&bDiamond x1"
+        amount: 1
+        material: "DIAMOND"
+        weight: 12
+        type: "ITEM"
+      - display: "&aMoney 10.000"
+        amount: 1
+        material: "EMERALD"
+        weight: 8
+        type: "COMMAND"
+        command: "eco give %player% 10000"
     epic:
-      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 7 }
-      - { type: ITEM, material: DIAMOND, amount: 2, display: '&bDiamond x2', weight: 5 }
+      - display: "&6Golden Apple x1"
+        amount: 1
+        material: "GOLDEN_APPLE"
+        weight: 7
+        type: "ITEM"
+      - display: "&bDiamond x2"
+        amount: 2
+        material: "DIAMOND"
+        weight: 5
+        type: "ITEM"
     mythic:
-      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&eTotem x1', weight: 2 }
+      - display: "&eTotem x1"
+        amount: 1
+        material: "TOTEM_OF_UNDYING"
+        weight: 2
+        type: "ITEM"
 
   # ==================================================
   # CONTOH BUILD / DECOR REWARD
   # ==================================================
   kouzan:
     uncommon:
-      - { type: ITEM, material: OAK_LOG, amount: 32, display: '&6Oak Log x32', weight: 35 }
-      - { type: ITEM, material: COBBLESTONE, amount: 64, display: '&7Cobblestone x64', weight: 35 }
+      - display: "&6Oak Log x32"
+        amount: 32
+        material: "OAK_LOG"
+        weight: 35
+        type: "ITEM"
+      - display: "&7Cobblestone x64"
+        amount: 64
+        material: "COBBLESTONE"
+        weight: 35
+        type: "ITEM"
     common:
-      - { type: ITEM, material: STONE, amount: 64, display: '&fStone x64', weight: 30 }
-      - { type: ITEM, material: GRASS_BLOCK, amount: 16, display: '&aGrass Block x16', weight: 25 }
+      - display: "&fStone x64"
+        amount: 64
+        material: "STONE"
+        weight: 30
+        type: "ITEM"
+      - display: "&aGrass Block x16"
+        amount: 16
+        material: "GRASS_BLOCK"
+        weight: 25
+        type: "ITEM"
     rare:
-      - { type: ITEM, material: CHERRY_LOG, amount: 32, display: '&dCherry Log x32', weight: 15 }
+      - display: "&dCherry Log x32"
+        amount: 32
+        material: "CHERRY_LOG"
+        weight: 15
+        type: "ITEM"
     epic:
-      - { type: ITEM, material: SEA_LANTERN, amount: 8, display: '&bSea Lantern x8', weight: 6 }
+      - display: "&bSea Lantern x8"
+        amount: 8
+        material: "SEA_LANTERN"
+        weight: 6
+        type: "ITEM"
     mythic:
-      - { type: ITEM, material: BEACON, amount: 1, display: '&bBeacon x1', weight: 1 }
+      - display: "&bBeacon x1"
+        amount: 1
+        material: "BEACON"
+        weight: 1
+        type: "ITEM"
 
   # ==================================================
   # CONTOH FOOD REWARD
   # ==================================================
   tenshiyoro:
     uncommon:
-      - { type: ITEM, material: BREAD, amount: 32, display: '&fBread x32', weight: 40 }
-      - { type: ITEM, material: COOKED_BEEF, amount: 16, display: '&fCooked Beef x16', weight: 35 }
+      - display: "&fBread x32"
+        amount: 32
+        material: "BREAD"
+        weight: 40
+        type: "ITEM"
+      - display: "&fCooked Beef x16"
+        amount: 16
+        material: "COOKED_BEEF"
+        weight: 35
+        type: "ITEM"
     common:
-      - { type: ITEM, material: GOLDEN_CARROT, amount: 16, display: '&6Golden Carrot x16', weight: 25 }
+      - display: "&6Golden Carrot x16"
+        amount: 16
+        material: "GOLDEN_CARROT"
+        weight: 25
+        type: "ITEM"
     rare:
-      - { type: ITEM, material: GOLDEN_APPLE, amount: 1, display: '&6Golden Apple x1', weight: 10 }
+      - display: "&6Golden Apple x1"
+        amount: 1
+        material: "GOLDEN_APPLE"
+        weight: 10
+        type: "ITEM"
 
   # ==================================================
   # CONTOH TOOLS KECIL
   # ==================================================
   shinjuore:
     uncommon:
-      - { type: ITEM, material: STONE_PICKAXE, amount: 1, display: '&7Stone Pickaxe', weight: 20 }
-      - { type: ITEM, material: STONE_AXE, amount: 1, display: '&7Stone Axe', weight: 20 }
+      - display: "&7Stone Pickaxe"
+        amount: 1
+        material: "STONE_PICKAXE"
+        weight: 20
+        type: "ITEM"
+      - display: "&7Stone Axe"
+        amount: 1
+        material: "STONE_AXE"
+        weight: 20
+        type: "ITEM"
     common:
-      - { type: ITEM, material: IRON_PICKAXE, amount: 1, display: '&fIron Pickaxe', weight: 15 }
+      - display: "&fIron Pickaxe"
+        amount: 1
+        material: "IRON_PICKAXE"
+        weight: 15
+        type: "ITEM"
     rare:
-      - { type: ITEM, material: DIAMOND_PICKAXE, amount: 1, display: '&bDiamond Pickaxe', weight: 4 }
+      - display: "&bDiamond Pickaxe"
+        amount: 1
+        material: "DIAMOND_PICKAXE"
+        weight: 4
+        type: "ITEM"
 
   # ==================================================
   # CONTOH COMMAND REWARD MONEY

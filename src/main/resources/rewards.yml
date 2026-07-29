@@ -1,9 +1,7 @@
 # ==================================================
-# VelioraGacha Rewards V3.6
-# Bugfix Paper 1.21.8:
-# - Semua reward item dibuat aman memakai type ITEM.
-# - Command enchantment vanilla dihapus agar tidak error.
-# - Command hanya dipakai untuk money, key, dan zonk message.
+# VelioraGacha Rewards V3.7
+# Format reward dibuat vertikal agar mudah diedit.
+# Reward uang Tenshiyoro dibuat sangat sulit untuk menjaga ekonomi.
 #
 # Tier:
 # uncommon = Easy
@@ -15,160 +13,882 @@
 rewards:
   shinjuore:
     uncommon:
-      - { type: ITEM, material: COBBLESTONE, amount: 32, display: '&7Zonk Stone Pile', lore: ['&7Zonk kecil, masih bisa buat build.'], weight: 1500 }
-      - { type: ITEM, material: DIRT, amount: 32, display: '&7Zonk Dirt Pack', lore: ['&7Zonk kecil.'], weight: 1200 }
-      - { type: ITEM, material: GRAVEL, amount: 24, display: '&7Zonk Gravel Pack', lore: ['&7Zonk kecil, bisa cari flint.'], weight: 900 }
-      - { type: ITEM, material: COAL, amount: 16, display: '&8Coal Bundle', lore: ['&7Tier: &aEasy'], weight: 1200 }
-      - { type: ITEM, material: CHARCOAL, amount: 16, display: '&7Charcoal Bundle', lore: ['&7Tier: &aEasy'], weight: 900 }
-      - { type: ITEM, material: RAW_COPPER, amount: 24, display: '&6Raw Copper Pack', lore: ['&7Tier: &aEasy'], weight: 850 }
-      - { type: ITEM, material: COPPER_INGOT, amount: 24, display: '&6Copper Ingot Pack', lore: ['&7Tier: &aEasy'], weight: 800 }
-      - { type: ITEM, material: LAPIS_LAZULI, amount: 16, display: '&9Lapis Bundle', lore: ['&7Tier: &aEasy'], weight: 700 }
-      - { type: ITEM, material: REDSTONE, amount: 24, display: '&cRedstone Dust Pack', lore: ['&7Tier: &aEasy'], weight: 700 }
-      - { type: ITEM, material: FLINT, amount: 8, display: '&7Flint Bundle', lore: ['&7Tier: &aEasy'], weight: 650 }
+      - display: "&7Zonk Stone Pile"
+        amount: 32
+        material: COBBLESTONE
+        weight: 1500
+        type: ITEM
+        lore:
+          - "&7Zonk kecil, masih bisa buat build."
+      - display: "&7Zonk Dirt Pack"
+        amount: 32
+        material: DIRT
+        weight: 1200
+        type: ITEM
+        lore:
+          - "&7Zonk kecil."
+      - display: "&7Zonk Gravel Pack"
+        amount: 24
+        material: GRAVEL
+        weight: 900
+        type: ITEM
+        lore:
+          - "&7Zonk kecil, bisa cari flint."
+      - display: "&8Coal Bundle"
+        amount: 16
+        material: COAL
+        weight: 1200
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&7Charcoal Bundle"
+        amount: 16
+        material: CHARCOAL
+        weight: 900
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&6Raw Copper Pack"
+        amount: 24
+        material: RAW_COPPER
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&6Copper Ingot Pack"
+        amount: 24
+        material: COPPER_INGOT
+        weight: 800
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&9Lapis Bundle"
+        amount: 16
+        material: LAPIS_LAZULI
+        weight: 700
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&cRedstone Dust Pack"
+        amount: 24
+        material: REDSTONE
+        weight: 700
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&7Flint Bundle"
+        amount: 8
+        material: FLINT
+        weight: 650
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
     common:
-      - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 90 }
-      - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 1', display: '&dKouzan Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 60 }
-      - { type: ITEM, material: IRON_NUGGET, amount: 24, display: '&fIron Nugget Pouch', lore: ['&7Tier: &eMedium'], weight: 850 }
-      - { type: ITEM, material: IRON_INGOT, amount: 8, display: '&fIron Ingot Pack', lore: ['&7Tier: &eMedium'], weight: 850 }
-      - { type: ITEM, material: RAW_IRON, amount: 12, display: '&fRaw Iron Pack', lore: ['&7Tier: &eMedium'], weight: 750 }
-      - { type: ITEM, material: GOLD_INGOT, amount: 6, display: '&6Gold Ingot Pack', lore: ['&7Tier: &eMedium'], weight: 650 }
-      - { type: ITEM, material: RAW_GOLD, amount: 8, display: '&6Raw Gold Pack', lore: ['&7Tier: &eMedium'], weight: 550 }
-      - { type: ITEM, material: QUARTZ, amount: 20, display: '&fQuartz Bundle', lore: ['&7Tier: &eMedium'], weight: 500 }
-      - { type: ITEM, material: AMETHYST_SHARD, amount: 12, display: '&dAmethyst Shard Pack', lore: ['&7Tier: &eMedium'], weight: 450 }
+      - display: "&fShinjuore Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 90
+        type: COMMAND
+        command: vgcreate givekey %player% shinjuore_key 1
+      - display: "&dKouzan Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 60
+        type: COMMAND
+        command: vgcreate givekey %player% kouzan_key 1
+      - display: "&fIron Nugget Pouch"
+        amount: 24
+        material: IRON_NUGGET
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&fIron Ingot Pack"
+        amount: 8
+        material: IRON_INGOT
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&fRaw Iron Pack"
+        amount: 12
+        material: RAW_IRON
+        weight: 750
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&6Gold Ingot Pack"
+        amount: 6
+        material: GOLD_INGOT
+        weight: 650
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&6Raw Gold Pack"
+        amount: 8
+        material: RAW_GOLD
+        weight: 550
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&fQuartz Bundle"
+        amount: 20
+        material: QUARTZ
+        weight: 500
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
+      - display: "&dAmethyst Shard Pack"
+        amount: 12
+        material: AMETHYST_SHARD
+        weight: 450
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
     rare:
-      - { type: COMMAND, command: 'vgcreate givekey %player% tenshiyoro_key 2', display: '&eTenshiyoro Key x2', material: TRIPWIRE_HOOK, amount: 1, weight: 35 }
-      - { type: ITEM, material: DIAMOND, amount: 1, display: '&bDiamond Shard', lore: ['&7Tier: &bNormal'], weight: 240 }
-      - { type: ITEM, material: EMERALD, amount: 4, display: '&aEmerald Treasure', lore: ['&7Tier: &bNormal'], weight: 220 }
-      - { type: ITEM, material: IRON_BLOCK, amount: 1, display: '&fIron Block', lore: ['&7Tier: &bNormal'], weight: 150 }
-      - { type: ITEM, material: GOLD_BLOCK, amount: 1, display: '&6Gold Block', lore: ['&7Tier: &bNormal'], weight: 110 }
-      - { type: ITEM, material: EXPERIENCE_BOTTLE, amount: 8, display: '&aMining EXP Bottle', lore: ['&7Tier: &bNormal'], weight: 100 }
-      - { type: ITEM, material: DIAMOND_ORE, amount: 1, display: '&bDiamond Ore', lore: ['&7Tier: &bNormal'], weight: 65 }
+      - display: "&eTenshiyoro Key x2"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 35
+        type: COMMAND
+        command: vgcreate givekey %player% tenshiyoro_key 2
+      - display: "&bDiamond Shard"
+        amount: 1
+        material: DIAMOND
+        weight: 240
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
+      - display: "&aEmerald Treasure"
+        amount: 4
+        material: EMERALD
+        weight: 220
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
+      - display: "&fIron Block"
+        amount: 1
+        material: IRON_BLOCK
+        weight: 150
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
+      - display: "&6Gold Block"
+        amount: 1
+        material: GOLD_BLOCK
+        weight: 110
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
+      - display: "&aMining EXP Bottle"
+        amount: 8
+        material: EXPERIENCE_BOTTLE
+        weight: 100
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
+      - display: "&bDiamond Ore"
+        amount: 1
+        material: DIAMOND_ORE
+        weight: 65
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
     epic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kinzai_key 3', display: '&cKinzai Key x3', material: TRIPWIRE_HOOK, amount: 1, weight: 10 }
-      - { type: ITEM, material: DIAMOND, amount: 2, display: '&bDiamond Treasure', lore: ['&7Tier: &cHard'], weight: 55 }
-      - { type: ITEM, material: EMERALD, amount: 8, display: '&aEmerald Treasure Box', lore: ['&7Tier: &cHard'], weight: 45 }
-      - { type: ITEM, material: DIAMOND_BLOCK, amount: 1, display: '&bDiamond Block', lore: ['&7Tier: &cHard'], weight: 12 }
-      - { type: ITEM, material: EMERALD_BLOCK, amount: 1, display: '&aEmerald Block', lore: ['&7Tier: &cHard'], weight: 10 }
-      - { type: ITEM, material: ANCIENT_DEBRIS, amount: 1, display: '&6Ancient Debris Fragment', lore: ['&7Tier: &cHard'], weight: 24 }
-      - { type: ITEM, material: NETHERITE_SCRAP, amount: 1, display: '&8Netherite Scrap', lore: ['&7Tier: &cHard'], weight: 15 }
+      - display: "&cKinzai Key x3"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 10
+        type: COMMAND
+        command: vgcreate givekey %player% kinzai_key 3
+      - display: "&bDiamond Treasure"
+        amount: 2
+        material: DIAMOND
+        weight: 55
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+      - display: "&aEmerald Treasure Box"
+        amount: 8
+        material: EMERALD
+        weight: 45
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+      - display: "&bDiamond Block"
+        amount: 1
+        material: DIAMOND_BLOCK
+        weight: 12
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+      - display: "&aEmerald Block"
+        amount: 1
+        material: EMERALD_BLOCK
+        weight: 10
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+      - display: "&6Ancient Debris Fragment"
+        amount: 1
+        material: ANCIENT_DEBRIS
+        weight: 24
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+      - display: "&8Netherite Scrap"
+        amount: 1
+        material: NETHERITE_SCRAP
+        weight: 15
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
     mythic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% tenshiyoro_key 5', display: '&eTenshiyoro Key x5', material: TRIPWIRE_HOOK, amount: 1, weight: 1 }
-      - { type: ITEM, material: NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount: 1, display: '&dNetherite Upgrade Material', lore: ['&7Tier: &5Impossible', '&7Super rare.'], weight: 5 }
-      - { type: ITEM, material: NETHERITE_INGOT, amount: 1, display: '&5Netherite Ingot', lore: ['&7Tier: &5Impossible'], weight: 2 }
-      - { type: ITEM, material: BEACON, amount: 1, display: '&bAncient Mining Beacon', lore: ['&7Tier: &5Impossible'], weight: 1 }
-
+      - display: "&eTenshiyoro Key x5"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 1
+        type: COMMAND
+        command: vgcreate givekey %player% tenshiyoro_key 5
+      - display: "&dNetherite Upgrade Material"
+        amount: 1
+        material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
+        weight: 5
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+          - "&7Super rare."
+      - display: "&5Netherite Ingot"
+        amount: 1
+        material: NETHERITE_INGOT
+        weight: 2
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+      - display: "&bAncient Mining Beacon"
+        amount: 1
+        material: BEACON
+        weight: 1
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
   tenshiyoro:
     uncommon:
-      - { type: COMMAND, command: 'minecraft:tellraw %player% {"text":"Zonk... kamu belum hoki di Tenshiyoro.","color":"gray"}', display: '&7Zonk Empty Pouch', material: BARRIER, amount: 1, weight: 2200 }
-      - { type: ITEM, material: PAPER, amount: 1, display: '&7Zonk Torn Ticket', lore: ['&7Tiket sobek, belum hoki.'], weight: 1500 }
-      - { type: COMMAND, command: 'eco give %player% 500', display: '&aMoney 500', material: EMERALD, amount: 1, weight: 2000 }
-      - { type: COMMAND, command: 'eco give %player% 1000', display: '&aMoney 1.000', material: EMERALD, amount: 1, weight: 1700 }
-      - { type: COMMAND, command: 'eco give %player% 2000', display: '&aMoney 2.000', material: EMERALD, amount: 1, weight: 1300 }
-      - { type: COMMAND, command: 'eco give %player% 3000', display: '&aMoney 3.000', material: EMERALD, amount: 1, weight: 1050 }
+      - display: "&7Zonk Empty Pouch"
+        amount: 1
+        material: BARRIER
+        weight: 2200
+        type: COMMAND
+        command: minecraft:tellraw %player% {"text":"Zonk... kamu belum hoki di Tenshiyoro.","color":"gray"}
+      - display: "&7Zonk Torn Ticket"
+        amount: 1
+        material: PAPER
+        weight: 1500
+        type: ITEM
+        lore:
+          - "&7Tiket sobek, belum hoki."
+      - display: "&aMoney 500"
+        amount: 1
+        material: EMERALD
+        weight: 120
+        type: COMMAND
+        command: eco give %player% 500
+      - display: "&aMoney 1.000"
+        amount: 1
+        material: EMERALD
+        weight: 90
+        type: COMMAND
+        command: eco give %player% 1000
+      - display: "&aMoney 2.000"
+        amount: 1
+        material: EMERALD
+        weight: 60
+        type: COMMAND
+        command: eco give %player% 2000
+      - display: "&aMoney 3.000"
+        amount: 1
+        material: EMERALD
+        weight: 40
+        type: COMMAND
+        command: eco give %player% 3000
     common:
-      - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 130 }
-      - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 1', display: '&dKouzan Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 100 }
-      - { type: COMMAND, command: 'eco give %player% 5000', display: '&aMoney 5.000', material: EMERALD, amount: 1, weight: 1300 }
-      - { type: COMMAND, command: 'eco give %player% 7500', display: '&aMoney 7.500', material: EMERALD, amount: 1, weight: 900 }
-      - { type: COMMAND, command: 'eco give %player% 10000', display: '&aMoney 10.000', material: EMERALD, amount: 1, weight: 700 }
+      - display: "&fShinjuore Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 130
+        type: COMMAND
+        command: vgcreate givekey %player% shinjuore_key 1
+      - display: "&dKouzan Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 100
+        type: COMMAND
+        command: vgcreate givekey %player% kouzan_key 1
+      - display: "&aMoney 5.000"
+        amount: 1
+        material: EMERALD
+        weight: 25
+        type: COMMAND
+        command: eco give %player% 5000
+      - display: "&aMoney 7.500"
+        amount: 1
+        material: EMERALD
+        weight: 18
+        type: COMMAND
+        command: eco give %player% 7500
+      - display: "&aMoney 10.000"
+        amount: 1
+        material: EMERALD
+        weight: 12
+        type: COMMAND
+        command: eco give %player% 10000
     rare:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kinzai_key 2', display: '&cKinzai Key x2', material: TRIPWIRE_HOOK, amount: 1, weight: 55 }
-      - { type: COMMAND, command: 'eco give %player% 15000', display: '&aMoney 15.000', material: EMERALD, amount: 1, weight: 500 }
-      - { type: COMMAND, command: 'eco give %player% 25000', display: '&aMoney 25.000', material: EMERALD, amount: 1, weight: 250 }
-      - { type: ITEM, material: EMERALD, amount: 6, display: '&aLucky Emerald', lore: ['&7Tier: &bNormal'], weight: 200 }
+      - display: "&cKinzai Key x2"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 55
+        type: COMMAND
+        command: vgcreate givekey %player% kinzai_key 2
+      - display: "&aMoney 15.000"
+        amount: 1
+        material: EMERALD
+        weight: 8
+        type: COMMAND
+        command: eco give %player% 15000
+      - display: "&aMoney 25.000"
+        amount: 1
+        material: EMERALD
+        weight: 5
+        type: COMMAND
+        command: eco give %player% 25000
+      - display: "&aLucky Emerald"
+        amount: 6
+        material: EMERALD
+        weight: 200
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
     epic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% tenshiyoro_key 3', display: '&eTenshiyoro Key x3', material: TRIPWIRE_HOOK, amount: 1, weight: 10 }
-      - { type: COMMAND, command: 'eco give %player% 50000', display: '&aMoney 50.000', material: EMERALD, amount: 1, weight: 120 }
-      - { type: COMMAND, command: 'eco give %player% 100000', display: '&aMoney 100.000', material: EMERALD, amount: 1, weight: 50 }
-      - { type: ITEM, material: DIAMOND, amount: 3, display: '&bBonus Diamond', lore: ['&7Tier: &cHard'], weight: 80 }
+      - display: "&eTenshiyoro Key x3"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 10
+        type: COMMAND
+        command: vgcreate givekey %player% tenshiyoro_key 3
+      - display: "&aMoney 50.000"
+        amount: 1
+        material: EMERALD
+        weight: 2
+        type: COMMAND
+        command: eco give %player% 50000
+      - display: "&aMoney 100.000"
+        amount: 1
+        material: EMERALD
+        weight: 1
+        type: COMMAND
+        command: eco give %player% 100000
+      - display: "&bBonus Diamond"
+        amount: 3
+        material: DIAMOND
+        weight: 80
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
     mythic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% tenshiyoro_key 5', display: '&eTenshiyoro Key x5', material: TRIPWIRE_HOOK, amount: 1, weight: 1 }
-      - { type: COMMAND, command: 'eco give %player% 150000', display: '&aMoney 150.000', material: EMERALD_BLOCK, amount: 1, weight: 10 }
-      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&6Lucky Totem', lore: ['&7Tier: &5Impossible'], weight: 4 }
-
+      - display: "&eTenshiyoro Key x5"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 1
+        type: COMMAND
+        command: vgcreate givekey %player% tenshiyoro_key 5
+      - display: "&aMoney 150.000"
+        amount: 1
+        material: EMERALD_BLOCK
+        weight: 1
+        type: COMMAND
+        command: eco give %player% 150000
+      - display: "&6Lucky Totem"
+        amount: 1
+        material: TOTEM_OF_UNDYING
+        weight: 4
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
   kinzai:
     uncommon:
-      - { type: ITEM, material: WOODEN_SWORD, amount: 1, display: '&7Zonk Wooden Sword', lore: ['&7Tier: &aEasy'], weight: 1200 }
-      - { type: ITEM, material: STONE_SWORD, amount: 1, display: '&aStone Sword', lore: ['&7No enchant weapon.'], weight: 900 }
-      - { type: ITEM, material: BOW, amount: 1, display: '&aBasic Bow', lore: ['&7No enchant weapon.'], weight: 700 }
-      - { type: ITEM, material: ARROW, amount: 32, display: '&fArrow Pack', lore: ['&7Tier: &aEasy'], weight: 850 }
-      - { type: ITEM, material: SHIELD, amount: 1, display: '&7Simple Shield', lore: ['&7Tier: &aEasy'], weight: 500 }
+      - display: "&7Zonk Wooden Sword"
+        amount: 1
+        material: WOODEN_SWORD
+        weight: 1200
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&aStone Sword"
+        amount: 1
+        material: STONE_SWORD
+        weight: 900
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&aBasic Bow"
+        amount: 1
+        material: BOW
+        weight: 700
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&fArrow Pack"
+        amount: 32
+        material: ARROW
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
+      - display: "&7Simple Shield"
+        amount: 1
+        material: SHIELD
+        weight: 500
+        type: ITEM
+        lore:
+          - "&7Tier: &aEasy"
     common:
-      - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 100 }
-      - { type: ITEM, material: IRON_SWORD, amount: 1, display: '&eIron Sword', lore: ['&7No enchant weapon.'], weight: 650 }
-      - { type: ITEM, material: IRON_AXE, amount: 1, display: '&eIron Battle Axe', lore: ['&7No enchant weapon.'], weight: 500 }
-      - { type: ITEM, material: CROSSBOW, amount: 1, display: '&eCrossbow', lore: ['&7No enchant weapon.'], weight: 350 }
-      - { type: ITEM, material: SPECTRAL_ARROW, amount: 16, display: '&eSpectral Arrow Pack', lore: ['&7Tier: &eMedium'], weight: 300 }
+      - display: "&fShinjuore Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 100
+        type: COMMAND
+        command: vgcreate givekey %player% shinjuore_key 1
+      - display: "&eIron Sword"
+        amount: 1
+        material: IRON_SWORD
+        weight: 650
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&eIron Battle Axe"
+        amount: 1
+        material: IRON_AXE
+        weight: 500
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&eCrossbow"
+        amount: 1
+        material: CROSSBOW
+        weight: 350
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&eSpectral Arrow Pack"
+        amount: 16
+        material: SPECTRAL_ARROW
+        weight: 300
+        type: ITEM
+        lore:
+          - "&7Tier: &eMedium"
     rare:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kinzai_key 2', display: '&cKinzai Key x2', material: TRIPWIRE_HOOK, amount: 1, weight: 35 }
-      - { type: ITEM, material: DIAMOND_SWORD, amount: 1, display: '&bDiamond Sword', lore: ['&7No enchant weapon.'], weight: 240 }
-      - { type: ITEM, material: DIAMOND_AXE, amount: 1, display: '&bDiamond Battle Axe', lore: ['&7No enchant weapon.'], weight: 180 }
-      - { type: ITEM, material: TRIDENT, amount: 1, display: '&3Trident', lore: ['&7Tier: &bNormal'], weight: 60 }
+      - display: "&cKinzai Key x2"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 35
+        type: COMMAND
+        command: vgcreate givekey %player% kinzai_key 2
+      - display: "&bDiamond Sword"
+        amount: 1
+        material: DIAMOND_SWORD
+        weight: 240
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&bDiamond Battle Axe"
+        amount: 1
+        material: DIAMOND_AXE
+        weight: 180
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+      - display: "&3Trident"
+        amount: 1
+        material: TRIDENT
+        weight: 60
+        type: ITEM
+        lore:
+          - "&7Tier: &bNormal"
     epic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kagekari_key 3', display: '&bKagekari Key x3', material: TRIPWIRE_HOOK, amount: 1, weight: 10 }
-      - { type: ITEM, material: NETHERITE_SWORD, amount: 1, display: '&cNetherite Sword', lore: ['&7No enchant weapon.', '&7Tier: &cHard'], weight: 28 }
-      - { type: ITEM, material: NETHERITE_AXE, amount: 1, display: '&cNetherite Battle Axe', lore: ['&7No enchant weapon.', '&7Tier: &cHard'], weight: 22 }
-      - { type: ITEM, material: MACE, amount: 1, display: '&6Mace', lore: ['&7Tier: &cHard'], weight: 10 }
+      - display: "&bKagekari Key x3"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 10
+        type: COMMAND
+        command: vgcreate givekey %player% kagekari_key 3
+      - display: "&cNetherite Sword"
+        amount: 1
+        material: NETHERITE_SWORD
+        weight: 28
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Battle Axe"
+        amount: 1
+        material: NETHERITE_AXE
+        weight: 22
+        type: ITEM
+        lore:
+          - "&7No enchant weapon."
+          - "&7Tier: &cHard"
+      - display: "&6Mace"
+        amount: 1
+        material: MACE
+        weight: 10
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
     mythic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kinzai_key 5', display: '&cKinzai Key x5', material: TRIPWIRE_HOOK, amount: 1, weight: 1 }
-      - { type: ITEM, material: NETHERITE_SWORD, amount: 1, display: '&5Ancient Netherite Sword', lore: ['&7Tier: &5Impossible'], weight: 4 }
-      - { type: ITEM, material: MACE, amount: 1, display: '&5Ancient Mace', lore: ['&7Tier: &5Impossible'], weight: 2 }
-
+      - display: "&cKinzai Key x5"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 1
+        type: COMMAND
+        command: vgcreate givekey %player% kinzai_key 5
+      - display: "&5Ancient Netherite Sword"
+        amount: 1
+        material: NETHERITE_SWORD
+        weight: 4
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+      - display: "&5Ancient Mace"
+        amount: 1
+        material: MACE
+        weight: 2
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
   kagekari:
     uncommon:
-      - { type: ITEM, material: LEATHER_HELMET, amount: 1, display: '&7Leather Helmet', lore: ['&7No enchant armor.'], weight: 900 }
-      - { type: ITEM, material: LEATHER_CHESTPLATE, amount: 1, display: '&7Leather Chestplate', lore: ['&7No enchant armor.'], weight: 850 }
-      - { type: ITEM, material: LEATHER_LEGGINGS, amount: 1, display: '&7Leather Leggings', lore: ['&7No enchant armor.'], weight: 850 }
-      - { type: ITEM, material: LEATHER_BOOTS, amount: 1, display: '&7Leather Boots', lore: ['&7No enchant armor.'], weight: 900 }
+      - display: "&7Leather Helmet"
+        amount: 1
+        material: LEATHER_HELMET
+        weight: 900
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&7Leather Chestplate"
+        amount: 1
+        material: LEATHER_CHESTPLATE
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&7Leather Leggings"
+        amount: 1
+        material: LEATHER_LEGGINGS
+        weight: 850
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&7Leather Boots"
+        amount: 1
+        material: LEATHER_BOOTS
+        weight: 900
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
     common:
-      - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 90 }
-      - { type: ITEM, material: CHAINMAIL_HELMET, amount: 1, display: '&eChainmail Helmet', lore: ['&7No enchant armor.'], weight: 550 }
-      - { type: ITEM, material: CHAINMAIL_CHESTPLATE, amount: 1, display: '&eChainmail Chestplate', lore: ['&7No enchant armor.'], weight: 500 }
-      - { type: ITEM, material: IRON_HELMET, amount: 1, display: '&fIron Helmet', lore: ['&7No enchant armor.'], weight: 520 }
-      - { type: ITEM, material: IRON_CHESTPLATE, amount: 1, display: '&fIron Chestplate', lore: ['&7No enchant armor.'], weight: 460 }
+      - display: "&fShinjuore Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 90
+        type: COMMAND
+        command: vgcreate givekey %player% shinjuore_key 1
+      - display: "&eChainmail Helmet"
+        amount: 1
+        material: CHAINMAIL_HELMET
+        weight: 550
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&eChainmail Chestplate"
+        amount: 1
+        material: CHAINMAIL_CHESTPLATE
+        weight: 500
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&fIron Helmet"
+        amount: 1
+        material: IRON_HELMET
+        weight: 520
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&fIron Chestplate"
+        amount: 1
+        material: IRON_CHESTPLATE
+        weight: 460
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
     rare:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kagekari_key 2', display: '&bKagekari Key x2', material: TRIPWIRE_HOOK, amount: 1, weight: 32 }
-      - { type: ITEM, material: DIAMOND_HELMET, amount: 1, display: '&bDiamond Helmet', lore: ['&7No enchant armor.'], weight: 130 }
-      - { type: ITEM, material: DIAMOND_CHESTPLATE, amount: 1, display: '&bDiamond Chestplate', lore: ['&7No enchant armor.'], weight: 95 }
-      - { type: ITEM, material: DIAMOND_LEGGINGS, amount: 1, display: '&bDiamond Leggings', lore: ['&7No enchant armor.'], weight: 95 }
-      - { type: ITEM, material: DIAMOND_BOOTS, amount: 1, display: '&bDiamond Boots', lore: ['&7No enchant armor.'], weight: 130 }
+      - display: "&bKagekari Key x2"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 32
+        type: COMMAND
+        command: vgcreate givekey %player% kagekari_key 2
+      - display: "&bDiamond Helmet"
+        amount: 1
+        material: DIAMOND_HELMET
+        weight: 130
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&bDiamond Chestplate"
+        amount: 1
+        material: DIAMOND_CHESTPLATE
+        weight: 95
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&bDiamond Leggings"
+        amount: 1
+        material: DIAMOND_LEGGINGS
+        weight: 95
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+      - display: "&bDiamond Boots"
+        amount: 1
+        material: DIAMOND_BOOTS
+        weight: 130
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
     epic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 3', display: '&dKouzan Key x3', material: TRIPWIRE_HOOK, amount: 1, weight: 10 }
-      - { type: ITEM, material: NETHERITE_HELMET, amount: 1, display: '&cNetherite Helmet', lore: ['&7No enchant armor.', '&7Tier: &cHard'], weight: 12 }
-      - { type: ITEM, material: NETHERITE_CHESTPLATE, amount: 1, display: '&cNetherite Chestplate', lore: ['&7No enchant armor.', '&7Tier: &cHard'], weight: 7 }
-      - { type: ITEM, material: NETHERITE_LEGGINGS, amount: 1, display: '&cNetherite Leggings', lore: ['&7No enchant armor.', '&7Tier: &cHard'], weight: 7 }
-      - { type: ITEM, material: NETHERITE_BOOTS, amount: 1, display: '&cNetherite Boots', lore: ['&7No enchant armor.', '&7Tier: &cHard'], weight: 12 }
+      - display: "&dKouzan Key x3"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 10
+        type: COMMAND
+        command: vgcreate givekey %player% kouzan_key 3
+      - display: "&cNetherite Helmet"
+        amount: 1
+        material: NETHERITE_HELMET
+        weight: 12
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Chestplate"
+        amount: 1
+        material: NETHERITE_CHESTPLATE
+        weight: 7
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Leggings"
+        amount: 1
+        material: NETHERITE_LEGGINGS
+        weight: 7
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Boots"
+        amount: 1
+        material: NETHERITE_BOOTS
+        weight: 12
+        type: ITEM
+        lore:
+          - "&7No enchant armor."
+          - "&7Tier: &cHard"
     mythic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kagekari_key 5', display: '&bKagekari Key x5', material: TRIPWIRE_HOOK, amount: 1, weight: 1 }
-      - { type: ITEM, material: NETHERITE_CHESTPLATE, amount: 1, display: '&5Ancient Netherite Chestplate', lore: ['&7Tier: &5Impossible'], weight: 3 }
-      - { type: ITEM, material: TOTEM_OF_UNDYING, amount: 1, display: '&6Guardian Totem', lore: ['&7Tier: &5Impossible'], weight: 2 }
-
+      - display: "&bKagekari Key x5"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 1
+        type: COMMAND
+        command: vgcreate givekey %player% kagekari_key 5
+      - display: "&5Ancient Netherite Chestplate"
+        amount: 1
+        material: NETHERITE_CHESTPLATE
+        weight: 3
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+      - display: "&6Guardian Totem"
+        amount: 1
+        material: TOTEM_OF_UNDYING
+        weight: 2
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
   kouzan:
     uncommon:
-      - { type: ITEM, material: WOODEN_PICKAXE, amount: 1, display: '&7Wooden Pickaxe', lore: ['&7No enchant tool.'], weight: 950 }
-      - { type: ITEM, material: STONE_PICKAXE, amount: 1, display: '&7Stone Pickaxe', lore: ['&7No enchant tool.'], weight: 760 }
-      - { type: ITEM, material: STONE_AXE, amount: 1, display: '&7Stone Axe', lore: ['&7No enchant tool.'], weight: 720 }
-      - { type: ITEM, material: STONE_SHOVEL, amount: 1, display: '&7Stone Shovel', lore: ['&7No enchant tool.'], weight: 700 }
+      - display: "&7Wooden Pickaxe"
+        amount: 1
+        material: WOODEN_PICKAXE
+        weight: 950
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&7Stone Pickaxe"
+        amount: 1
+        material: STONE_PICKAXE
+        weight: 760
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&7Stone Axe"
+        amount: 1
+        material: STONE_AXE
+        weight: 720
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&7Stone Shovel"
+        amount: 1
+        material: STONE_SHOVEL
+        weight: 700
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
     common:
-      - { type: COMMAND, command: 'vgcreate givekey %player% shinjuore_key 1', display: '&fShinjuore Key x1', material: TRIPWIRE_HOOK, amount: 1, weight: 95 }
-      - { type: ITEM, material: IRON_PICKAXE, amount: 1, display: '&fIron Pickaxe', lore: ['&7No enchant tool.'], weight: 600 }
-      - { type: ITEM, material: IRON_AXE, amount: 1, display: '&fIron Axe', lore: ['&7No enchant tool.'], weight: 560 }
-      - { type: ITEM, material: IRON_SHOVEL, amount: 1, display: '&fIron Shovel', lore: ['&7No enchant tool.'], weight: 540 }
-      - { type: ITEM, material: SHEARS, amount: 1, display: '&eGarden Shears', lore: ['&7No enchant tool.'], weight: 260 }
+      - display: "&fShinjuore Key x1"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 95
+        type: COMMAND
+        command: vgcreate givekey %player% shinjuore_key 1
+      - display: "&fIron Pickaxe"
+        amount: 1
+        material: IRON_PICKAXE
+        weight: 600
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&fIron Axe"
+        amount: 1
+        material: IRON_AXE
+        weight: 560
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&fIron Shovel"
+        amount: 1
+        material: IRON_SHOVEL
+        weight: 540
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&eGarden Shears"
+        amount: 1
+        material: SHEARS
+        weight: 260
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
     rare:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 2', display: '&dKouzan Key x2', material: TRIPWIRE_HOOK, amount: 1, weight: 26 }
-      - { type: ITEM, material: DIAMOND_PICKAXE, amount: 1, display: '&bDiamond Pickaxe', lore: ['&7No enchant tool.'], weight: 135 }
-      - { type: ITEM, material: DIAMOND_AXE, amount: 1, display: '&bDiamond Axe', lore: ['&7No enchant tool.'], weight: 125 }
-      - { type: ITEM, material: DIAMOND_SHOVEL, amount: 1, display: '&bDiamond Shovel', lore: ['&7No enchant tool.'], weight: 120 }
-      - { type: ITEM, material: DIAMOND_HOE, amount: 1, display: '&bDiamond Hoe', lore: ['&7No enchant tool.'], weight: 105 }
+      - display: "&dKouzan Key x2"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 26
+        type: COMMAND
+        command: vgcreate givekey %player% kouzan_key 2
+      - display: "&bDiamond Pickaxe"
+        amount: 1
+        material: DIAMOND_PICKAXE
+        weight: 135
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&bDiamond Axe"
+        amount: 1
+        material: DIAMOND_AXE
+        weight: 125
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&bDiamond Shovel"
+        amount: 1
+        material: DIAMOND_SHOVEL
+        weight: 120
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+      - display: "&bDiamond Hoe"
+        amount: 1
+        material: DIAMOND_HOE
+        weight: 105
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
     epic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kagekari_key 3', display: '&bKagekari Key x3', material: TRIPWIRE_HOOK, amount: 1, weight: 9 }
-      - { type: ITEM, material: NETHERITE_PICKAXE, amount: 1, display: '&cNetherite Pickaxe', lore: ['&7No enchant tool.', '&7Tier: &cHard'], weight: 10 }
-      - { type: ITEM, material: NETHERITE_AXE, amount: 1, display: '&cNetherite Axe', lore: ['&7No enchant tool.', '&7Tier: &cHard'], weight: 8 }
-      - { type: ITEM, material: NETHERITE_SHOVEL, amount: 1, display: '&cNetherite Shovel', lore: ['&7No enchant tool.', '&7Tier: &cHard'], weight: 8 }
-      - { type: ITEM, material: NETHERITE_HOE, amount: 1, display: '&cNetherite Hoe', lore: ['&7No enchant tool.', '&7Tier: &cHard'], weight: 7 }
+      - display: "&bKagekari Key x3"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 9
+        type: COMMAND
+        command: vgcreate givekey %player% kagekari_key 3
+      - display: "&cNetherite Pickaxe"
+        amount: 1
+        material: NETHERITE_PICKAXE
+        weight: 10
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Axe"
+        amount: 1
+        material: NETHERITE_AXE
+        weight: 8
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Shovel"
+        amount: 1
+        material: NETHERITE_SHOVEL
+        weight: 8
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+          - "&7Tier: &cHard"
+      - display: "&cNetherite Hoe"
+        amount: 1
+        material: NETHERITE_HOE
+        weight: 7
+        type: ITEM
+        lore:
+          - "&7No enchant tool."
+          - "&7Tier: &cHard"
     mythic:
-      - { type: COMMAND, command: 'vgcreate givekey %player% kouzan_key 5', display: '&dKouzan Key x5', material: TRIPWIRE_HOOK, amount: 1, weight: 1 }
-      - { type: ITEM, material: NETHERITE_PICKAXE, amount: 1, display: '&5Ancient Netherite Pickaxe', lore: ['&7Tier: &5Impossible'], weight: 4 }
-      - { type: ITEM, material: NETHERITE_AXE, amount: 1, display: '&5Ancient Netherite Axe', lore: ['&7Tier: &5Impossible'], weight: 3 }
-      - { type: ITEM, material: NETHERITE_HOE, amount: 1, display: '&5Ancient Netherite Hoe', lore: ['&7Tier: &5Impossible'], weight: 2 }
+      - display: "&dKouzan Key x5"
+        amount: 1
+        material: TRIPWIRE_HOOK
+        weight: 1
+        type: COMMAND
+        command: vgcreate givekey %player% kouzan_key 5
+      - display: "&5Ancient Netherite Pickaxe"
+        amount: 1
+        material: NETHERITE_PICKAXE
+        weight: 4
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+      - display: "&5Ancient Netherite Axe"
+        amount: 1
+        material: NETHERITE_AXE
+        weight: 3
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+      - display: "&5Ancient Netherite Hoe"
+        amount: 1
+        material: NETHERITE_HOE
+        weight: 2
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
