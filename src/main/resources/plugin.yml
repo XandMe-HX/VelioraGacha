@@ -14,8 +14,8 @@ commands:
       - vgcrate
     usage: /vgcreate
   key:
-    description: Key shop command
-    usage: /key shop
+    description: Daftar hadiah crate dan status key shop
+    usage: /key rewards
 permissions:
   velioragacha.admin:
     default: op
