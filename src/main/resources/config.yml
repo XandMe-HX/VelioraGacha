@@ -11,7 +11,7 @@ settings:
   test-crate-has-default-rewards: true
 
 economy:
-  enabled: true
+  enabled: false
   money-format: '#,###'
 
 messages:
@@ -33,7 +33,8 @@ messages:
   key-bought: '%prefix% &aBerhasil membeli &f%amount%x %key% &adengan harga &f%price%&a.'
   not-enough-money: '%prefix% &cUang kamu kurang. Butuh &f%price%&c.'
   economy-missing: '%prefix% &cEconomy Vault tidak tersedia.'
-  no-key: '%prefix% &cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.'
+  shop-disabled: '%prefix% &eKey shop dinonaktifkan. Key hanya berasal dari event dan reward server.'
+  no-key: '%prefix% &cKamu butuh &f%key_name%&c. Key berasal dari event dan reward server. Lihat hadiah di &f/key rewards&c.'
   wrong-key: '%prefix% &cKey ini tidak cocok untuk crate ini.'
   no-reward: '%prefix% &cCrate ini belum punya reward. Isi dulu di &f/vgcreate gui &c-> Crate Settings.'
   crate-no-reward: '%prefix% &cCrate ini belum punya reward. Isi dulu di &f/vgcreate gui &c-> Crate Settings.'
@@ -203,7 +204,7 @@ hologram:
           height: 0.30
         - content: '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
           height: 0.30
-        - content: '&f/key shop &7ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴇʟɪ ᴋᴇʏ'
+        - content: '&f/key rewards &7ᴜɴᴛᴜᴋ ᴍᴇʟɪʜᴀᴛ ʜᴀᴅɪᴀʜ'
           height: 0.30
   lines:
     - '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
@@ -217,12 +218,17 @@ hologram:
     - '&f★ ᴋᴇʏs ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
     - ''
     - '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
-    - '&f/key shop &7ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴇʟɪ ᴋᴇʏ'
+    - '&f/key rewards &7ᴜɴᴛᴜᴋ ᴍᴇʟɪʜᴀᴛ ʜᴀᴅɪᴀʜ'
 
 shop:
+  enabled: false
   title: '&8Key Shop'
   quantity-title: '&8Beli %key%'
   filler: BLACK_STAINED_GLASS_PANE
+
+catalog:
+  title: '&8Daftar Hadiah'
+  detail-title: '&8Hadiah %crate% (%page%/%pages%)'
 
 editor:
   default-weight: 10
