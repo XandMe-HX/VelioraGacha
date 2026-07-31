@@ -191,7 +191,7 @@ hologram-example:
           height: 0.3
         - content: '&f★ ᴋᴇʏѕ ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
           height: 0.3
-        - content: '%crate_prefix%ᴍᴇᴍʙᴇʟɪ ᴅɪ &f/key shop %crate_suffix%(/key shop)'
+        - content: '%crate_prefix%ʟɪʜᴀᴛ ʜᴀᴅɪᴀʜ ᴅɪ &f/key rewards%crate_suffix%'
           height: 0.3
 
 # ==================================================
