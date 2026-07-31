@@ -13,27 +13,27 @@
 rewards:
   shinjuore:
     uncommon:
-      - display: "&7Zonk Stone Pile"
+      - display: "&7Builder Stone Pack"
         amount: 32
         material: COBBLESTONE
         weight: 1500
         type: ITEM
         lore:
-          - "&7Zonk kecil, masih bisa buat build."
-      - display: "&7Zonk Dirt Pack"
+          - "&7Hadiah minimum untuk kebutuhan build."
+      - display: "&7Soil Pack"
         amount: 32
         material: DIRT
         weight: 1200
         type: ITEM
         lore:
-          - "&7Zonk kecil."
-      - display: "&7Zonk Gravel Pack"
+          - "&7Hadiah minimum untuk farming dan build."
+      - display: "&7Gravel Pack"
         amount: 24
         material: GRAVEL
         weight: 900
         type: ITEM
         lore:
-          - "&7Zonk kecil, bisa cari flint."
+          - "&7Hadiah minimum, dapat digunakan mencari flint."
       - display: "&8Coal Bundle"
         amount: 16
         material: COAL
@@ -274,19 +274,20 @@ rewards:
           - "&7Tier: &5Impossible"
   tenshiyoro:
     uncommon:
-      - display: "&7Zonk Empty Pouch"
-        amount: 1
-        material: BARRIER
+      - display: "&8Coal Safety Pack"
+        amount: 16
+        material: COAL
         weight: 2200
-        type: COMMAND
-        command: minecraft:tellraw %player% {"text":"Zonk... kamu belum hoki di Tenshiyoro.","color":"gray"}
-      - display: "&7Zonk Torn Ticket"
-        amount: 1
-        material: PAPER
+        type: ITEM
+        lore:
+          - "&7Hadiah minimum yang tetap berguna."
+      - display: "&fIron Safety Pack"
+        amount: 4
+        material: IRON_INGOT
         weight: 1500
         type: ITEM
         lore:
-          - "&7Tiket sobek, belum hoki."
+          - "&7Hadiah minimum yang tetap berguna."
       - display: "&aMoney 500"
         amount: 1
         material: EMERALD
@@ -349,18 +350,20 @@ rewards:
         weight: 55
         type: COMMAND
         command: vgcreate givekey %player% kinzai_key 2
-      - display: "&aMoney 15.000"
+      - display: "&aEmerald Block"
         amount: 1
-        material: EMERALD
+        material: EMERALD_BLOCK
         weight: 8
-        type: COMMAND
-        command: eco give %player% 15000
-      - display: "&aMoney 25.000"
-        amount: 1
-        material: EMERALD
+        type: ITEM
+        lore:
+          - "&7Pengganti reward uang di atas batas 10K."
+      - display: "&bDiamond Pair"
+        amount: 2
+        material: DIAMOND
         weight: 5
-        type: COMMAND
-        command: eco give %player% 25000
+        type: ITEM
+        lore:
+          - "&7Pengganti reward uang di atas batas 10K."
       - display: "&aLucky Emerald"
         amount: 6
         material: EMERALD
@@ -375,18 +378,20 @@ rewards:
         weight: 10
         type: COMMAND
         command: vgcreate givekey %player% tenshiyoro_key 3
-      - display: "&aMoney 50.000"
-        amount: 1
-        material: EMERALD
+      - display: "&bDiamond Pack"
+        amount: 4
+        material: DIAMOND
         weight: 2
-        type: COMMAND
-        command: eco give %player% 50000
-      - display: "&aMoney 100.000"
+        type: ITEM
+        lore:
+          - "&7Reward item untuk menjaga ekonomi."
+      - display: "&8Netherite Scrap"
         amount: 1
-        material: EMERALD
+        material: NETHERITE_SCRAP
         weight: 1
-        type: COMMAND
-        command: eco give %player% 100000
+        type: ITEM
+        lore:
+          - "&7Reward item untuk menjaga ekonomi."
       - display: "&bBonus Diamond"
         amount: 3
         material: DIAMOND
@@ -401,12 +406,13 @@ rewards:
         weight: 1
         type: COMMAND
         command: vgcreate givekey %player% tenshiyoro_key 5
-      - display: "&aMoney 150.000"
+      - display: "&dNetherite Upgrade Template"
         amount: 1
-        material: EMERALD_BLOCK
+        material: NETHERITE_UPGRADE_SMITHING_TEMPLATE
         weight: 1
-        type: COMMAND
-        command: eco give %player% 150000
+        type: ITEM
+        lore:
+          - "&7Reward item langka tanpa menambah uang server."
       - display: "&6Lucky Totem"
         amount: 1
         material: TOTEM_OF_UNDYING
@@ -416,27 +422,36 @@ rewards:
           - "&7Tier: &5Impossible"
   kinzai:
     uncommon:
-      - display: "&7Zonk Wooden Sword"
+      - display: "&aTraining Wooden Sword"
         amount: 1
         material: WOODEN_SWORD
         weight: 1200
         type: ITEM
         lore:
           - "&7Tier: &aEasy"
+        enchantments:
+          - SHARPNESS:1
+          - UNBREAKING:1
       - display: "&aStone Sword"
         amount: 1
         material: STONE_SWORD
         weight: 900
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted starter weapon."
+        enchantments:
+          - SHARPNESS:1
+          - UNBREAKING:1
       - display: "&aBasic Bow"
         amount: 1
         material: BOW
         weight: 700
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted starter bow."
+        enchantments:
+          - POWER:1
+          - UNBREAKING:1
       - display: "&fArrow Pack"
         amount: 32
         material: ARROW
@@ -464,14 +479,20 @@ rewards:
         weight: 650
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted medium weapon."
+        enchantments:
+          - SHARPNESS:2
+          - UNBREAKING:2
       - display: "&eIron Battle Axe"
         amount: 1
         material: IRON_AXE
         weight: 500
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted medium weapon."
+        enchantments:
+          - SHARPNESS:2
+          - UNBREAKING:2
       - display: "&eCrossbow"
         amount: 1
         material: CROSSBOW
@@ -499,7 +520,10 @@ rewards:
         weight: 240
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted rare weapon."
+        enchantments:
+          - SHARPNESS:3
+          - UNBREAKING:2
       - display: "&bDiamond Battle Axe"
         amount: 1
         material: DIAMOND_AXE
@@ -514,6 +538,10 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &bNormal"
+        enchantments:
+          - LOYALTY:2
+          - IMPALING:3
+          - UNBREAKING:2
     epic:
       - display: "&bKagekari Key x3"
         amount: 1
@@ -527,8 +555,11 @@ rewards:
         weight: 28
         type: ITEM
         lore:
-          - "&7No enchant weapon."
+          - "&7Enchanted epic weapon."
           - "&7Tier: &cHard"
+        enchantments:
+          - SHARPNESS:4
+          - UNBREAKING:3
       - display: "&cNetherite Battle Axe"
         amount: 1
         material: NETHERITE_AXE
@@ -544,6 +575,9 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &cHard"
+        enchantments:
+          - DENSITY:3
+          - UNBREAKING:3
     mythic:
       - display: "&cKinzai Key x5"
         amount: 1
@@ -558,6 +592,10 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &5Impossible"
+        enchantments:
+          - SHARPNESS:5
+          - UNBREAKING:3
+          - LOOTING:3
       - display: "&5Ancient Mace"
         amount: 1
         material: MACE
@@ -565,6 +603,10 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &5Impossible"
+        enchantments:
+          - DENSITY:4
+          - BREACH:3
+          - UNBREAKING:3
   kagekari:
     uncommon:
       - display: "&7Leather Helmet"
@@ -650,7 +692,10 @@ rewards:
         weight: 95
         type: ITEM
         lore:
-          - "&7No enchant armor."
+          - "&7Enchanted rare armor."
+        enchantments:
+          - PROTECTION:3
+          - UNBREAKING:2
       - display: "&bDiamond Leggings"
         amount: 1
         material: DIAMOND_LEGGINGS
@@ -686,8 +731,11 @@ rewards:
         weight: 7
         type: ITEM
         lore:
-          - "&7No enchant armor."
+          - "&7Enchanted epic armor."
           - "&7Tier: &cHard"
+        enchantments:
+          - PROTECTION:4
+          - UNBREAKING:3
       - display: "&cNetherite Leggings"
         amount: 1
         material: NETHERITE_LEGGINGS
@@ -718,6 +766,10 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &5Impossible"
+        enchantments:
+          - PROTECTION:4
+          - UNBREAKING:3
+          - MENDING:1
       - display: "&6Guardian Totem"
         amount: 1
         material: TOTEM_OF_UNDYING
@@ -768,7 +820,10 @@ rewards:
         weight: 600
         type: ITEM
         lore:
-          - "&7No enchant tool."
+          - "&7Enchanted medium tool."
+        enchantments:
+          - EFFICIENCY:2
+          - UNBREAKING:2
       - display: "&fIron Axe"
         amount: 1
         material: IRON_AXE
@@ -803,7 +858,10 @@ rewards:
         weight: 135
         type: ITEM
         lore:
-          - "&7No enchant tool."
+          - "&7Enchanted rare tool."
+        enchantments:
+          - EFFICIENCY:3
+          - UNBREAKING:2
       - display: "&bDiamond Axe"
         amount: 1
         material: DIAMOND_AXE
@@ -838,8 +896,11 @@ rewards:
         weight: 10
         type: ITEM
         lore:
-          - "&7No enchant tool."
+          - "&7Enchanted epic tool."
           - "&7Tier: &cHard"
+        enchantments:
+          - EFFICIENCY:4
+          - UNBREAKING:3
       - display: "&cNetherite Axe"
         amount: 1
         material: NETHERITE_AXE
@@ -878,6 +939,11 @@ rewards:
         type: ITEM
         lore:
           - "&7Tier: &5Impossible"
+        enchantments:
+          - EFFICIENCY:5
+          - FORTUNE:3
+          - UNBREAKING:3
+          - MENDING:1
       - display: "&5Ancient Netherite Axe"
         amount: 1
         material: NETHERITE_AXE
