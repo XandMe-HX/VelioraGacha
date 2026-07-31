@@ -7,7 +7,7 @@
 # 4. Pink   = Kouzan
 # 5. Putih  = Shinjuore
 #
-# Harga key reguler 5K. Tenshiyoro khusus economy 10K.
+# Key tidak dijual. Key hanya diberikan melalui event dan reward server.
 # ==================================================
 keys:
   kinzai_key:
@@ -16,7 +16,7 @@ keys:
     prefix: '&c'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 5000
+    price: 1000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -25,14 +25,14 @@ keys:
       - '&7Reward Focus: &fHunter weapons, sword, bow, trident, mace'
       - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik Kinzai Crate.'
+      - '&eKey event. Pegang lalu klik Kinzai Crate.'
   kagekari_key:
     display-name: '&b&lKagekari Guardian Armor Key'
     short-name: 'Kagekari'
     prefix: '&b'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 5000
+    price: 1000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -41,14 +41,14 @@ keys:
       - '&7Reward Focus: &fArmor pieces and protection sets'
       - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik Kagekari Crate.'
+      - '&eKey event. Pegang lalu klik Kagekari Crate.'
   tenshiyoro_key:
     display-name: '&e&lTenshiyoro Fortune Economy Key'
     short-name: 'Tenshiyoro'
     prefix: '&e'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 10000
+    price: 3000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -57,14 +57,14 @@ keys:
       - '&7Reward Focus: &fMoney, vouchers, bonus keys'
       - '&7Economy Mode: &cAnti inflation, jackpot super rare'
       - ''
-      - '&ePegang key ini lalu klik Tenshiyoro Crate.'
+      - '&eKey event. Pegang lalu klik Tenshiyoro Crate.'
   kouzan_key:
     display-name: '&d&lKouzan Master Tools Key'
     short-name: 'Kouzan'
     prefix: '&d'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 5000
+    price: 1500
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -73,14 +73,14 @@ keys:
       - '&7Reward Focus: &fPickaxe, axe, shovel, hoe, tool sets'
       - '&7Enchant Tier: &aEasy &7-> &5Impossible'
       - ''
-      - '&ePegang key ini lalu klik Kouzan Crate.'
+      - '&eKey event. Pegang lalu klik Kouzan Crate.'
   shinjuore_key:
     display-name: '&f&lShinjuore Mining Treasury Key'
     short-name: 'Shinjuore'
     prefix: '&f'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 5000
+    price: 3000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -89,7 +89,7 @@ keys:
       - '&7Reward Focus: &fOre, ingot, mining materials'
       - '&7Resource Mode: &fBalanced survival material'
       - ''
-      - '&ePegang key ini lalu klik Shinjuore Crate.'
+      - '&eKey event. Pegang lalu klik Shinjuore Crate.'
   test_key:
     display-name: '&5&lVeliora Test Crate Key'
     short-name: 'Test'

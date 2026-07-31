@@ -11,6 +11,7 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.*;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -216,9 +217,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
                 return null;
             }
             String display = str(map, "display", material.name() + " x" + Math.max(1, amount));
+            if (!isSafeRewardDisplay(display)) return null;
             if (type.equals("COMMAND")) {
                 List<String> commands = commands(map);
-                if (commands.isEmpty()) return null;
+                if (commands.isEmpty() || commands.stream().anyMatch(command -> !isSafeRewardCommand(command))) return null;
                 return new Reward(RewardType.COMMAND, display, material, Math.max(1, amount), weight, commands, item(material, display, List.of("&7Command reward", "&7Rarity: &f" + prettyRarity(rarity))), rarity);
             }
             if (amount <= 0) return null;
@@ -230,6 +232,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
                 if (loreRaw instanceof List<?> loreList) meta.setLore(loreList.stream().map(String::valueOf).map(this::color).toList());
                 item.setItemMeta(meta);
             }
+            applyRewardEnchantments(item, map.get("enchantments"));
             return new Reward(RewardType.ITEM, display, material, amount, weight, List.of(), item, rarity);
         } catch (Throwable throwable) {
             logError("load reward " + crate + " " + rarity, throwable);
@@ -252,8 +255,14 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         if (!(sender instanceof Player player)) return true;
         if (args.length == 1 && args[0].equalsIgnoreCase("shop")) {
             if (!player.hasPermission("velioragacha.shop")) return deny(player);
+            if (!isShopEnabled()) {
+                msg(player, msg("shop-disabled", "&eKey shop dinonaktifkan. Key hanya berasal dari event dan reward server."));
+                return true;
+            }
             openShop(player);
-        } else msg(sender, "&f/key shop");
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("rewards")) {
+            openRewardCatalog(player);
+        } else msg(sender, "&f/key rewards &7| &f/key shop");
         return true;
     }
 
@@ -346,7 +355,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     }
 
     @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (command.getName().equalsIgnoreCase("key")) return args.length == 1 ? filter(List.of("shop"), args[0]) : List.of();
+        if (command.getName().equalsIgnoreCase("key")) return args.length == 1 ? filter(List.of("rewards", "shop"), args[0]) : List.of();
         if (args.length == 1) return filter(List.of("gui", "givekey", "effecttest", "reload", "debug", "dump"), args[0]);
         if (args.length == 2 && args[0].equalsIgnoreCase("effecttest")) return filter(new ArrayList<>(crates.keySet()), args[1]);
         if (args.length == 3 && args[0].equalsIgnoreCase("givekey")) return filter(new ArrayList<>(keys.keySet()), args[2]);
@@ -464,6 +473,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     }
 
     private void openShop(Player player) {
+        if (!isShopEnabled()) {
+            msg(player, msg("shop-disabled", "&eKey shop dinonaktifkan. Key hanya berasal dari event dan reward server."));
+            return;
+        }
         Inventory inv = gui(new Holder("shop", null, null, 1), 54, getConfig().getString("shop.title", "&8Key Shop"));
         fill(inv);
         int[] slots = {20, 21, 22, 23, 24};
@@ -472,6 +485,62 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             KeyDef key = keys.get(crate.key);
             if (key != null && i < slots.length) inv.setItem(slots[i++], keyIcon(key, List.of("&7Crate: &f" + crate.name, "&7Harga: &a" + cash(key.price), "", "&eKlik untuk pilih jumlah.")));
         }
+        player.openInventory(inv);
+    }
+
+    private void openRewardCatalog(Player player) {
+        Inventory inv = gui(new Holder("rewardcatalog", null, null, 1), 27, getConfig().getString("catalog.title", "&8Daftar Hadiah"));
+        fill(inv);
+        int[] slots = {10, 11, 13, 15, 16};
+        int index = 0;
+        for (CrateDef crate : playerCrates()) {
+            if (index >= slots.length) break;
+            List<String> lore = new ArrayList<>();
+            lore.add("&7Total hadiah: &f" + rewardCount(crate.id));
+            lore.add("&7Peluang rarity:");
+            for (String rarity : RARITIES) {
+                lore.add("&8- &f" + prettyRarity(rarity) + ": &e" + percent(rarityChance(crate, rarity)));
+            }
+            lore.add("");
+            lore.add("&eKlik untuk melihat hadiah dan peluangnya.");
+            inv.setItem(slots[index++], itemWithPdc(crate.block, crate.prefix + crate.name + crate.suffix, lore, crateKey, crate.id));
+        }
+        player.openInventory(inv);
+    }
+
+    private void openRewardList(Player player, String crateId, int requestedPage) {
+        CrateDef crate = crates.get(crateId);
+        if (crate == null) return;
+        List<Reward> list = rewards.getOrDefault(crate.id, List.of());
+        int pageSize = 45;
+        int pages = Math.max(1, (list.size() + pageSize - 1) / pageSize);
+        int page = Math.max(0, Math.min(pages - 1, requestedPage));
+        Inventory inv = gui(new Holder("rewardlist", crate.id, null, page), 54,
+                getConfig().getString("catalog.detail-title", "&8Hadiah %crate% (%page%/%pages%)")
+                        .replace("%crate%", plain(crate.name))
+                        .replace("%page%", String.valueOf(page + 1))
+                        .replace("%pages%", String.valueOf(pages)));
+        fill(inv);
+        int start = page * pageSize;
+        int end = Math.min(list.size(), start + pageSize);
+        for (int i = start; i < end; i++) {
+            Reward reward = list.get(i);
+            ItemStack icon = reward.icon();
+            ItemMeta meta = icon.getItemMeta();
+            if (meta != null) {
+                List<String> lore = meta.hasLore() ? new ArrayList<>(Objects.requireNonNull(meta.getLore())) : new ArrayList<>();
+                lore.add("");
+                lore.add(color("&7Rarity: &f" + prettyRarity(reward.rarity)));
+                lore.add(color("&7Peluang total: &e" + percent(rewardChance(crate, reward))));
+                lore.add(color("&aHadiah yang tampil adalah hadiah yang diterima."));
+                meta.setLore(lore);
+                icon.setItemMeta(meta);
+            }
+            inv.setItem(i - start, icon);
+        }
+        if (page > 0) inv.setItem(45, item(Material.ARROW, "&eHalaman sebelumnya"));
+        inv.setItem(49, item(Material.BARRIER, "&cKembali"));
+        if (page + 1 < pages) inv.setItem(53, item(Material.ARROW, "&eHalaman berikutnya"));
         player.openInventory(inv);
     }
 
@@ -510,6 +579,12 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
                 case "rarity" -> { if (slot == 22) openDetail(player, holder.id); else { String rarity = pdc(clicked, keyKey); if (rarity != null) openRewardEditor(player, holder.id, rarity); } }
                 case "shop" -> { String id = pdc(clicked, keyKey); if (id != null) openQty(player, id, 1); }
                 case "qty" -> qtyClick(player, holder, slot);
+                case "rewardcatalog" -> { String id = pdc(clicked, crateKey); if (id != null) openRewardList(player, id, 0); }
+                case "rewardlist" -> {
+                    if (slot == 45) openRewardList(player, holder.id, holder.amount - 1);
+                    else if (slot == 49) openRewardCatalog(player);
+                    else if (slot == 53) openRewardList(player, holder.id, holder.amount + 1);
+                }
                 case "roulette" -> { }
             }
         } catch (Throwable throwable) {
@@ -589,6 +664,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     }
 
     private void buyKey(Player player, String keyId, int amount) {
+        if (!isShopEnabled()) {
+            msg(player, msg("shop-disabled", "&eKey shop dinonaktifkan. Key hanya berasal dari event dan reward server."));
+            return;
+        }
         KeyDef key = keys.get(keyId);
         if (key == null) return;
         int max = getConfig().getInt("settings.max-shop-amount", 64);
@@ -862,6 +941,64 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         return list.get(0);
     }
 
+    private boolean isShopEnabled() {
+        return getConfig().getBoolean("shop.enabled", false)
+                && getConfig().getBoolean("economy.enabled", false);
+    }
+
+    private boolean isSafeRewardDisplay(String display) {
+        String value = plain(display).toLowerCase(Locale.ROOT);
+        return !value.contains("zonk") && !value.contains("empty pouch") && !value.contains("torn ticket");
+    }
+
+    private boolean isSafeRewardCommand(String command) {
+        String value = command == null ? "" : command.trim();
+        if (value.toLowerCase(Locale.ROOT).contains("zonk")) return false;
+        String[] parts = value.split("\\s+");
+        if (parts.length >= 4
+                && (parts[0].equalsIgnoreCase("eco") || parts[0].equalsIgnoreCase("essentials:eco"))
+                && parts[1].equalsIgnoreCase("give")) {
+            try {
+                return Double.parseDouble(parts[3]) <= 10_000.0D;
+            } catch (NumberFormatException ignored) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void applyRewardEnchantments(ItemStack item, Object raw) {
+        if (!(raw instanceof List<?> list)) return;
+        for (Object entry : list) {
+            String[] parts = String.valueOf(entry).split(":", 2);
+            String name = parts[0].trim();
+            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase(Locale.ROOT)));
+            if (enchantment == null) enchantment = Enchantment.getByName(name.toUpperCase(Locale.ROOT));
+            if (enchantment == null) continue;
+            int level = parts.length == 2 ? Math.max(1, parse(parts[1].trim())) : 1;
+            item.addUnsafeEnchantment(enchantment, level);
+        }
+    }
+
+    private double rarityChance(CrateDef crate, String rarity) {
+        double total = crate.rarityChances.values().stream().mapToDouble(value -> Math.max(0.0D, value)).sum();
+        if (total <= 0.0D) return 0.0D;
+        return Math.max(0.0D, crate.rarityChances.getOrDefault(normalizeRarity(rarity), 0.0D)) / total;
+    }
+
+    private double rewardChance(CrateDef crate, Reward reward) {
+        List<Reward> tier = rewards.getOrDefault(crate.id, List.of()).stream()
+                .filter(candidate -> normalizeRarity(candidate.rarity).equals(normalizeRarity(reward.rarity)))
+                .toList();
+        int totalWeight = tier.stream().mapToInt(candidate -> Math.max(1, candidate.weight)).sum();
+        if (totalWeight <= 0) return 0.0D;
+        return rarityChance(crate, reward.rarity) * Math.max(1, reward.weight) / totalWeight;
+    }
+
+    private String percent(double probability) {
+        return String.format(Locale.US, "%.3f%%", probability * 100.0D);
+    }
+
     private String chooseRarity(Map<String, Double> chances) {
         double total = chances.values().stream().mapToDouble(value -> Math.max(0.0D, value)).sum();
         if (total <= 0.0D) return "uncommon";
@@ -889,7 +1026,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private void noKey(Player player, Location loc, CrateDef crate) {
         KeyDef key = keys.get(crate.key);
         String keyName = key == null ? crate.key : plain(key.name);
-        notifyCrate(player, "no-key", crate, msg("no-key", "&cKamu butuh &f%key_name% &cuntuk membuka crate ini. Beli di &f/key shop&c.").replace("%key_name%", keyName), "&cButuh Key", "&fPegang " + keyName + " &7untuk membuka crate ini.");
+        notifyCrate(player, "no-key", crate, msg("no-key", "&cKamu butuh &f%key_name%&c. Key berasal dari event dan reward server. Lihat hadiah di &f/key rewards&c.").replace("%key_name%", keyName), "&cButuh Key", "&fPegang " + keyName + " &7untuk membuka crate ini.");
         knock(player, loc);
     }
 
