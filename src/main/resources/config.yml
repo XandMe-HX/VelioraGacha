@@ -236,8 +236,8 @@ editor:
 no-key:
   knockback:
     enabled: true
-    strength: 0.65
-    y: 0.25
+    strength: 1.65
+    y: 1.25
   sound: ENTITY_VILLAGER_NO
 
 crates:
