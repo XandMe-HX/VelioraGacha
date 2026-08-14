@@ -16,7 +16,7 @@ keys:
     prefix: '&c'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 1000
+    price: 500
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -32,7 +32,7 @@ keys:
     prefix: '&b'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 1000
+    price: 500
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -48,7 +48,7 @@ keys:
     prefix: '&e'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 3000
+    price: 1000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -64,7 +64,7 @@ keys:
     prefix: '&d'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 1500
+    price: 1000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
@@ -80,7 +80,7 @@ keys:
     prefix: '&f'
     suffix: ''
     material: TRIPWIRE_HOOK
-    price: 3000
+    price: 1000
     glow: true
     lore:
       - '&8Veliora Gardens Gacha Key'
