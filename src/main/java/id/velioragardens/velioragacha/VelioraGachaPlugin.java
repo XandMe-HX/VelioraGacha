@@ -1485,9 +1485,21 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         gradient.appendTail(gradientOut);
         Matcher hex = HEX.matcher(gradientOut.toString());
         StringBuffer hexOut = new StringBuffer();
-        while (hex.find()) hex.appendReplacement(hexOut, Matcher.quoteReplacement(ChatColor.of("#" + hex.group(1)).toString()));
+        while (hex.find()) hex.appendReplacement(hexOut, Matcher.quoteReplacement(legacyHex(hex.group(1))));
         hex.appendTail(hexOut);
         return ChatColor.translateAlternateColorCodes('&', hexOut.toString());
+    }
+
+    private String legacyHex(String hex) {
+        String value = hex == null ? "FFFFFF" : hex.replace("#", "");
+        if (!value.matches("[A-Fa-f0-9]{6}")) {
+            return "";
+        }
+        StringBuilder out = new StringBuilder("\u00A7x");
+        for (char character : value.toCharArray()) {
+            out.append('\u00A7').append(character);
+        }
+        return out.toString();
     }
 
     private String applyGradient(String from, String to, String text) {
@@ -1500,7 +1512,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             int red = (int) (((start >> 16 & 255) * (1D - ratio)) + ((end >> 16 & 255) * ratio));
             int green = (int) (((start >> 8 & 255) * (1D - ratio)) + ((end >> 8 & 255) * ratio));
             int blue = (int) (((start & 255) * (1D - ratio)) + ((end & 255) * ratio));
-            out.append(ChatColor.of(String.format("#%02X%02X%02X", red, green, blue))).append(text.charAt(i));
+            out.append(legacyHex(String.format("%02X%02X%02X", red, green, blue))).append(text.charAt(i));
         }
         return out.toString();
     }
