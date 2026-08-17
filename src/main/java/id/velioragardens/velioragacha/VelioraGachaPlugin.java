@@ -35,12 +35,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class VelioraGachaPlugin extends JavaPlugin implements Listener, CommandExecutor, TabCompleter {
     private static final List<String> PLAYER_ORDER = List.of("shinjuore", "tenshiyoro", "kinzai", "kagekari", "kouzan");
     private static final List<String> RARITIES = List.of("uncommon", "common", "rare", "epic", "mythic");
     private static final Map<String, String> RARITY_ALIAS = Map.of("legendary", "mythic", "legend", "mythic", "mythical", "mythic");
     private static final List<String> EFFECTS = List.of("fire_spiral", "cherry_spiral", "end_rod_spiral", "oak_leaf_spiral", "bubble_spiral", "bonemeal_star_spiral", "soul_fire_spiral", "sparkle_spiral", "portal_spiral", "crit_spiral", "note_spiral");
+    private static final Pattern GRADIENT = Pattern.compile("<gradient:#([A-Fa-f0-9]{6}):#([A-Fa-f0-9]{6})>(.*?)</gradient>");
+    private static final Pattern HEX = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
     private final Map<String, KeyDef> keys = new LinkedHashMap<>();
     private final Map<String, CrateDef> crates = new LinkedHashMap<>();
@@ -71,12 +75,16 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         saveMissing("rewards-gui.yml");
         saveMissing("examples.yml");
         saveMissing("rewards-examples.yml");
+        migrateHologramConfig();
         hookVault();
         loadAll();
         cleanupHolograms();
-        spawnAllHolograms();
-        startEffects();
-        startHologramUpdater();
+        // Tunggu world selesai aktif agar TextDisplay tidak hilang saat startup/reload chunk.
+        Bukkit.getScheduler().runTask(this, () -> {
+            spawnAllHolograms();
+            startEffects();
+            startHologramUpdater();
+        });
         Objects.requireNonNull(getCommand("vgcreate")).setExecutor(this);
         Objects.requireNonNull(getCommand("vgcreate")).setTabCompleter(this);
         Objects.requireNonNull(getCommand("key")).setExecutor(this);
@@ -95,6 +103,27 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private void saveMissing(String name) {
         File file = new File(getDataFolder(), name);
         if (!file.exists()) saveResource(name, false);
+    }
+
+    private void migrateHologramConfig() {
+        boolean changed = false;
+        if (!getConfig().contains("hologram.page-duration-ticks")) {
+            getConfig().set("hologram.page-duration-ticks", 120);
+            getConfig().set("hologram.view-range", 64);
+            getConfig().set("hologram.see-through", true);
+            getConfig().set("hologram.shadowed", true);
+            if (getConfig().getMapList("hologram.pages").size() < 2) {
+                getConfig().set("hologram.pages.1.lines", List.of(
+                        "&b%crate_display%",
+                        "&7Key dibutuhkan: &f%key_short_name%",
+                        "&7Key kamu: &b%keys%",
+                        "",
+                        "&fKlik crate sambil memegang key",
+                        "&7/key rewards untuk daftar hadiah"));
+            }
+            changed = true;
+        }
+        if (changed) saveConfig();
     }
 
     private void hookVault() {
@@ -289,6 +318,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             }
             case "givekey" -> giveKey(sender, args);
             case "effecttest" -> effectTest(sender, args);
+            case "hologram", "holo" -> hologramCommand(sender, args);
             case "debug" -> {
                 if (!sender.hasPermission("velioragacha.debug") && !sender.hasPermission("velioragacha.admin")) return deny(sender);
                 sendDebug(sender);
@@ -300,6 +330,28 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             default -> msg(sender, "&d/vgcreate gui &7| &d/vgcreate givekey <player|*> <key> <amount> &7| &d/vgcreate effecttest <crate> &7| &d/vgcreate reload/debug/dump");
         }
         return true;
+    }
+
+    private void hologramCommand(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("velioragacha.debug") && !sender.hasPermission("velioragacha.admin")) {
+            deny(sender);
+            return;
+        }
+        String action = args.length < 2 ? "status" : args[1].toLowerCase(Locale.ROOT);
+        if (action.equals("respawn")) {
+            removeHolograms();
+            cleanupHolograms();
+            spawnAllHolograms();
+            msg(sender, "&bHologram crate dibuat ulang. &7Aktif: &f" + holograms.size());
+            return;
+        }
+        if (action.equals("status")) {
+            msg(sender, "&8[&bVelioraGacha&8] &fHologram: &a" + getConfig().getBoolean("hologram.enabled", true)
+                    + " &7| Lokasi: &f" + locations.size() + " &7| Aktif: &f" + holograms.size()
+                    + " &7| Halaman: &f" + hologramPages().size());
+            return;
+        }
+        msg(sender, "&f/vgcreate hologram status &7| &f/vgcreate hologram respawn");
     }
 
     private boolean giveKey(CommandSender sender, String[] args) {
@@ -1117,7 +1169,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             display.addScoreboardTag("velioragacha_hologram");
             display.setPersistent(false);
             display.setGravity(false);
-            display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "FIXED")));
+            display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "CENTER")));
+            display.setViewRange((float) Math.max(16D, getConfig().getDouble("hologram.view-range", 64D)));
+            display.setSeeThrough(getConfig().getBoolean("hologram.see-through", true));
+            display.setShadowed(getConfig().getBoolean("hologram.shadowed", true));
             display.setText(color(holoText(crate, loc)));
             holograms.put(key, display.getUniqueId());
         } catch (Throwable throwable) {
@@ -1141,22 +1196,29 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     }
 
     private List<String> hologramLines() {
-        List<Map<?, ?>> pages = getConfig().getMapList("hologram.pages");
-        if (!pages.isEmpty()) {
-            Object rawLines = pages.get(0).get("lines");
-            if (rawLines instanceof List<?> list) {
-                List<String> out = new ArrayList<>();
-                for (Object row : list) {
-                    if (row instanceof Map<?, ?> map) {
-                        Object content = map.get("content");
-                        out.add(content == null ? "" : String.valueOf(content));
-                    } else out.add(String.valueOf(row));
-                }
-                if (!out.isEmpty()) return out;
+        List<List<String>> pages = hologramPages();
+        long duration = Math.max(20L, getConfig().getLong("hologram.page-duration-ticks", 120L));
+        int page = pages.size() <= 1 ? 0 : (int) ((System.currentTimeMillis() / 50L / duration) % pages.size());
+        return pages.get(page);
+    }
+
+    private List<List<String>> hologramPages() {
+        List<List<String>> pages = new ArrayList<>();
+        for (Map<?, ?> page : getConfig().getMapList("hologram.pages")) {
+            Object rawLines = page.get("lines");
+            if (!(rawLines instanceof List<?> list)) continue;
+            List<String> lines = new ArrayList<>();
+            for (Object row : list) {
+                if (row instanceof Map<?, ?> map) {
+                    Object content = map.get("content");
+                    lines.add(content == null ? "" : String.valueOf(content));
+                } else lines.add(String.valueOf(row));
             }
+            if (!lines.isEmpty()) pages.add(List.copyOf(lines));
         }
-        List<String> lines = getConfig().getStringList("hologram.lines");
-        return lines.isEmpty() ? List.of("&d%crate_display% Crate", "&fKeys: %keys%") : lines;
+        if (!pages.isEmpty()) return List.copyOf(pages);
+        List<String> fallback = getConfig().getStringList("hologram.lines");
+        return List.of(fallback.isEmpty() ? List.of("&b%crate_display% Crate", "&fKeys: %keys%") : fallback);
     }
 
     private Player nearest(Location location) {
@@ -1177,8 +1239,12 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
                 for (Map.Entry<String, CrateLoc> entry : locations.entrySet()) {
                     Entity entity = entity(holograms.get(entry.getKey()));
                     CrateDef crate = crates.get(entry.getValue().crate);
+                    if (!(entity instanceof TextDisplay) && crate != null) {
+                        spawnHologram(entry.getKey(), entry.getValue());
+                        continue;
+                    }
                     if (entity instanceof TextDisplay display && crate != null) {
-                        display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "FIXED")));
+                        display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "CENTER")));
                         display.setText(color(holoText(crate, entry.getValue())));
                     }
                 }
@@ -1406,12 +1472,38 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private boolean canFitKey(PlayerInventory inv, KeyDef key, int amount) { int remaining = amount; ItemStack sample = createKeyItem(key, 1); for (ItemStack current : inv.getStorageContents()) { if (current == null || current.getType() == Material.AIR) remaining -= 64; else if (current.isSimilar(sample)) remaining -= Math.max(0, current.getMaxStackSize() - current.getAmount()); if (remaining <= 0) return true; } return false; }
     private void giveOrDrop(Player player, ItemStack item) { player.getInventory().addItem(item).values().forEach(left -> player.getWorld().dropItemNaturally(player.getLocation(), left)); }
     private String pdc(ItemStack item, NamespacedKey key) { if (item == null || !item.hasItemMeta()) return null; return item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING); }
-    private Entity entity(UUID uuid) { if (uuid == null) return null; for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) if (entity.getUniqueId().equals(uuid)) return entity; return null; }
+    private Entity entity(UUID uuid) { return uuid == null ? null : Bukkit.getEntity(uuid); }
     private Material effectIcon(String effect) { return switch (effect) { case "fire_spiral" -> Material.BLAZE_POWDER; case "cherry_spiral" -> Material.CHERRY_LEAVES; case "end_rod_spiral" -> Material.END_ROD; case "oak_leaf_spiral" -> Material.OAK_LEAVES; case "bubble_spiral" -> Material.WATER_BUCKET; case "bonemeal_star_spiral" -> Material.BONE_MEAL; case "soul_fire_spiral" -> Material.SOUL_TORCH; case "portal_spiral" -> Material.ENDER_EYE; case "crit_spiral" -> Material.IRON_SWORD; case "note_spiral" -> Material.NOTE_BLOCK; default -> Material.NETHER_STAR; }; }
     private Material parseMaterial(String name, Material fallback, String action) { Material material = name == null ? null : Material.matchMaterial(name.toUpperCase(Locale.ROOT)); if (material == null) { logWarningOnce("mat-" + action + "-" + name, "Invalid material for " + action + ": " + name + ", fallback " + fallback); return fallback; } return material; }
     private Particle particle(String name, Particle fallback) { try { return Particle.valueOf(String.valueOf(name).toUpperCase(Locale.ROOT)); } catch (Throwable ignored) { return fallback; } }
     private Sound sound(String name, Sound fallback) { try { return Sound.valueOf(String.valueOf(name).toUpperCase(Locale.ROOT)); } catch (Throwable ignored) { return fallback; } }
-    private String color(String text) { return ChatColor.translateAlternateColorCodes('&', (text == null ? "" : text).replaceAll("<#([A-Fa-f0-9]{6})>", "").replaceAll("</#([A-Fa-f0-9]{6})>", "")); }
+    private String color(String text) {
+        String input = text == null ? "" : text;
+        Matcher gradient = GRADIENT.matcher(input);
+        StringBuffer gradientOut = new StringBuffer();
+        while (gradient.find()) gradient.appendReplacement(gradientOut, Matcher.quoteReplacement(applyGradient(gradient.group(1), gradient.group(2), gradient.group(3))));
+        gradient.appendTail(gradientOut);
+        Matcher hex = HEX.matcher(gradientOut.toString());
+        StringBuffer hexOut = new StringBuffer();
+        while (hex.find()) hex.appendReplacement(hexOut, Matcher.quoteReplacement(ChatColor.of("#" + hex.group(1)).toString()));
+        hex.appendTail(hexOut);
+        return ChatColor.translateAlternateColorCodes('&', hexOut.toString());
+    }
+
+    private String applyGradient(String from, String to, String text) {
+        if (text == null || text.isEmpty()) return "";
+        int start = Integer.parseInt(from, 16), end = Integer.parseInt(to, 16);
+        StringBuilder out = new StringBuilder();
+        int visible = Math.max(1, text.length() - 1);
+        for (int i = 0; i < text.length(); i++) {
+            double ratio = (double) i / visible;
+            int red = (int) (((start >> 16 & 255) * (1D - ratio)) + ((end >> 16 & 255) * ratio));
+            int green = (int) (((start >> 8 & 255) * (1D - ratio)) + ((end >> 8 & 255) * ratio));
+            int blue = (int) (((start & 255) * (1D - ratio)) + ((end & 255) * ratio));
+            out.append(ChatColor.of(String.format("#%02X%02X%02X", red, green, blue))).append(text.charAt(i));
+        }
+        return out.toString();
+    }
     private String plain(String text) { return ChatColor.stripColor(color(text)); }
     private String displayName(ItemStack item) { return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name() + " x" + item.getAmount(); }
     private String cash(double value) { return moneyFormat.format(value).replace(',', '.'); }
