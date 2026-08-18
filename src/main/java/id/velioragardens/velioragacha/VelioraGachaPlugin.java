@@ -51,14 +51,14 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private final Map<String, CrateLoc> locations = new LinkedHashMap<>();
     private final Map<String, List<Reward>> rewards = new HashMap<>();
     private final Map<UUID, Opening> openings = new HashMap<>();
-    private final Map<String, UUID> holograms = new HashMap<>();
+    private final Map<String, List<UUID>> holograms = new HashMap<>();
     private final Map<String, Long> messageCooldown = new HashMap<>();
     private final Set<String> warningOnce = new HashSet<>();
     private final Random random = new Random();
 
     private File cratesFile, keysFile, rewardsFile, rewardsGuiFile, logsDir;
     private FileConfiguration cratesYml, keysYml, rewardsYml, rewardsGuiYml;
-    private NamespacedKey crateKey, keyKey;
+    private NamespacedKey crateKey, keyKey, hologramOwnerKey;
     private Economy economy;
     private DecimalFormat moneyFormat = new DecimalFormat("#,###");
     private BukkitTask effectTask, hologramTask;
@@ -66,6 +66,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     @Override public void onEnable() {
         crateKey = new NamespacedKey(this, "velioragacha_crate_id");
         keyKey = new NamespacedKey(this, "velioragacha_key_id");
+        hologramOwnerKey = new NamespacedKey(this, "hologram_owner");
         logsDir = new File(getDataFolder(), "logs");
         if (!logsDir.exists()) logsDir.mkdirs();
         saveMissing("config.yml");
@@ -107,20 +108,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
 
     private void migrateHologramConfig() {
         boolean changed = false;
-        if (!getConfig().contains("hologram.page-duration-ticks")) {
-            getConfig().set("hologram.page-duration-ticks", 120);
+        if (!getConfig().contains("hologram.view-range")) {
             getConfig().set("hologram.view-range", 64);
             getConfig().set("hologram.see-through", true);
             getConfig().set("hologram.shadowed", true);
-            if (getConfig().getMapList("hologram.pages").size() < 2) {
-                getConfig().set("hologram.pages.1.lines", List.of(
-                        "&b%crate_display%",
-                        "&7Key dibutuhkan: &f%key_short_name%",
-                        "&7Key kamu: &b%keys%",
-                        "",
-                        "&fKlik crate sambil memegang key",
-                        "&7/key rewards untuk daftar hadiah"));
-            }
             changed = true;
         }
         if (changed) saveConfig();
@@ -349,7 +340,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         if (action.equals("status")) {
             msg(sender, "&8[&bVelioraGacha&8] &fHologram: &a" + getConfig().getBoolean("hologram.enabled", true)
                     + " &7| Lokasi: &f" + locations.size() + " &7| Aktif: &f" + holograms.size()
-                    + " &7| Halaman: &f" + hologramPages().size());
+                    + " &7| Mode: &fPERMANEN");
             return;
         }
         msg(sender, "&f/vgcreate hologram status &7| &f/vgcreate hologram respawn");
@@ -1199,17 +1190,26 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
             CrateDef crate = crates.get(loc.crate);
             World world = Bukkit.getWorld(loc.world);
             if (world == null || crate == null || !crate.hologram || !getConfig().getBoolean("hologram.enabled", true)) return;
-            Location location = new Location(world, loc.x + .5, loc.y + getConfig().getDouble("hologram.y-offset", 2.35), loc.z + .5);
-            TextDisplay display = world.spawn(location, TextDisplay.class);
-            display.addScoreboardTag("velioragacha_hologram");
-            display.setPersistent(false);
-            display.setGravity(false);
-            display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "CENTER")));
-            display.setViewRange((float) Math.max(16D, getConfig().getDouble("hologram.view-range", 64D)));
-            display.setSeeThrough(getConfig().getBoolean("hologram.see-through", true));
-            display.setShadowed(getConfig().getBoolean("hologram.shadowed", true));
-            display.setText(color(holoText(crate, loc)));
-            holograms.put(key, display.getUniqueId());
+            List<HologramLine> lines = hologramLines(crate);
+            double y = loc.y + getConfig().getDouble("hologram.y-offset", 2.65D);
+            List<UUID> entities = new ArrayList<>();
+            for (HologramLine line : lines) {
+                Location location = new Location(world, loc.x + .5D, y, loc.z + .5D);
+                TextDisplay display = world.spawn(location, TextDisplay.class);
+                display.addScoreboardTag("velioragacha_hologram");
+                display.getPersistentDataContainer().set(hologramOwnerKey, PersistentDataType.STRING, key);
+                display.setPersistent(true);
+                display.setGravity(false);
+                display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "CENTER")));
+                display.setAlignment(TextDisplay.TextAlignment.CENTER);
+                display.setViewRange((float) Math.max(16D, getConfig().getDouble("hologram.view-range", 64D)));
+                display.setSeeThrough(getConfig().getBoolean("hologram.see-through", true));
+                display.setShadowed(getConfig().getBoolean("hologram.shadowed", true));
+                display.setText(color(holoText(crate, loc, line.content())));
+                entities.add(display.getUniqueId());
+                y -= Math.max(0.05D, line.height());
+            }
+            holograms.put(key, List.copyOf(entities));
         } catch (Throwable throwable) {
             logError("spawn hologram", null, loc == null ? null : loc.crate, throwable);
         }
@@ -1220,40 +1220,38 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         catch (Throwable ignored) { return Display.Billboard.FIXED; }
     }
 
-    private String holoText(CrateDef crate, CrateLoc loc) {
+    private String holoText(CrateDef crate, CrateLoc loc, String source) {
         String keysText = "-";
         World world = Bukkit.getWorld(loc.world);
         Player nearest = world == null ? null : nearest(new Location(world, loc.x + .5, loc.y + .5, loc.z + .5));
         if (nearest != null) keysText = String.valueOf(countPhysicalKeys(nearest, crate.key));
         KeyDef key = keys.get(crate.key);
         String keyName = key == null ? crate.key : plain(key.name);
-        return String.join("\n", hologramLines()).replace("%crate%", crate.id).replace("%crate_display%", crate.name).replace("%crate_prefix%", crate.prefix).replace("%crate_suffix%", crate.suffix).replace("%key%", crate.key).replace("%key_name%", keyName).replace("%key_short_name%", key == null ? shortKeyName(keyName) : key.shortName).replace("%keys%", keysText).replace("%level_reward%", crate.level).replace("%permission_open%", "velioragacha.open").replace("%permission_shop%", "velioragacha.shop");
+        return source.replace("%crate%", crate.id).replace("%crate_display%", crate.name).replace("%crate_prefix%", crate.prefix).replace("%crate_suffix%", crate.suffix).replace("%key%", crate.key).replace("%key_name%", keyName).replace("%key_short_name%", key == null ? shortKeyName(keyName) : key.shortName).replace("%keys%", keysText).replace("%level_reward%", crate.level).replace("%permission_open%", "velioragacha.open").replace("%permission_shop%", "velioragacha.shop");
     }
 
-    private List<String> hologramLines() {
-        List<List<String>> pages = hologramPages();
-        long duration = Math.max(20L, getConfig().getLong("hologram.page-duration-ticks", 120L));
-        int page = pages.size() <= 1 ? 0 : (int) ((System.currentTimeMillis() / 50L / duration) % pages.size());
-        return pages.get(page);
-    }
-
-    private List<List<String>> hologramPages() {
-        List<List<String>> pages = new ArrayList<>();
-        for (Map<?, ?> page : getConfig().getMapList("hologram.pages")) {
+    private List<HologramLine> hologramLines(CrateDef crate) {
+        List<Map<?, ?>> configured = new ArrayList<>();
+        for (Map<?, ?> page : cratesYml.getMapList("crates." + crate.id + ".hologram.pages")) configured.add(page);
+        if (configured.isEmpty()) for (Map<?, ?> page : getConfig().getMapList("hologram.pages")) configured.add(page);
+        // "pages" mengikuti struktur DecentHolograms, tetapi satu crate selalu memakai satu page permanen.
+        for (Map<?, ?> page : configured) {
             Object rawLines = page.get("lines");
             if (!(rawLines instanceof List<?> list)) continue;
-            List<String> lines = new ArrayList<>();
+            List<HologramLine> lines = new ArrayList<>();
             for (Object row : list) {
                 if (row instanceof Map<?, ?> map) {
                     Object content = map.get("content");
-                    lines.add(content == null ? "" : String.valueOf(content));
-                } else lines.add(String.valueOf(row));
+                    double height = decimal(map.get("height"), getConfig().getDouble("hologram.line-spacing", 0.30D));
+                    lines.add(new HologramLine(content == null ? "" : String.valueOf(content), height));
+                } else lines.add(new HologramLine(String.valueOf(row), getConfig().getDouble("hologram.line-spacing", 0.30D)));
             }
-            if (!lines.isEmpty()) pages.add(List.copyOf(lines));
+            if (!lines.isEmpty()) return List.copyOf(lines);
         }
-        if (!pages.isEmpty()) return List.copyOf(pages);
         List<String> fallback = getConfig().getStringList("hologram.lines");
-        return List.of(fallback.isEmpty() ? List.of("&b%crate_display% Crate", "&fKeys: %keys%") : fallback);
+        if (fallback.isEmpty()) fallback = List.of("&b%crate_display% Crate", "&fKeys: %keys%");
+        double spacing = getConfig().getDouble("hologram.line-spacing", 0.30D);
+        return fallback.stream().map(line -> new HologramLine(line, spacing)).toList();
     }
 
     private Player nearest(Location location) {
@@ -1272,15 +1270,18 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         hologramTask = new BukkitRunnable() {
             @Override public void run() {
                 for (Map.Entry<String, CrateLoc> entry : locations.entrySet()) {
-                    Entity entity = entity(holograms.get(entry.getKey()));
                     CrateDef crate = crates.get(entry.getValue().crate);
-                    if (!(entity instanceof TextDisplay) && crate != null) {
+                    List<HologramLine> lines = crate == null ? List.of() : hologramLines(crate);
+                    List<UUID> ids = holograms.getOrDefault(entry.getKey(), List.of());
+                    List<TextDisplay> displays = ids.stream().map(VelioraGachaPlugin.this::entity).filter(TextDisplay.class::isInstance).map(TextDisplay.class::cast).toList();
+                    if (crate != null && (displays.size() != ids.size() || displays.size() != lines.size())) {
                         spawnHologram(entry.getKey(), entry.getValue());
                         continue;
                     }
-                    if (entity instanceof TextDisplay display && crate != null) {
+                    if (crate != null) for (int index = 0; index < displays.size(); index++) {
+                        TextDisplay display = displays.get(index);
                         display.setBillboard(parseBillboard(getConfig().getString("hologram.billboard", "CENTER")));
-                        display.setText(color(holoText(crate, entry.getValue())));
+                        display.setText(color(holoText(crate, entry.getValue(), lines.get(index).content())));
                     }
                 }
             }
@@ -1289,7 +1290,15 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
 
     private void restartHologramUpdater() { if (hologramTask != null) hologramTask.cancel(); startHologramUpdater(); }
     private void refreshCrateHolograms(String crateId) { locations.forEach((key, loc) -> { if (loc.crate.equals(crateId)) spawnHologram(key, loc); }); }
-    private void removeHologram(String key) { UUID uuid = holograms.remove(key); Entity entity = entity(uuid); if (entity != null) entity.remove(); }
+    private void removeHologram(String key) {
+        List<UUID> ids = holograms.remove(key);
+        if (ids != null) for (UUID uuid : ids) { Entity entity = entity(uuid); if (entity != null) entity.remove(); }
+        for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) {
+            if (!entity.getScoreboardTags().contains("velioragacha_hologram")) continue;
+            String owner = entity.getPersistentDataContainer().get(hologramOwnerKey, PersistentDataType.STRING);
+            if (key.equals(owner)) entity.remove();
+        }
+    }
     private void removeHolograms() { new ArrayList<>(holograms.keySet()).forEach(this::removeHologram); }
     private void cleanupHolograms() { for (World world : Bukkit.getWorlds()) for (Entity entity : world.getEntities()) if (entity.getScoreboardTags().contains("velioragacha_hologram")) entity.remove(); }
 
@@ -1565,6 +1574,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private Object val(Map<?, ?> map, String key) { return map.get(key); }
     private String str(Map<?, ?> map, String key, String fallback) { Object value = val(map, key); return value == null ? fallback : String.valueOf(value); }
     private int num(Map<?, ?> map, String key, int fallback) { try { return Integer.parseInt(String.valueOf(val(map, key))); } catch (Exception ignored) { return fallback; } }
+    private double decimal(Object value, double fallback) { try { return Double.parseDouble(String.valueOf(value)); } catch (Exception ignored) { return fallback; } }
     private List<String> commands(Map<?, ?> map) { List<String> out = new ArrayList<>(); Object one = val(map, "command"), many = val(map, "commands"); if (one != null && !String.valueOf(one).isBlank()) out.add(String.valueOf(one)); if (many instanceof List<?> list) for (Object o : list) if (o != null && !String.valueOf(o).isBlank()) out.add(String.valueOf(o)); return out; }
     private String msg(String path, String fallback) { return getConfig().getString("messages." + path, fallback).replace("%prefix%", getConfig().getString("settings.prefix", "&8[&dVelioraGacha&8] ")); }
     private void msg(CommandSender sender, String message) { sender.sendMessage(color(message)); }
@@ -1575,6 +1585,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private record KeyDef(String id, String name, String shortName, String prefix, String suffix, Material icon, double price, boolean glow, List<String> lore) { }
     private record CrateDef(String id, String name, Material block, String key, String effect, String level, boolean hologram, String prefix, String suffix, Map<String, Double> rarityChances) { }
     private record CrateLoc(String crate, String world, int x, int y, int z) { }
+    private record HologramLine(String content, double height) { }
     private record Reward(RewardType type, String display, Material material, int amount, int weight, List<String> commands, ItemStack item, String rarity) { ItemStack icon() { ItemStack copy = item == null ? new ItemStack(material, Math.max(1, Math.min(64, amount))) : item.clone(); copy.setAmount(Math.max(1, Math.min(64, copy.getAmount()))); ItemMeta meta = copy.getItemMeta(); if (meta != null && !meta.hasDisplayName()) { meta.setDisplayName(ChatColor.WHITE + ChatColor.stripColor(display)); copy.setItemMeta(meta); } return copy; } }
     private record KeyCheck(KeyState state, ItemStack stack) { }
     private static final class Opening { final UUID player; final CrateDef crate; final Reward reward; final Inventory inventory; final boolean preview; BukkitTask task; boolean rewarded; Opening(UUID player, CrateDef crate, Reward reward, Inventory inventory, boolean preview) { this.player = player; this.crate = crate; this.reward = reward; this.inventory = inventory; this.preview = preview; } void cancel() { if (task != null) task.cancel(); } }

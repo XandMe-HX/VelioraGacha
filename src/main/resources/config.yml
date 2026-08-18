@@ -218,29 +218,30 @@ hologram:
   billboard: CENTER
   line-spacing: 0.30
   update-ticks: 40
-  page-duration-ticks: 120
   nearest-player-radius: 8
   view-range: 64
   see-through: true
   shadowed: true
 
-  # Berganti halaman otomatis, seperti konsep page di DecentHolograms.
+  # Satu page adalah satu kelompok hologram permanen. Tidak berganti otomatis.
   pages:
     - lines:
-        - content: '<gradient:#45E8FF:#2B78FF>%crate_display%</gradient>'
-        - content: '&3Veliora Gacha Crate'
+        - content: '%crate_prefix%&l%crate_display%%crate_suffix%'
+          height: 0.3
+        - content: '&7ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
+          height: 0.3
         - content: ''
-        - content: '&fBuka crate sambil memegang key'
-        - content: '&7Tier reward: &b%level_reward%'
+          height: 0.3
+        - content: '&fʙᴜᴋᴀ ᴄʀᴀᴛᴇ ɪɴɪ ᴅᴇɴɢᴀɴ &b%key_short_name% ᴋᴇʏ'
+          height: 0.3
+        - content: '&f★ ʟᴇᴠᴇʟ ʀᴇᴡᴀʀᴅ: &b%level_reward%'
+          height: 0.3
+        - content: '&f★ ᴋᴇʏ ᴛᴇʀᴅᴇᴋᴀᴛ: &b%keys%'
+          height: 0.3
         - content: ''
-        - content: '&eKlik crate untuk membuka'
-    - lines:
-        - content: '<gradient:#45E8FF:#2B78FF>Info Key</gradient>'
-        - content: '&fKey dibutuhkan: &b%key_short_name%'
-        - content: '&fKey kamu: &b%keys%'
-        - content: ''
-        - content: '&7Gunakan &f/key rewards'
-        - content: '&7untuk melihat daftar hadiah'
+          height: 0.3
+        - content: '&7Klik crate untuk membuka hadiah'
+          height: 0.3
 
   # Fallback untuk config lama.
   lines:
