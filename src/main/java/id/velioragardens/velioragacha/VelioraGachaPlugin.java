@@ -164,7 +164,8 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         for (String id : root.getKeys(false)) {
             String path = "keys." + id;
             String display = keysYml.getString(path + ".display-name", id);
-            tmp.put(normal(id), new KeyDef(normal(id), display, keysYml.getString(path + ".short-name", shortKeyName(display)), keysYml.getString(path + ".prefix", ""), keysYml.getString(path + ".suffix", ""), parseMaterial(keysYml.getString(path + ".material"), Material.TRIPWIRE_HOOK, "key material " + id), keysYml.getDouble(path + ".price", 150000.0D), keysYml.getBoolean(path + ".glow", true), keysYml.getStringList(path + ".lore")));
+            double price = boundedShopPrice(keysYml.getDouble(path + ".price", 500.0D));
+            tmp.put(normal(id), new KeyDef(normal(id), display, keysYml.getString(path + ".short-name", shortKeyName(display)), keysYml.getString(path + ".prefix", ""), keysYml.getString(path + ".suffix", ""), parseMaterial(keysYml.getString(path + ".material"), Material.TRIPWIRE_HOOK, "key material " + id), price, keysYml.getBoolean(path + ".glow", true), keysYml.getStringList(path + ".lore")));
         }
         for (String crate : PLAYER_ORDER) {
             String id = crate + "_key";
@@ -1553,6 +1554,10 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
     private String plain(String text) { return ChatColor.stripColor(color(text)); }
     private String displayName(ItemStack item) { return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : item.getType().name() + " x" + item.getAmount(); }
     private String cash(double value) { return moneyFormat.format(value).replace(',', '.'); }
+    private double boundedShopPrice(double value) {
+        if (value <= 0.0D) return 0.0D;
+        return Math.max(500.0D, Math.min(5000.0D, value));
+    }
     private int parse(String raw) { try { return Integer.parseInt(raw); } catch (Exception ignored) { return 0; } }
     private int invSize(int size) { int safe = Math.max(9, Math.min(54, size)); return ((safe + 8) / 9) * 9; }
     private String locKey(Location loc) { return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ(); }
