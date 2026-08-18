@@ -11,7 +11,7 @@ settings:
   test-crate-has-default-rewards: true
 
 economy:
-  enabled: false
+  enabled: true
   money-format: '#,###'
 
 messages:
@@ -173,55 +173,43 @@ effects:
 
 hologram:
   enabled: true
-  provider: AUTO
+  # Native TextDisplay Paper: tidak perlu DecentHolograms atau plugin hologram lain.
+  provider: TEXT_DISPLAY
   y-offset: 2.65
   billboard: CENTER
-  # FIXED / CENTER / VERTICAL / HORIZONTAL
   line-spacing: 0.30
   update-ticks: 40
+  page-duration-ticks: 120
   nearest-player-radius: 8
+  view-range: 64
+  see-through: true
+  shadowed: true
+
+  # Berganti halaman otomatis, seperti konsep page di DecentHolograms.
   pages:
     - lines:
-        - content: '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
-          height: 0.30
-        - content: '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
-          height: 0.30
+        - content: '<gradient:#45E8FF:#2B78FF>%crate_display%</gradient>'
+        - content: '&3Veliora Gacha Crate'
         - content: ''
-          height: 0.30
-        - content: '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ'
-          height: 0.30
-        - content: '&fᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ ʀᴇᴡᴀʀᴅ'
-          height: 0.30
-        - content: '%crate_prefix%ᴅᴀʀɪ ᴛɪᴇʀ %level_reward%%crate_suffix%'
-          height: 0.30
+        - content: '&fBuka crate sambil memegang key'
+        - content: '&7Tier reward: &b%level_reward%'
         - content: ''
-          height: 0.30
-        - content: '&f★ ᴋᴇʏ ᴅɪʙᴜᴛᴜʜᴋᴀɴ: %crate_prefix%%key_short_name%%crate_suffix%'
-          height: 0.30
-        - content: '&f★ ᴋᴇʏs ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
-          height: 0.30
+        - content: '&eKlik crate untuk membuka'
+    - lines:
+        - content: '<gradient:#45E8FF:#2B78FF>Info Key</gradient>'
+        - content: '&fKey dibutuhkan: &b%key_short_name%'
+        - content: '&fKey kamu: &b%keys%'
         - content: ''
-          height: 0.30
-        - content: '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
-          height: 0.30
-        - content: '&f/key rewards &7ᴜɴᴛᴜᴋ ᴍᴇʟɪʜᴀᴛ ʜᴀᴅɪᴀʜ'
-          height: 0.30
+        - content: '&7Gunakan &f/key rewards'
+        - content: '&7untuk melihat daftar hadiah'
+
+  # Fallback untuk config lama.
   lines:
-    - '%crate_prefix%&l✦ %crate_display% ✦%crate_suffix%'
-    - '&8ᴠᴇʟɪᴏʀᴀ ɢᴀᴄʜᴀ ᴄʀᴀᴛᴇ'
-    - ''
-    - '&fʙᴜᴋᴀ ᴘᴇᴛɪ ɪɴɪ ᴜɴᴛᴜᴋ'
-    - '&fᴍᴇɴᴅᴀᴘᴀᴛᴋᴀɴ ʀᴇᴡᴀʀᴅ'
-    - '%crate_prefix%ᴅᴀʀɪ ᴛɪᴇʀ %level_reward%%crate_suffix%'
-    - ''
-    - '&f★ ᴋᴇʏ ᴅɪʙᴜᴛᴜʜᴋᴀɴ: %crate_prefix%%key_short_name%%crate_suffix%'
-    - '&f★ ᴋᴇʏs ᴋᴀᴍᴜ: %crate_prefix%%keys% ᴋᴇʏs%crate_suffix%'
-    - ''
-    - '&eᴋʟɪᴋ ᴄʀᴀᴛᴇ sᴀᴍʙɪʟ ᴘᴇɢᴀɴɢ ᴋᴇʏ'
-    - '&f/key rewards &7ᴜɴᴛᴜᴋ ᴍᴇʟɪʜᴀᴛ ʜᴀᴅɪᴀʜ'
+    - '&b%crate_display%'
+    - '&fKey kamu: &b%keys%'
 
 shop:
-  enabled: false
+  enabled: true
   title: '&8Key Shop'
   quantity-title: '&8Beli %key%'
   filler: BLACK_STAINED_GLASS_PANE
@@ -236,8 +224,8 @@ editor:
 no-key:
   knockback:
     enabled: true
-    strength: 0.65
-    y: 0.25
+    strength: 1.65
+    y: 1.25
   sound: ENTITY_VILLAGER_NO
 
 crates:
