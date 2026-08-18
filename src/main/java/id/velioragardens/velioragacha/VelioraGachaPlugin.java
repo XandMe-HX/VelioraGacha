@@ -928,6 +928,7 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         if (!opening.preview) giveReward(player, opening.crate, opening.reward);
         Sound finishSound = sound(getConfig().getString("animation.result.sound", getConfig().getString("animation.sound-finish")), Sound.ENTITY_PLAYER_LEVELUP);
         player.playSound(player.getLocation(), finishSound, 1F, 1F);
+        if (!opening.preview) playRewardEffects(player, opening.reward);
         if (showResultScreen && player.getOpenInventory().getTopInventory().equals(opening.inventory)) renderResultScreen(opening.inventory, opening.crate, opening.reward);
         sendResultNotifications(player, opening);
     }
@@ -1019,17 +1020,50 @@ public final class VelioraGachaPlugin extends JavaPlugin implements Listener, Co
         return true;
     }
 
+    /**
+     * Supports a list or a simple YAML map. Full namespaced keys work for
+     * custom enchantments registered by plugins such as ExcellentEnchants.
+     * Rewards created in the GUI keep their complete ItemStack/PDC unchanged.
+     */
     private void applyRewardEnchantments(ItemStack item, Object raw) {
-        if (!(raw instanceof List<?> list)) return;
-        for (Object entry : list) {
-            String[] parts = String.valueOf(entry).split(":", 2);
+        List<String> entries = new ArrayList<>();
+        if (raw instanceof List<?> list) {
+            for (Object entry : list) entries.add(String.valueOf(entry));
+        } else if (raw instanceof Map<?, ?> map) {
+            for (Map.Entry<?, ?> entry : map.entrySet()) entries.add(entry.getKey() + ":" + entry.getValue());
+        } else if (raw != null) {
+            entries.add(String.valueOf(raw));
+        }
+
+        for (String entry : entries) {
+            String[] parts = entry.split(":", 2);
             String name = parts[0].trim();
-            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase(Locale.ROOT)));
-            if (enchantment == null) enchantment = Enchantment.getByName(name.toUpperCase(Locale.ROOT));
-            if (enchantment == null) continue;
             int level = parts.length == 2 ? Math.max(1, parse(parts[1].trim())) : 1;
+            NamespacedKey key = NamespacedKey.fromString(name.toLowerCase(Locale.ROOT));
+            if (key == null) key = NamespacedKey.minecraft(name.toLowerCase(Locale.ROOT));
+            Enchantment enchantment = Enchantment.getByKey(key);
+            if (enchantment == null) enchantment = Enchantment.getByName(name.toUpperCase(Locale.ROOT));
+            if (enchantment == null) {
+                logWarningOnce("unknown-enchant-" + name, "Unknown vanilla/custom enchantment ignored: " + name);
+                continue;
+            }
             item.addUnsafeEnchantment(enchantment, level);
         }
+    }
+
+    private void playRewardEffects(Player player, Reward reward) {
+        if (!getConfig().getBoolean("reward-effects.enabled", true)) return;
+        ConfigurationSection section = getConfig().getConfigurationSection("reward-effects." + normalizeRarity(reward.rarity));
+        if (section == null) return;
+        try {
+            Particle particle = Particle.valueOf(section.getString("particle", "END_ROD").toUpperCase(Locale.ROOT));
+            int count = Math.max(0, section.getInt("count", 24));
+            double spread = Math.max(0.0D, section.getDouble("spread", 0.6D));
+            player.getWorld().spawnParticle(particle, player.getLocation().add(0, 1.0D, 0), count, spread, 0.7D, spread, 0.02D);
+        } catch (IllegalArgumentException ignored) { }
+        Sound configured = sound(section.getString("sound", "ENTITY_PLAYER_LEVELUP"), Sound.ENTITY_PLAYER_LEVELUP);
+        player.playSound(player.getLocation(), configured, 1.0F, (float) section.getDouble("pitch", 1.0D));
+        if (section.getBoolean("lightning-effect", false)) player.getWorld().strikeLightningEffect(player.getLocation());
     }
 
     private double rarityChance(CrateDef crate, String rarity) {
