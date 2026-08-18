@@ -607,6 +607,32 @@ rewards:
           - DENSITY:4
           - BREACH:3
           - UNBREAKING:3
+      - display: "&b&lDiamond Spear"
+        amount: 1
+        material: DIAMOND_SPEAR
+        weight: 4
+        type: ITEM
+        lore:
+          - "&7Tier: &cHard"
+          - "&7Tombak cepat dengan enchant sedang."
+        enchantments:
+          SHARPNESS: 4
+          UNBREAKING: 3
+          LUNGE: 1
+      - display: "&d&lNetherite Spear"
+        amount: 1
+        material: NETHERITE_SPEAR
+        weight: 1
+        type: ITEM
+        lore:
+          - "&7Tier: &5Impossible"
+          - "&dTombak mitologi dengan enchant penuh."
+        enchantments:
+          SHARPNESS: 5
+          UNBREAKING: 3
+          FIRE_ASPECT: 2
+          LOOTING: 3
+          LUNGE: 3
   kagekari:
     uncommon:
       - display: "&7Leather Helmet"
