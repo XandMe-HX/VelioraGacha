@@ -154,6 +154,45 @@ animation:
       - 23
       - 24
 
+# Efek kemenangan per tier. Visual saja, tidak memberi damage.
+reward-effects:
+  enabled: true
+  uncommon:
+    particle: HAPPY_VILLAGER
+    count: 12
+    spread: 0.35
+    sound: ENTITY_EXPERIENCE_ORB_PICKUP
+    pitch: 1.2
+    lightning-effect: false
+  common:
+    particle: END_ROD
+    count: 18
+    spread: 0.45
+    sound: BLOCK_AMETHYST_BLOCK_CHIME
+    pitch: 1.1
+    lightning-effect: false
+  rare:
+    particle: ENCHANT
+    count: 32
+    spread: 0.55
+    sound: ENTITY_PLAYER_LEVELUP
+    pitch: 1.0
+    lightning-effect: false
+  epic:
+    particle: ELECTRIC_SPARK
+    count: 48
+    spread: 0.7
+    sound: ENTITY_LIGHTNING_BOLT_IMPACT
+    pitch: 0.9
+    lightning-effect: false
+  mythic:
+    particle: FIREWORK
+    count: 70
+    spread: 0.9
+    sound: ENTITY_LIGHTNING_BOLT_THUNDER
+    pitch: 0.8
+    lightning-effect: true
+
 effects:
   enabled: true
   interval-ticks: 3
