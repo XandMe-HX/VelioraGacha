@@ -8,6 +8,7 @@ softdepend:
   - DecentHolograms
   - PlaceholderAPI
   - ExcellentEnchants
+  - VelioraSuite
 commands:
   vgcreate:
     description: Main admin command VelioraGacha

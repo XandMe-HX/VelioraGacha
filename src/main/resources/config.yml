@@ -4,7 +4,7 @@
 # File examples.yml dan rewards-examples.yml hanya contoh, tidak dibaca otomatis.
 # ==================================================
 settings:
-  prefix: '&8[&dVelioraGacha&8] '
+  prefix: '&8[&dVelioraGacha&8] &r'
   storage: YAML
   max-shop-amount: 64
   show-test-crate: true
